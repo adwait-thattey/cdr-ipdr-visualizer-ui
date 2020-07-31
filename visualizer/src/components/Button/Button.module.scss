@@ -1,0 +1,24 @@
+.buttonWrapper {
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+}
+
+.button {
+    border: 1px solid #0252fc;
+    height: 40px;
+    background: #fff;
+    color: #0252fc;
+    font-weight: 600;
+    font-size: 14px;
+    transition-duration: .2s;
+    border-radius: 7px;
+    min-width: 160px;
+}
+
+.button:hover {
+    background-color: #0252fc;
+    color: #fff;
+    cursor: pointer;
+}
