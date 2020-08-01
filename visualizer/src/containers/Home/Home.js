@@ -32,15 +32,15 @@ const getNodeData = async () => new Promise((res, rej) => {
 
 
 const cdrData = [{from: 1, to: 2, frequency: 5, calls: []}, 
-    {from: 1, to: 3, frequency: 5, calls: []}, 
-    {from: 2, to: 3, frequency: 5, calls: []}, 
-    {from: 2, to: 3, frequency: 5, calls: []}
+    {id: 50, from: 1, to: 3, frequency: 5, calls: []}, 
+    {id: 51, from: 2, to: 3, frequency: 5, calls: []}, 
+    {id: 52, from: 2, to: 3, frequency: 5, calls: []}
 ]
 
 const ipdrData = [
-    {from: 1, service: 1, records: 3}, 
-    {from: 2, service: 3, records: 2}, 
-    {from: 1, service: 3, records: 4}, 
+    {id: 70, from: 1, service: 1 + 50000, records: 3}, 
+    {id: 71, from: 2, service: 3 + 50000, records: 2}, 
+    {id: 72, from: 1, service: 3 + 50000, records: 4}, 
 ]
 
 const usersData = [
@@ -68,17 +68,17 @@ const usersData = [
 
 const servicesData = [
     {
-        id: 1,
+        id: 1 + 50000,
         name: "WhatsApp",
         port: 5432
     },
     {
-        id: 2,
+        id: 2 + 50000,
         name: "Messenger",
         port: 8000
     },
     {
-        id: 3,
+        id: 3 + 50000,
         name: "Telegram",
         port: 8001
     }
@@ -114,26 +114,29 @@ const Home = () => {
         // User nodes
         for (let ele of users) {
             const { id } = ele;
-            G.addNode(id, { type: "user", color: "orange", value: id + 15 })
+            console.log(id);
+            G.addNode(id, { type: "user", color: "orange", value: id })
         }
 
         // Service nodes
         for (let ele of services) {
             const { id } = ele;
-            const newId = id + 100
-            G.addNode(newId, { type: "user", color: "blue", value: newId })
+            console.log(id);
+            G.addNode(id, { type: "service", color: "blue", value: id })
         }
 
         // CDR edges
         for (let ele of cdr) {
-            const { from, to, frequency } = ele;
-            G.addEdge(from, to, { frequency, color: 'blue' });
+            const { from, to, frequency, id } = ele;
+            console.log(from, to);
+            G.addEdge(from, to, { frequency, color: 'blue', id });
         }
 
         // IPDR edges
         for (let ele of ipdr) {
-            const { from, service } = ele;
-            G.addEdge(from, service + 100);
+            const { from, service, id } = ele;
+            console.log(from, service);
+            G.addEdge(from, service, { id });
         }
 
         window.jsnx.draw(G, {
@@ -141,12 +144,13 @@ const Home = () => {
             withLabels: true,
             nodeAttr: {
                 r: function(d) {
-                    return d.data.value > 100 ? 15 : d.data.value;
+                    return d.data.value > 100 || d.data.value < 5 ? 15 : d.data.value;
                 }
             },
             nodeStyle: {
                 fill: (d) => d.data.color 
-            }
+            },
+            stickyDrag: true
         });
 
 
@@ -156,7 +160,7 @@ const Home = () => {
 
         window.d3.selectAll('.node').on('click', async(d) => {
             const nodeData = await getNodeData(d.node);
-            const updatedData = { id: d.node, ...nodeData }
+            const updatedData = { id: d.node, ...nodeData, type: d.data.type }
             setDetailPanel([true, updatedData]);
         });
 
@@ -166,8 +170,6 @@ const Home = () => {
         });
 
     }, [cdr, ipdr, users, services]);
-
-    console.log(detailPanel)
 
     const hoverDiv = () => {
         const { x, y } = hoverModal[1];

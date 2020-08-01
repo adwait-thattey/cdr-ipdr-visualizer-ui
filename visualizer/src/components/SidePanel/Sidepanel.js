@@ -1,6 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
 import ListItem from '../List/List';
+import Activity from '../Activity/Activity';
 
 const { TabPane } = Tabs;
 
@@ -11,7 +12,7 @@ const SidePanel = ({ data }) => {
             <div>
                 <Tabs type="card" defaultActiveKey="1" size="large" onChange={() => null}>
                     <TabPane tab="Details" key="1">
-                        {data && (
+                        {data && data.type === "user" && (
                             <>
                                 <div>
                                     <h5>Name</h5>
@@ -37,7 +38,11 @@ const SidePanel = ({ data }) => {
                         )}
                     </TabPane>
                     <TabPane tab="Activity" key="2">
-                        Content of Tab Pane 2
+                        {data && data.type === "user" && (
+                            <>
+                                <Activity />
+                            </>
+                        )}
                     </TabPane>
                 </Tabs>
             </div>
