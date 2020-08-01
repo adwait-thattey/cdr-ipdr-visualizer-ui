@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './Home.module.scss';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { Modal } from 'antd';
+import SidePanel from '../../components/SidePanel/Sidepanel';
 
 const getRandomColor = () => {
     var letters = '0123456789ABCDEF';
@@ -12,6 +13,23 @@ const getRandomColor = () => {
     return color;
 }
 
+const getNodeData = async () => new Promise((res, rej) => {
+    setTimeout(() => {
+        res({
+            name: "Brijesh Bumrela",
+            address: "Death Valley",
+            phone_numbers: [
+                { number: "1234567890", imsi: "1234567890abcdfg" }, 
+                { number: "1234567890", imsi: "1234567890hijkml" }
+            ],
+            devices: [
+                { imei: "efunewfiun32", mac: "80:20:42:41:41" }, 
+                { imei: "efunewfiun32", mac: "80:20:42:11:90" }
+            ],
+        })
+    }, 1000);
+})
+
 
 const cdrData = [{from: 1, to: 2, frequency: 5, calls: []}, 
     {from: 1, to: 3, frequency: 5, calls: []}, 
@@ -21,8 +39,8 @@ const cdrData = [{from: 1, to: 2, frequency: 5, calls: []},
 
 const ipdrData = [
     {from: 1, service: 1, records: 3}, 
-    {from: 1, service: 2, records: 2}, 
-    {from: 2, service: 3, records: 4}, 
+    {from: 2, service: 3, records: 2}, 
+    {from: 1, service: 3, records: 4}, 
 ]
 
 const usersData = [
@@ -84,21 +102,6 @@ const Home = () => {
 
     const handleFilterModal = (status) => setShowFilterModal(status)
 
-
-    useEffect(() => {
-        window.d3.selectAll('.node').on('mouseenter', d => {
-            setHoverModal([true, d]);
-        });
-
-        window.d3.selectAll('.node').on('click', d => {
-            setDetailPanel([true, d]);
-        });
-
-        window.d3.selectAll('.node').on('mouseleave', d => {
-            setHoverModal([false, null]);
-        });
-    }, []);
-
     useEffect(() => {
         var G = new window.jsnx.Graph();
         // G.addNode(1, { count: 12, color: getRandomColor() });
@@ -108,9 +111,29 @@ const Home = () => {
         // G.addEdge(3, 2, { edge_labels: "node2" });
 
 
+        // User nodes
         for (let ele of users) {
             const { id } = ele;
-            G.addNode(id, { type: "user", color: getRandomColor(), value: id + 15 })
+            G.addNode(id, { type: "user", color: "orange", value: id + 15 })
+        }
+
+        // Service nodes
+        for (let ele of services) {
+            const { id } = ele;
+            const newId = id + 100
+            G.addNode(newId, { type: "user", color: "blue", value: newId })
+        }
+
+        // CDR edges
+        for (let ele of cdr) {
+            const { from, to, frequency } = ele;
+            G.addEdge(from, to, { frequency, color: 'blue' });
+        }
+
+        // IPDR edges
+        for (let ele of ipdr) {
+            const { from, service } = ele;
+            G.addEdge(from, service + 100);
         }
 
         window.jsnx.draw(G, {
@@ -118,20 +141,38 @@ const Home = () => {
             withLabels: true,
             nodeAttr: {
                 r: function(d) {
-                    return d.data.value < 5 ? 15 : d.data.value;
+                    return d.data.value > 100 ? 15 : d.data.value;
                 }
             },
             nodeStyle: {
                 fill: (d) => d.data.color 
             }
         });
+
+
+        window.d3.selectAll('.node').on('mouseenter', d => {
+            setHoverModal([true, d]);
+        });
+
+        window.d3.selectAll('.node').on('click', async(d) => {
+            const nodeData = await getNodeData(d.node);
+            const updatedData = { id: d.node, ...nodeData }
+            setDetailPanel([true, updatedData]);
+        });
+
+
+        window.d3.selectAll('.node').on('mouseleave', d => {
+            setHoverModal([false, null]);
+        });
+
     }, [cdr, ipdr, users, services]);
+
+    console.log(detailPanel)
 
     const hoverDiv = () => {
         const { x, y } = hoverModal[1];
         return (
-            <></>
-            // <div className={styles.hoverModal} style={{ left: x + 100, top: y - 10 }}>{hoverModal[1].node}</div>
+            <div className={styles.hoverModal} style={{ left: x + 100, top: y - 10 }}>{hoverModal[1].node}</div>
         )
     }
 
@@ -150,7 +191,7 @@ const Home = () => {
             <div className={styles.networkWrapper}>
                 <div className={styles.graphCanvas} id="demo-canvas"></div>
                 <div className={styles.sidepanelWrapper}>
-
+                    {<SidePanel data={detailPanel[1]}/>}
                 </div>
             </div>
 
