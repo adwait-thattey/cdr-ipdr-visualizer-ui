@@ -4,7 +4,11 @@ import './App.css';
 import Home from './containers/Home/Home';
 import Sidebar from './components/Sidebar/Sidebar.js';
 import Auth from './containers/Auth/Auth';
+<<<<<<< HEAD
 import Upload from './containers/Upload/Upload.js';
+=======
+import Upload from './containers/Upload/Upload';
+>>>>>>> upload_ui
 
 function App() {
   return (
