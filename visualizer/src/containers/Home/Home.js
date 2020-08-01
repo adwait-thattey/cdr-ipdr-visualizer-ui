@@ -5,6 +5,7 @@ import { Modal } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
+import { getFilteredData } from '../../services/filters';
 
 const getRandomColor = () => {
   var letters = '0123456789ABCDEF';
@@ -120,7 +121,15 @@ const initialFilters = {
 
 
     frequency_min: null,
-    frequency_max: null
+    frequency_max: null,
+
+
+    phone_number: null,
+    exclude_these_phone_number: false,
+
+
+    user_id: null,
+    exclude_these_user_id: false
 }
 
 
@@ -145,9 +154,23 @@ const Home = () => {
 
     const handleFilterModal = (status) => setShowFilterModal(status);
 
-    const handleFilters = (newFilterState) => {
+    const handleFilters = async (newFilterState) => {
         setFilters(newFilterState);
         setShowFilterModal(false);
+        try {
+            const updatedData = await getFilteredData(newFilterState)
+            setAllValues(updatedData)
+        } catch(e) {
+            console.log(e);
+        }
+    }
+
+    const setAllValues = (updatedData) => {
+        const { cdr, ipdr, users, services } = updatedData;
+        setCdrData(cdr);
+        setIpdr(ipdr);
+        setUsers(users);
+        setServices(services);
     }
   
     useEffect(() => {
@@ -160,60 +183,62 @@ const Home = () => {
 
         // User nodes
         for (let ele of users) {
-        const { id, ...rest } = ele;
-        G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
+            const { id, ...rest } = ele;
+            G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
         }
 
         // Service nodes
         for (let ele of services) {
-        const { id, ...rest } = ele;
-        G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
+            const { id, ...rest } = ele;
+            G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
         }
 
         // CDR edges
         for (let ele of cdr) {
-        const { from, to, frequency, id } = ele;
-        G.addEdge(from, to, { frequency, color: 'blue', id });
+            const { from, to, frequency, id } = ele;
+            G.addEdge(from, to, { frequency, color: 'blue', id });
         }
 
         // IPDR edges
         for (let ele of ipdr) {
-        const { from, service, id } = ele;
-        G.addEdge(from, service, { id });
+            const { from, service, id } = ele;
+            G.addEdge(from, service, { id });
         }
 
         window.jsnx.draw(G, {
-        element: '#demo-canvas',
-        withLabels: true,
-        nodeAttr: {
-            r: function (d) {
-            return d.data.value > 100 || d.data.value <= 10 ? 15 : d.data.value;
+            element: '#demo-canvas',
+            withLabels: true,
+            nodeAttr: {
+                r: function (d) {
+                return d.data.value > 100 || d.data.value <= 10 ? 15 : d.data.value;
+                },
             },
-        },
-        layoutAttr: {
-            charge: -120,
-            linkDistance: 160,
-        },
-        nodeStyle: {
-            fill: (d) => d.data.color,
-        },
-        stickyDrag: true,
+            layoutAttr: {
+                charge: -120,
+                linkDistance: 160,
+            },
+            nodeStyle: {
+                fill: (d) => d.data.color,
+            },
+            stickyDrag: true,
         });
 
         window.d3.selectAll('.node').on('mouseenter', (d) => {
-        setHoverModal([true, d]);
+            setHoverModal([true, d]);
         });
 
         window.d3.selectAll('.node').on('click', async (d) => {
-        const nodeData = await getNodeData(d.node);
-        const updatedData = { id: d.node, ...nodeData, type: d.data.type };
-        setDetailPanel([true, updatedData]);
+            const nodeData = await getNodeData(d.node);
+            const updatedData = { id: d.node, ...nodeData, type: d.data.type };
+            setDetailPanel([true, updatedData]);
         });
 
         window.d3.selectAll('.node').on('mouseleave', (d) => {
-        setHoverModal([false, null]);
+            setHoverModal([false, null]);
         });
     }, [cdr, ipdr, users, services]);
+
+    console.log(filters);
 
     const hoverDiv = () => {
         const { x, y } = hoverModal[1];
@@ -229,12 +254,12 @@ const Home = () => {
   return (
         <>
             <Modal
-                title="Basic Modal"
+                title="Apply Filters"
                 visible={showFilterModal}
                 onCancel={() => handleFilterModal(false)}
                 footer={null}
             >
-                <Filter updateChange={handleFilters} />
+                <Filter updateChange={handleFilters} modalChange={handleFilterModal}/>
             </Modal>
             <SearchBar onFilterClick={() => handleFilterModal(true)} />
 

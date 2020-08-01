@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './Filter.module.scss';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
-import { Slider, DatePicker } from 'antd';
+import { DatePicker } from 'antd';
 import CCheckBox from '../../components/Checkbox/CCheckbox';
 import CSlider from '../../components/CSlider/CSlider';
 
@@ -28,14 +28,27 @@ const initialFilters = {
 
     
     frequency_min: null,
-    frequency_max: null
+    frequency_max: null,
+
+
+    phone_number: null,
+    exclude_these_phone_number: false,
+
+
+    user_id: null,
+    exclude_these_user_id: false
 }
 
-const Filter = ({ updateChange }) => {
+const Filter = ({ updateChange, modalChange }) => {
 
     const [filters, setFilters] = useState(initialFilters);
 
-    const submitChange = () => updateChange(filters);
+    const submitChange = () => {
+        const phone_number = filters.phone_number && filters.phone_number.split(',');
+        const updatedFilters = { ...filters, phone_number: phone_number }
+        updateChange(updatedFilters);
+        modalChange(false)
+    };
 
     const handleChangeCheckbox = (e, name) => setFilters((prev) => ({ ...prev, [name]: e.target.checked }))
 
@@ -50,8 +63,6 @@ const Filter = ({ updateChange }) => {
     }
 
     const handleSliderChange = (value, name) => setFilters((prev) => ({ ...prev, [name]: value }))
-
-
 
     const { location_lat, location_long } = filters;
 
@@ -87,12 +98,20 @@ const Filter = ({ updateChange }) => {
                 <h5>Frequency</h5>
                 <CSlider range defaultValue={[20, 50]} name="frequency" onChange={handleDoubleSliderChange} />
             </div>
+            <div className={styles.rows}>
+                <Input name="phone_number" onChange={handleChange} title="Phone numbers" placeholder="Enter comma seperated phone numbers"/>
+                <CCheckBox handleChange={handleChangeCheckbox} name="exclude_these_phone_number" defaultChecked={false}/>
+            </div>
+            <div className={styles.rows}>
+                <Input name="user_id" onChange={handleChange} title="User ID's" placeholder="Enter comma seperated user id's"/>
+                <CCheckBox handleChange={handleChangeCheckbox} name="exclude_these_user_id" defaultChecked={false}/>
+            </div>
             <div>
                 {/* <RangePicker /> */}
             </div>
             <div className={styles.dual}>
                 <Button text="Save" onClick={submitChange}></Button>
-                <Button text="Cancel" onClick={() => null}></Button>
+                <Button text="Cancel" onClick={() => modalChange(false)}></Button>
             </div>
         </>
     );
