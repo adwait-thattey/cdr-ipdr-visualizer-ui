@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
-import styles from "./Home.module.scss";
-import SearchBar from "../../components/SearchBar/SearchBar";
-import { Modal } from "antd";
+import React, { useEffect, useState } from 'react';
+import styles from './Home.module.scss';
+import SearchBar from '../../components/SearchBar/SearchBar';
+import { Modal } from 'antd';
 
 const Home = () => {
   const [showFilterModal, setShowFilterModal] = useState(false);

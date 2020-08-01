@@ -7,26 +7,26 @@ import Auth from './containers/Auth/Auth';
 import Upload from './containers/Upload/Upload.';
 
 function App() {
-    return (
-        <Router>
-            <div className="container-wrap">
-                <Sidebar />
-                <div className="main-target">
-                    <Switch>
-                        <Route path="/visualize">
-                            <Home />
-                        </Route>
-                        <Route path="/auth" exact>
-                            <Auth />
-                        </Route>
-                        <Route path="/upload">
-                            <Upload />
-                        </Route>
-                    </Switch>
-                </div>  
-            </div>
-        </Router>
-    );
+  return (
+    <Router>
+      <div className="container-wrap">
+        <Sidebar />
+        <div className="main-target">
+          <Switch>
+            <Route path="/visualize">
+              <Home />
+            </Route>
+            <Route path="/auth" exact>
+              <Auth />
+            </Route>
+            <Route path="/upload">
+              <Upload />
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    </Router>
+  );
 }
 
 export default App;

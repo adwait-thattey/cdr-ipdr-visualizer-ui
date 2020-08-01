@@ -1,10 +1,10 @@
-import React from "react";
-import styles from "./Cdr.module.scss";
-import { Row, Col, Typography } from "antd";
-import { UploadOutlined } from "@ant-design/icons";
-import Button from "../../../components/Button/Button";
+import React from 'react';
+import styles from './Cdr.module.scss';
+import { Typography } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
+import Button from '../../../components/Button/Button';
 
-const { Title, Paragraph } = Typography;
+const { Title } = Typography;
 
 const Cdr = () => {
   return (
@@ -18,7 +18,7 @@ const Cdr = () => {
           orci, eget dictum dolor iaculis ac. Quisque feugiat quam et ipsum
           tristique ultricies.
         </div>
-        <Button text={"Upload"} />
+        <Button text={'Upload'} />
       </div>
       <div className={styles.element}>
         <Title level={4}>Upload</Title>
@@ -29,7 +29,7 @@ const Cdr = () => {
           orci, eget dictum dolor iaculis ac. Quisque feugiat quam et ipsum
           tristique ultricies.
         </div>
-        <Button text={"Upload"} />
+        <Button text={'Upload'} />
       </div>
     </div>
   );

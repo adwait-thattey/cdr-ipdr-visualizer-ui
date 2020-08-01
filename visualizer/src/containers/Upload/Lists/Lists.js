@@ -1,6 +1,6 @@
-import React from "react";
-import styles from "./Lists.module.scss";
-import { Tabs } from "antd";
+import React from 'react';
+import styles from './Lists.module.scss';
+import { Tabs } from 'antd';
 
 const Lists = () => {
   return (
