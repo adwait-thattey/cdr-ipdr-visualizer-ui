@@ -10,24 +10,20 @@ const Cdr = () => {
   return (
     <div className={styles.container}>
       <div className={styles.element}>
-        <Title level={4}>Upload</Title>
+        <Title level={4}>Upload CDR v1</Title>
 
         <div className={styles.caption}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-          condimentum nisl maximus elit ultrices porta. Nullam dapibus vulputate
-          orci, eget dictum dolor iaculis ac. Quisque feugiat quam et ipsum
-          tristique ultricies.
+          Visualization made easy ! Upload the Call Detail Record(CDR v1) data
+          here and get started.
         </div>
         <Button text={'Upload'} />
       </div>
       <div className={styles.element}>
-        <Title level={4}>Upload</Title>
+        <Title level={4}>Upload CDR v2</Title>
 
         <div className={styles.caption}>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam
-          condimentum nisl maximus elit ultrices porta. Nullam dapibus vulputate
-          orci, eget dictum dolor iaculis ac. Quisque feugiat quam et ipsum
-          tristique ultricies.
+          Visualization made easy ! Upload the Call Detail Record(CDR v2) data
+          here and get started.
         </div>
         <Button text={'Upload'} />
       </div>

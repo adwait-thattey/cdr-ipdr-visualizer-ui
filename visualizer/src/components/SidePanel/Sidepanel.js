@@ -1,8 +1,7 @@
 import React from 'react';
 import { Tabs } from 'antd';
-import ListItem from '../List/List';
-import styles from './Sidepanel.module.scss';
 import Activity from '../Activity/Activity';
+import styles from './Sidepanel.module.scss';
 
 const { TabPane } = Tabs;
 

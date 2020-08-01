@@ -14,33 +14,27 @@ const Filter = () => {
         <>
             <Input
                 onChange={handleChange}
-                name="title"
-                title="Title"
-                placeholder="Enter Title"
+                name="latitude"
+                title="Latitude"
+                placeholder="Enter Latitude"
             />
             <Input
                 onChange={handleChange}
-                name="width"
-                title="Width"
-                placeholder="Enter Width"
+                name="longitude"
+                title="Longitude"
+                placeholder="Enter Longitude"
             />
             <Input
                 onChange={handleChange}
-                name="height"
-                title="Height"
-                placeholder="Enter Height"
+                name="start_time"
+                title="Start Time"
+                placeholder="Enter start time"
             />
             <Input
                 onChange={handleChange}
-                name="xAxis"
-                title="X-Axis Label"
-                placeholder="Enter Label for X axis"
-            />
-            <Input
-                onChange={handleChange}
-                name="yAxis"
-                title="Y-Axis Label"
-                placeholder="Enter Label for Y axis"
+                name="end_time"
+                title="End Time"
+                placeholder="Enter end time"
             />
             <div className={styles.buttons}>
                 <Button text="Save" onClick={submitChange}></Button>
