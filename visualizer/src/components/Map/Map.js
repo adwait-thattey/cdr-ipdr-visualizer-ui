@@ -3,13 +3,16 @@ import ReactMapGL, {
   FlyToInterpolator,
   NavigationControl,
   Marker,
+  Layer,
+  Source,
 } from 'react-map-gl';
 import Supercluster from 'supercluster';
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import styling from './Map.module.scss';
-import reduceCluster from '../../services/MapData';
+import { reduceCluster, getLineGeoJSON } from '../../services/MapData';
+import MarkerPoint from './Marker';
 
 const MAPBOX_TOKEN =
   'pk.eyJ1IjoicmFtLW4xOCIsImEiOiJja2RiZ2J4dTQwdjEyMzFwZzdpMDR5ejQ5In0.71lREfvqVll3KxP005EsKg';
@@ -21,8 +24,8 @@ const MAX_ZOOM = 20;
 const MIN_ZOOM = 3;
 const DEFAULT_ZOOM = 4;
 
-const Map = ({ points }) => {
-  const [viewPort, setViewPort] = useState({
+const Map = ({ pointsGeoJSON }) => {
+  const [viewport, setViewPort] = useState({
     height: '50vh',
     width: '100%',
     zoom: DEFAULT_ZOOM,
@@ -41,26 +44,34 @@ const Map = ({ points }) => {
 
   const supercluster = useMemo(() => {
     const supercluster = new Supercluster({
-      radius: 60,
+      radius: 25,
       maxZoom: MAX_ZOOM,
       reduce: reduceCluster,
     });
-    supercluster.load(points);
+    supercluster.load(pointsGeoJSON);
     return supercluster;
-  }, [points]);
+  }, [pointsGeoJSON]);
+
+  const lineGeoJSON = useMemo(() => {
+    return getLineGeoJSON(pointsGeoJSON);
+  }, [pointsGeoJSON]);
 
   const bounds = mapRef.current
     ? mapRef.current.getMap().getBounds().toArray().flat()
     : null;
 
-  const clusters = supercluster.getClusters(bounds, viewPort.zoom);
+  console.log(bounds, viewport);
 
-  console.log(clusters);
+  const clusters = useMemo(() => {
+    return bounds
+      ? supercluster.getClusters(bounds, Math.round(viewport.zoom))
+      : [];
+  }, [supercluster, viewport, bounds]);
 
   return (
     <ReactMapGL
       ref={mapRef}
-      {...viewPort}
+      {...viewport}
       mapboxApiAccessToken={MAPBOX_TOKEN}
       minZoom={MIN_ZOOM}
       maxZoom={MAX_ZOOM}
@@ -76,7 +87,31 @@ const Map = ({ points }) => {
           showCompass={true}
         />
       </div>
-      <div className={styling.container}></div>
+      <div className={styling.container}>
+        <Source id="route" {...lineGeoJSON} />
+        <Layer
+          type="line"
+          id="route"
+          source="route"
+          paint={{ 'line-width': 2 }}
+        />
+        {clusters.map((val, index) => {
+          return (
+            <Marker
+              longitude={val.geometry.coordinates[0]}
+              latitude={val.geometry.coordinates[1]}
+              key={index}
+              offsetLeft={-10}
+              offsetTop={-10}
+            >
+              <MarkerPoint
+                count={val.properties.cluster ? val.properties.point_count : 1}
+                type={val.properties.type}
+              />
+            </Marker>
+          );
+        })}
+      </div>
     </ReactMapGL>
   );
 };
