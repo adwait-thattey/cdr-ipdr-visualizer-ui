@@ -5,7 +5,7 @@ const CustomPopup = (props) => {
   return (
     <div
       className={styles.hoverModal}
-      style={{ left: props.x + 100, top: props.y + 25 }}
+      style={{ left: props.x + 90, top: props.y + 45 }}
     >
       <div className={styles.hoverModalValue}>{props.data.name}</div>
     </div>
