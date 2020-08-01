@@ -36,7 +36,10 @@ const getNodeData = async () =>
 const cdrData = [{from: 1, to: 2, frequency: 5, calls: []}, 
     {id: 50, from: 1, to: 3, frequency: 5, calls: []}, 
     {id: 51, from: 2, to: 3, frequency: 5, calls: []}, 
-    {id: 52, from: 2, to: 3, frequency: 5, calls: []}
+    {id: 52, from: 2, to: 3, frequency: 5, calls: []},
+    {id: 53, from: 3, to: 6, frequency: 5, calls: []},
+    {id: 54, from: 4, to: 6, frequency: 3, calls: []},
+    {id: 55, from: 5, to: 6, frequency: 5, calls: []}
 ]
 
 const ipdrData = [
@@ -66,6 +69,16 @@ const usersData = [
     name: 'Riya',
     phone_numbers: ['1234567890', '0987654321', '3628292838'],
   },
+  {
+    id: 5,
+    name: 'Shlok',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
+  {
+    id: 6,
+    name: 'Ram',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
 ];
 
 const servicesData = [
@@ -88,6 +101,7 @@ const servicesData = [
 
 const Home = () => {
     const [showFilterModal, setShowFilterModal] = useState(false);
+
     // Modal to showcase the pop up modal on hovering the node
     const [hoverModal, setHoverModal] = useState([false, null]);
 
@@ -115,29 +129,25 @@ const Home = () => {
 
         // User nodes
         for (let ele of users) {
-            const { id } = ele;
-            console.log(id);
-            G.addNode(id, { type: "user", color: "orange", value: id })
+            const { id, ...rest } = ele;
+            G.addNode(id, { type: "user", color: "orange", value: id, ...rest })
         }
 
         // Service nodes
         for (let ele of services) {
-            const { id } = ele;
-            console.log(id);
-            G.addNode(id, { type: "service", color: "blue", value: id })
+            const { id, ...rest } = ele;
+            G.addNode(id, { type: "service", color: "blue", value: id, ...rest })
         }
 
         // CDR edges
         for (let ele of cdr) {
             const { from, to, frequency, id } = ele;
-            console.log(from, to);
             G.addEdge(from, to, { frequency, color: 'blue', id });
         }
 
         // IPDR edges
         for (let ele of ipdr) {
             const { from, service, id } = ele;
-            console.log(from, service);
             G.addEdge(from, service, { id });
         }
 
@@ -146,8 +156,12 @@ const Home = () => {
             withLabels: true,
             nodeAttr: {
                 r: function(d) {
-                    return d.data.value > 100 || d.data.value < 5 ? 15 : d.data.value;
+                    return d.data.value > 100 || d.data.value <= 10 ? 15 : d.data.value;
                 }
+            },
+            layoutAttr: {
+                charge: -120,
+                linkDistance: 160
             },
             nodeStyle: {
                 fill: (d) => d.data.color 
@@ -178,12 +192,14 @@ const Home = () => {
     const { x, y } = hoverModal[1];
     return (
       <CustomPopup
-        data={{ id: hoverModal[1].node, name: 'Adwait Thattey' }}
+        data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
         x={x}
         y={y}
       />
     );
   };
+
+  console.log(hoverModal);
 
   return (
     <>

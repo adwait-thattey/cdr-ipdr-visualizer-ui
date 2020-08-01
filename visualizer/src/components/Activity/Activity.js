@@ -5,13 +5,12 @@ const { Step } = Steps;
 
 const Activity = () => {
     return (  
-        <h1 style={{ paddingLeft: '20px' }}>    
+        <h1>    
         <Steps progressDot current={5} direction="vertical">
-            <Step title="Called 82737474" description="At 5PM on 27/07/11. Duration - 15 min" />
-            <Step title="Finished" description="This is a description. This is a description." />
-            <Step title="In Progress" description="This is a description. This is a description." />
-            <Step title="Waiting" description="This is a description." />
-            <Step title="Waiting" description="This is a description." />
+            <Step title="Called 827374741" description="At 5PM on 27/07/11. Duration - 15 min" />
+            <Step title="Called 827374311" description="At 10:31PM on 27/08/11. Duration - 11 min" />
+            <Step title="Visited WhatsApp" description="At 10:40PM on 27/08/11. Duration - 4 min" />
+            <Step title="Visited Messenger" description="At 7:01AM on 28/08/11. Duration - 11 min" />
         </Steps>
       </h1>
     );
