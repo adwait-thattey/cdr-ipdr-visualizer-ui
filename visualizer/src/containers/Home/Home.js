@@ -3,6 +3,7 @@ import styles from './Home.module.scss';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { Modal } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
+import Filter from '../Filter/Filter';
 
 const getRandomColor = () => {
     var letters = '0123456789ABCDEF';
@@ -186,7 +187,7 @@ const Home = () => {
                 onCancel={() => handleFilterModal(false)}
                 footer={null}
             >
-                <h1>HI There</h1>
+                <Filter />
             </Modal>
             <SearchBar onFilterClick={() => handleFilterModal(true)}/>
 
