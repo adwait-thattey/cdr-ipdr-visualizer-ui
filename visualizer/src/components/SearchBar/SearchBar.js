@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import styling from "./SearchBar.module.scss";
-import Avatar from "../Avatar/Avatar";
-import Input from "../Input/Input";
-import Button from "../Button/Button";
+import styling from './SearchBar.module.scss';
+import Avatar from '../Avatar/Avatar';
+import Input from '../Input/Input';
+import Button from '../Button/Button';
 
 const Nav = ({ onFilterClick }) => {
   return (

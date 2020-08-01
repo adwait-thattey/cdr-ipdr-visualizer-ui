@@ -1,6 +1,6 @@
-import React from "react";
+import React from 'react';
 
-import styling from "./Avatar.module.scss";
+import styling from './Avatar.module.scss';
 
 function stringToHslColor(str, s, l) {
   var hash = 0;
@@ -9,17 +9,17 @@ function stringToHslColor(str, s, l) {
   }
 
   var h = hash % 360;
-  return "hsl(" + h + ", " + s + "%, " + l + "%)";
+  return 'hsl(' + h + ', ' + s + '%, ' + l + '%)';
 }
 
 const Avatar = ({
-  firstName = "",
-  lastName = "",
-  size = "standard",
+  firstName = '',
+  lastName = '',
+  size = 'standard',
   stacked,
 }) => {
   let style =
-    styling.avatar + " " + styling[size] + " " + (stacked && styling.stacked);
+    styling.avatar + ' ' + styling[size] + ' ' + (stacked && styling.stacked);
 
   let color = stringToHslColor(firstName + lastName, 40, 30);
 
@@ -31,8 +31,8 @@ const Avatar = ({
   );
 };
 
-export const AvatarPlaceholder = ({ number, size = "standard" }) => (
-  <div className={styling.placeholder + " " + styling[size]}>+{number}</div>
+export const AvatarPlaceholder = ({ number, size = 'standard' }) => (
+  <div className={styling.placeholder + ' ' + styling[size]}>+{number}</div>
 );
 
 export default Avatar;

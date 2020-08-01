@@ -1,14 +1,14 @@
-import React from "react";
-import { withRouter } from "react-router-dom";
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 import {
   AiOutlineBarChart,
   AiOutlineLogout,
   AiOutlineUnorderedList,
   AiOutlineUpload,
   Aicha,
-} from "react-icons/ai";
+} from 'react-icons/ai';
 
-import styling from "./Sidebar.module.scss";
+import styling from './Sidebar.module.scss';
 
 const Sidebar = ({ history }) => {
   return (
@@ -18,16 +18,16 @@ const Sidebar = ({ history }) => {
           <div className={styling.logo}>A</div>
 
           <ul className={styling.menu}>
-            <li onClick={() => history.push("/visualize")}>
+            <li onClick={() => history.push('/visualize')}>
               <AiOutlineBarChart />
             </li>
 
-            <li onClick={() => history.push("/upload")}>
+            <li onClick={() => history.push('/upload')}>
               <AiOutlineUpload />
             </li>
 
             <li>
-              <AiOutlineLogout onClick={() => history.push("/auth")} />
+              <AiOutlineLogout onClick={() => history.push('/auth')} />
             </li>
           </ul>
         </div>
