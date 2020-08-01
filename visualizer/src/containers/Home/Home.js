@@ -3,15 +3,34 @@ import styles from './Home.module.scss';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
 import { Modal } from 'antd';
+import SidePanel from '../../components/SidePanel/Sidepanel';
 
 const getRandomColor = () => {
-  var letters = '0123456789ABCDEF';
-  var color = '#';
-  for (var i = 0; i < 6; i++) {
-    color += letters[Math.floor(Math.random() * 16)];
-  }
-  return color;
-};
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+const getNodeData = async () => new Promise((res, rej) => {
+    setTimeout(() => {
+        res({
+            name: "Brijesh Bumrela",
+            address: "Death Valley",
+            phone_numbers: [
+                { number: "1234567890", imsi: "1234567890abcdfg" }, 
+                { number: "1234567890", imsi: "1234567890hijkml" }
+            ],
+            devices: [
+                { imei: "efunewfiun32", mac: "80:20:42:41:41" }, 
+                { imei: "efunewfiun32", mac: "80:20:42:11:90" }
+            ],
+        })
+    }, 1000);
+})
+
 
 const cdrData = [
   { from: 1, to: 2, frequency: 5, calls: [] },
@@ -21,10 +40,10 @@ const cdrData = [
 ];
 
 const ipdrData = [
-  { from: 1, service: 1, records: 3 },
-  { from: 1, service: 2, records: 2 },
-  { from: 2, service: 3, records: 4 },
-];
+    {from: 1, service: 1, records: 3}, 
+    {from: 2, service: 3, records: 2}, 
+    {from: 1, service: 3, records: 4}, 
+]
 
 const usersData = [
   {
@@ -68,45 +87,95 @@ const servicesData = [
 ];
 
 const Home = () => {
-  const [showFilterModal, setShowFilterModal] = useState(false);
-  // Modal to showcase the pop up modal on hovering the node
-  const [hoverModal, setHoverModal] = useState([false, null]);
+    const [showFilterModal, setShowFilterModal] = useState(false);
+    // Modal to showcase the pop up modal on hovering the node
+    const [hoverModal, setHoverModal] = useState([false, null]);
 
-  // Modal to showcase the detailed side panel
-  const [detailPanel, setDetailPanel] = useState([false, null]);
 
-  const [cdr, setCdrData] = useState(cdrData);
-  const [ipdr, setIpdr] = useState(ipdrData);
-  const [users, setUsers] = useState(usersData);
-  const [services, setServices] = useState(servicesData);
+    // Modal to showcase the detailed side panel
+    const [detailPanel, setDetailPanel] = useState([false, null]);
 
-  const handleFilterModal = (status) => setShowFilterModal(status);
 
-  useEffect(() => {
-    // window.d3.selectAll('.node').on('mouseenter', (d) => {
-    //   setHoverModal([true, d]);
-    // });
+    const [cdr, setCdrData] = useState(cdrData);
+    const [ipdr, setIpdr] = useState(ipdrData);
+    const [users, setUsers] = useState(usersData);
+    const [services, setServices] = useState(servicesData);
 
-    // window.d3.selectAll('.node').on('click', (d) => {
-    //   setDetailPanel([true, d]);
-    // });
 
-    // window.d3.selectAll('.node').on('mouseleave', (d) => {
-    //   setHoverModal([false, null]);
-    // });
-    //   }, []);
+    const handleFilterModal = (status) => setShowFilterModal(status)
 
-    //   useEffect(() => {
-    var G = new window.jsnx.Graph();
-    // G.addNode(1, { count: 12, color: getRandomColor() });
-    // G.addNode(2, { count: 8, color: getRandomColor() });
-    // G.addNode(3, { count: 15, color: getRandomColor() });
-    // G.addEdge(3, 1, { edge_labels: "node1" });
-    // G.addEdge(3, 2, { edge_labels: "node2" });
+    useEffect(() => {
+        var G = new window.jsnx.Graph();
+        // G.addNode(1, { count: 12, color: getRandomColor() });
+        // G.addNode(2, { count: 8, color: getRandomColor() });
+        // G.addNode(3, { count: 15, color: getRandomColor() });
+        // G.addEdge(3, 1, { edge_labels: "node1" });
+        // G.addEdge(3, 2, { edge_labels: "node2" });
 
-    for (let ele of users) {
-      const { id } = ele;
-      G.addNode(id, { type: 'user', color: getRandomColor(), value: id + 15 });
+
+        // User nodes
+        for (let ele of users) {
+            const { id } = ele;
+            G.addNode(id, { type: "user", color: "orange", value: id + 15 })
+        }
+
+        // Service nodes
+        for (let ele of services) {
+            const { id } = ele;
+            const newId = id + 100
+            G.addNode(newId, { type: "user", color: "blue", value: newId })
+        }
+
+        // CDR edges
+        for (let ele of cdr) {
+            const { from, to, frequency } = ele;
+            G.addEdge(from, to, { frequency, color: 'blue' });
+        }
+
+        // IPDR edges
+        for (let ele of ipdr) {
+            const { from, service } = ele;
+            G.addEdge(from, service + 100);
+        }
+
+        window.jsnx.draw(G, {
+            element: '#demo-canvas',
+            withLabels: true,
+            nodeAttr: {
+                r: function(d) {
+                    return d.data.value > 100 ? 15 : d.data.value;
+                }
+            },
+            nodeStyle: {
+                fill: (d) => d.data.color 
+            }
+        });
+
+
+        window.d3.selectAll('.node').on('mouseenter', d => {
+            setHoverModal([true, d]);
+        });
+
+        window.d3.selectAll('.node').on('click', async(d) => {
+            const nodeData = await getNodeData(d.node);
+            const updatedData = { id: d.node, ...nodeData }
+            setDetailPanel([true, updatedData]);
+        });
+
+
+        window.d3.selectAll('.node').on('mouseleave', d => {
+            setHoverModal([false, null]);
+        });
+
+    }, [cdr, ipdr, users, services]);
+
+    console.log(detailPanel)
+
+    const hoverDiv = () => {
+        const { x, y } = hoverModal[1];
+        return (
+            <div className={styles.hoverModal} style={{ left: x + 100, top: y - 10 }}>{hoverModal[1].node}</div>
+        )
     }
 
     window.jsnx.draw(G, {
