@@ -1,34 +1,39 @@
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { AiOutlineBarChart, AiOutlineLogout, AiOutlineUnorderedList, AiOutlineUpload, Aicha } from 'react-icons/ai';
+import React from "react";
+import { withRouter } from "react-router-dom";
+import {
+  AiOutlineBarChart,
+  AiOutlineLogout,
+  AiOutlineUnorderedList,
+  AiOutlineUpload,
+  Aicha,
+} from "react-icons/ai";
 
-import styling from './Sidebar.module.scss';
+import styling from "./Sidebar.module.scss";
 
 const Sidebar = ({ history }) => {
-    
-    return (
-        <aside className={styling.sidebar}>
-            <div className={styling.content}>
-                <div>
-                    <div className={styling.logo}>A</div>
-                    
-                    <ul className={styling.menu}>
-                        <li onClick={() => history.push('/visualize')}>
-                            <AiOutlineBarChart />
-                        </li>
-                        
-                        <li onClick={() => history.push('/upload')}>
-                            <AiOutlineUpload />
-                        </li>
-                        
-                        <li>
-                            <AiOutlineLogout onClick={() => history.push('/auth')}/>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </aside>
-    );
+  return (
+    <aside className={styling.sidebar}>
+      <div className={styling.content}>
+        <div>
+          <div className={styling.logo}>A</div>
+
+          <ul className={styling.menu}>
+            <li onClick={() => history.push("/visualize")}>
+              <AiOutlineBarChart />
+            </li>
+
+            <li onClick={() => history.push("/upload")}>
+              <AiOutlineUpload />
+            </li>
+
+            <li>
+              <AiOutlineLogout onClick={() => history.push("/auth")} />
+            </li>
+          </ul>
+        </div>
+      </div>
+    </aside>
+  );
 };
 
 export default withRouter(Sidebar);
