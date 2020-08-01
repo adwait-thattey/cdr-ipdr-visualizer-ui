@@ -4,7 +4,7 @@ import './App.css';
 import Home from './containers/Home/Home';
 import Sidebar from './components/Sidebar/Sidebar.js';
 import Auth from './containers/Auth/Auth';
-import Upload from './containers/Upload/Upload.';
+import Upload from './containers/Upload/Upload';
 
 function App() {
   return (
