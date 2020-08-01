@@ -22,7 +22,7 @@ const getNodeData = async () =>
         name: 'Brijesh Bumrela',
         address: 'Death Valley',
         phone_numbers: [
-          { number: '7985641784', imsi: '9878IRUSNCJA1234' },
+          { number: '7985641784', imsi: '9878ARUSNCJA1234' },
           { number: '9898784515', imsi: '7878AQNSANWJ1234' },
         ],
         devices: [
@@ -182,14 +182,24 @@ const Home = () => {
   }, [cdr, ipdr, users, services]);
 
   const hoverDiv = () => {
-    const { x, y } = hoverModal[1];
-    return (
-      <CustomPopup
-        data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
-        x={x}
-        y={y}
-      />
-    );
+    // const { x, y } = hoverModal[1];
+    // console.log(hoverModal[1]);
+
+    const event = window.d3.event;
+
+    if (event) {
+      const x = window.d3.event.pageX;
+      const y = window.d3.event.pageY;
+      return (
+        <CustomPopup
+          data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
+          x={x}
+          y={y}
+        />
+      );
+    } else {
+      return <></>;
+    }
   };
 
   console.log(hoverModal);
