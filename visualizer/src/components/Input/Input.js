@@ -10,7 +10,7 @@ const Input = ({ name, placeholder, onChange, title, value, width }) => {
         className={styles.input}
         name={name}
         placeholder={placeholder}
-        onChange={onChange}
+        onChange={(e) => onChange(e.target.value, name)}
         value={value}
       />
     </div>
