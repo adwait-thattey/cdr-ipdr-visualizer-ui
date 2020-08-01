@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { AiOutlineHome, AiOutlineLogout, AiOutlineSetting, AiOutlineUnorderedList } from 'react-icons/ai';
+import { AiOutlineBarChart, AiOutlineLogout, AiOutlineUnorderedList, AiOutlineUpload, Aicha } from 'react-icons/ai';
 
 import styling from './Sidebar.module.scss';
 
@@ -13,20 +13,16 @@ const Sidebar = ({ history }) => {
                     <div className={styling.logo}>A</div>
                     
                     <ul className={styling.menu}>
-                        <li onClick={() => history.push('/services')}>
-                            <AiOutlineUnorderedList />
+                        <li onClick={() => history.push('/visualize')}>
+                            <AiOutlineBarChart />
                         </li>
                         
-                        <li onClick={() => history.push('/organization')}>
-                            <AiOutlineHome />
-                        </li>
-                        
-                        <li onClick={() => history.push('/settings')}>
-                            <AiOutlineSetting />
+                        <li onClick={() => history.push('/upload')}>
+                            <AiOutlineUpload />
                         </li>
                         
                         <li>
-                            <AiOutlineLogout />
+                            <AiOutlineLogout onClick={() => history.push('/auth')}/>
                         </li>
                     </ul>
                 </div>

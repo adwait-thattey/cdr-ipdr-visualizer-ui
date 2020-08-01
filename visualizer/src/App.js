@@ -3,6 +3,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Home from './containers/Home/Home';
 import Sidebar from './components/Sidebar/Sidebar.js';
+import Auth from './containers/Auth/Auth';
+import Upload from './containers/Upload/Upload.';
 
 function App() {
     return (
@@ -15,10 +17,10 @@ function App() {
                             <Home />
                         </Route>
                         <Route path="/auth" exact>
-                            <Home />
+                            <Auth />
                         </Route>
-                        <Route path="/dashboard">
-                            <Home />
+                        <Route path="/upload">
+                            <Upload />
                         </Route>
                     </Switch>
                 </div>  
