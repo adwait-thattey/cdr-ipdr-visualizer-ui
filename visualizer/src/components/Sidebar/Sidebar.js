@@ -1,6 +1,6 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import { AiOutlineBarChart, AiOutlineLogout, AiOutlineUnorderedList, AiOutlineUpload, Aicha } from 'react-icons/ai';
+import { AiOutlineBarChart, AiOutlineLogout, AiOutlineUpload } from 'react-icons/ai';
 
 import styling from './Sidebar.module.scss';
 
