@@ -4,33 +4,34 @@ import SearchBar from '../../components/SearchBar/SearchBar';
 import { Modal } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
+import CustomPopup from '../../components/CustomPopup/CustomPopup';
 
 const getRandomColor = () => {
-    var letters = '0123456789ABCDEF';
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
+  var letters = '0123456789ABCDEF';
+  var color = '#';
+  for (var i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
-const getNodeData = async () => new Promise((res, rej) => {
+const getNodeData = async () =>
+  new Promise((res, rej) => {
     setTimeout(() => {
-        res({
-            name: "Brijesh Bumrela",
-            address: "Death Valley",
-            phone_numbers: [
-                { number: "1234567890", imsi: "1234567890abcdfg" }, 
-                { number: "1234567890", imsi: "1234567890hijkml" }
-            ],
-            devices: [
-                { imei: "efunewfiun32", mac: "80:20:42:41:41" }, 
-                { imei: "efunewfiun32", mac: "80:20:42:11:90" }
-            ],
-        })
+      res({
+        name: 'Brijesh Bumrela',
+        address: 'Death Valley',
+        phone_numbers: [
+          { number: '1234567890', imsi: '1234567890abcdfg' },
+          { number: '1234567890', imsi: '1234567890hijkml' },
+        ],
+        devices: [
+          { imei: 'efunewfiun32', mac: '80:20:42:41:41' },
+          { imei: 'efunewfiun32', mac: '80:20:42:11:90' },
+        ],
+      });
     }, 1000);
-})
-
+  });
 
 const cdrData = [{from: 1, to: 2, frequency: 5, calls: []}, 
     {id: 50, from: 1, to: 3, frequency: 5, calls: []}, 
@@ -45,27 +46,27 @@ const ipdrData = [
 ]
 
 const usersData = [
-    {
-        id: 1,
-        name: "Brijesh",
-        phone_numbers: ["1234567890", "0987654321", "3628292838"] 
-    },
-    {
-        id: 2,
-        name: "Adwait",
-        phone_numbers: ["1234567890", "0987654321", "3628292838"] 
-    },
-    {
-        id: 3,
-        name: "Parth",
-        phone_numbers: ["1234567890", "0987654321", "3628292838"] 
-    },
-    {
-        id: 4,
-        name: "Riya",
-        phone_numbers: ["1234567890", "0987654321", "3628292838"] 
-    }
-]
+  {
+    id: 1,
+    name: 'Brijesh',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
+  {
+    id: 2,
+    name: 'Adwait',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
+  {
+    id: 3,
+    name: 'Parth',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
+  {
+    id: 4,
+    name: 'Riya',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
+];
 
 const servicesData = [
     {
@@ -172,35 +173,40 @@ const Home = () => {
 
     }, [cdr, ipdr, users, services]);
 
-    const hoverDiv = () => {
-        const { x, y } = hoverModal[1];
-        return (
-            <div className={styles.hoverModal} style={{ left: x + 100, top: y - 10 }}>{hoverModal[1].node}</div>
-        )
-    }
 
+  const hoverDiv = () => {
+    const { x, y } = hoverModal[1];
     return (
-        <>
-            <Modal
-                title="Basic Modal"
-                visible={showFilterModal}
-                onCancel={() => handleFilterModal(false)}
-                footer={null}
-            >
-                <Filter />
-            </Modal>
-            <SearchBar onFilterClick={() => handleFilterModal(true)}/>
+      <CustomPopup
+        data={{ id: hoverModal[1].node, name: 'Adwait Thattey' }}
+        x={x}
+        y={y}
+      />
+    );
+  };
 
-            <div className={styles.networkWrapper}>
-                <div className={styles.graphCanvas} id="demo-canvas"></div>
-                <div className={styles.sidepanelWrapper}>
-                    {<SidePanel data={detailPanel[1]}/>}
-                </div>
-            </div>
+  return (
+    <>
+      <Modal
+        title="Basic Modal"
+        visible={showFilterModal}
+        onCancel={() => handleFilterModal(false)}
+        footer={null}
+      >
+        <Filter />
+      </Modal>
+      <SearchBar onFilterClick={() => handleFilterModal(true)} />
 
-            {hoverModal[0] && hoverDiv()}
-        </>
-    )
+      <div className={styles.networkWrapper}>
+        <div className={styles.graphCanvas} id="demo-canvas"></div>
+        <div className={styles.sidepanelWrapper}>
+          {<SidePanel data={detailPanel[1]} />}
+        </div>
+      </div>
+
+      {hoverModal[0] && hoverDiv()}
+    </>
+  );
 };
 
 export default Home;

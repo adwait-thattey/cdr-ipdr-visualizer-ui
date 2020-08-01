@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export AWS_ACCESS_KEY_ID=<AccessKey>
-export AWS_SECRET_ACCESS_KEY=<Secret>
+export AWS_ACCESS_KEY_ID=AKIARMQJQDHLHH5ALKPH
+export AWS_SECRET_ACCESS_KEY=Z8OaX2jsxtfcu6uNT/kTJxb9BdC/MMm78+KKEcMZ
 
 echo "Plz enter your name"
 
