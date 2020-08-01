@@ -23,7 +23,7 @@ const getNodeData = async () =>
         name: 'Brijesh Bumrela',
         address: 'Death Valley',
         phone_numbers: [
-          { number: '7985641784', imsi: '9878IRUSNCJA1234' },
+          { number: '7985641784', imsi: '9878ARUSNCJA1234' },
           { number: '9898784515', imsi: '7878AQNSANWJ1234' },
         ],
         devices: [
