@@ -34,8 +34,8 @@ const getNodeData = async () =>
   });
 
 const cdrData = [
-  { from: 1, to: 2, frequency: 5, calls: [] },
-  { id: 50, from: 1, to: 3, frequency: 5, calls: [] },
+  { id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] },
+  { id: 50, from: 1, to: 3, frequency: 5, calls: [71, 74] },
   { id: 51, from: 2, to: 3, frequency: 5, calls: [] },
   { id: 52, from: 2, to: 3, frequency: 5, calls: [] },
   { id: 53, from: 3, to: 6, frequency: 5, calls: [] },
@@ -44,9 +44,144 @@ const cdrData = [
 ];
 
 const ipdrData = [
-  { id: 70, from: 1, service: 1 + 50000, records: 3 },
-  { id: 71, from: 2, service: 3 + 50000, records: 2 },
-  { id: 72, from: 1, service: 3 + 50000, records: 4 },
+  { id: 70, from: 1, service: 1 + 50000, records: 3, calls: [21] },
+  { id: 71, from: 2, service: 3 + 50000, records: 2, calls: [] },
+  { id: 72, from: 1, service: 3 + 50000, records: 4, calls: [22] },
+];
+
+const detailedCdrData = [
+  {
+    id: 68,
+    timestamp: '2020-08-01T18:56:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 69,
+    timestamp: '2019-04-08T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 70,
+    timestamp: '2019-03-18T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 71,
+    timestamp: '2019-07-21T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 72,
+    timestamp: '2019-12-01T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 73,
+    timestamp: '2019-01-15T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 74,
+    timestamp: '2019-03-30T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+];
+
+const detailedIpdrData = [
+  {
+    id: 21,
+    start_time: '2019-03-30T19:02:41+05:30',
+    duration: 523,
+    private_ip: null,
+    private_port: null,
+    public_ip: null,
+    public_port: null,
+    destination_ip: null,
+    destination_port: 5432,
+    from_number: null,
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+    upload_data_volume: null,
+    download_data_volume: null,
+  },
+  {
+    id: 22,
+    start_time: '2019-04-30T19:02:41+05:30',
+    duration: 975,
+    private_ip: null,
+    private_port: null,
+    public_ip: null,
+    public_port: null,
+    destination_ip: null,
+    destination_port: 8001,
+    from_number: null,
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+    upload_data_volume: null,
+    download_data_volume: null,
+  },
 ];
 
 const usersData = [
@@ -110,7 +245,9 @@ const Home = () => {
   const [detailPanel, setDetailPanel] = useState([false, null]);
 
   const [cdr, setCdrData] = useState(cdrData);
+  const [detailedCdr, setDetailedCdr] = useState(detailedCdrData);
   const [ipdr, setIpdr] = useState(ipdrData);
+  const [detailedIpdr, setDetailedIpdr] = useState(detailedIpdrData);
   const [users, setUsers] = useState(usersData);
   const [services, setServices] = useState(servicesData);
 
@@ -173,6 +310,7 @@ const Home = () => {
     window.d3.selectAll('.node').on('click', async (d) => {
       const nodeData = await getNodeData(d.node);
       const updatedData = { id: d.node, ...nodeData, type: d.data.type };
+      console.log(updatedData);
       setDetailPanel([true, updatedData]);
     });
 
@@ -219,7 +357,16 @@ const Home = () => {
       <div className={styles.networkWrapper}>
         <div className={styles.graphCanvas} id="demo-canvas"></div>
         <div className={styles.sidepanelWrapper}>
-          {<SidePanel data={detailPanel[1]} />}
+          {
+            <SidePanel
+              data={detailPanel[1]}
+              cdr={cdr}
+              ipdr={ipdr}
+              detailedCdr={detailedCdr}
+              detailedIpdr={detailedIpdr}
+              servicesData={servicesData}
+            />
+          }
         </div>
       </div>
 

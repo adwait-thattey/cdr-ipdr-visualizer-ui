@@ -5,7 +5,8 @@ import styles from './Sidepanel.module.scss';
 
 const { TabPane } = Tabs;
 
-const SidePanel = ({ data }) => {
+const SidePanel = (props) => {
+  const { data } = props;
   console.log(data);
   return (
     <div>
@@ -50,7 +51,7 @@ const SidePanel = ({ data }) => {
           <TabPane tab="Activity" key="2">
             {data && data.type === 'user' && (
               <>
-                <Activity />
+                <Activity {...props} />
               </>
             )}
           </TabPane>
