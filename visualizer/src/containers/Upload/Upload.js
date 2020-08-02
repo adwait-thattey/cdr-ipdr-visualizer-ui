@@ -1,26 +1,33 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Upload.module.scss';
 import { Tabs } from 'antd';
 import Header from '../../components/Header/Header';
 import Cdr from './Cdr/Cdr';
 import Ipdr from './Ipdr/Ipdr';
 import Lists from './Lists/Lists';
+import { useParams } from 'react-router-dom';
 
 const { TabPane } = Tabs;
 
 const Upload = () => {
+  let { id } = useParams();
+  const defaultActiveTab = id ? id : 'cdr';
   return (
     <div className={styles.container}>
       <Header title="Upload Data" onFilterClick={() => {}} />
       <div className={styles.section}>
-        <Tabs type="card" className={styles.tabContainer}>
-          <TabPane tab="CDR" className={styles.tab} key="1">
+        <Tabs
+          type="card"
+          className={styles.tabContainer}
+          defaultActiveKey={defaultActiveTab}
+        >
+          <TabPane tab="CDR" className={styles.tab} key="cdr">
             <Cdr />
           </TabPane>
-          <TabPane tab="IPDR" className={styles.tab} key="2">
+          <TabPane tab="IPDR" className={styles.tab} key="ipdr">
             <Ipdr />
           </TabPane>
-          <TabPane tab="Lists" className={styles.tab} key="3">
+          <TabPane tab="Lists" className={styles.tab} key="lists">
             <Lists />
           </TabPane>
         </Tabs>

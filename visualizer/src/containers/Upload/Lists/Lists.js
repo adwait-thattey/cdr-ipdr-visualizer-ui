@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Lists.module.scss';
 // import { Tabs, Row, Col } from 'antd';
-import { Row, Col, List, Avatar, Form, Divider } from 'antd';
+import { Row, Col, List, Avatar, Form, Input, Divider } from 'antd';
 import Button from '../../../components/Button/Button';
 import ListSideForm from '../../../components/ListSideForm/ListSideForm';
 // import { Divider } from 'rc-menu';
-import { black } from 'color-name';
+import axios from '../../../services/axios';
+
+const { TextArea } = Input;
 
 const listsData = [
   {
@@ -13,73 +15,102 @@ const listsData = [
     name: 'Watchlist 1',
     content:
       'imei,1234567\nimei,0987654\nphone,0987656\nphone,345678345\nimei,23456754\n',
-  },
-  {
-    id: 2,
-    name: 'Watchlist 2',
-    content:
-      'imei,351527043500000\nimei,351527043500000\nphone,9284612974\nphone,7507763619\nimei,35200909880000\n',
-  },
-  { id: 3, name: 'New Watchlist', content: 'phone,1234567' },
-  { id: 4, name: 'watchlist 002', content: 'imsi,123456787' },
+  }
 ];
 
 const Lists = () => {
-  const [selectedData, setSelectedData] = useState();
+  const [list, setList] = useState(listsData);
+  const [inputData, setInputData] = useState({
+    id: Date.now(),
+    name: '',
+    content: '',
+  });
 
-  const ShowRightPanelData = () => {
-    console.log('object');
-    if (!selectedData) {
-      return <div>Select an item to show data</div>;
-    } else {
-      return <ListSideForm obj={selectedData} />;
+  useEffect(() => {
+    const getData = async() => {
+      let res = await axios.get('/data/watchlists');
+      setList(res.data)
     }
+    getData();
+  }, []);
+
+  // useEffect(() => {
+  //   setList(getData());
+  // }, []);
+
+  const inputHandler = (key, value) => {
+    setInputData({
+      ...inputData,
+      [key]: value,
+    });
   };
 
+  const resetInput = () => {
+    setInputData({
+      id: Date.now(),
+      name: '',
+      content: '',
+    });
+  };
+
+  const saveInput = async () => {
+    if (list.some((item) => item.id === inputData.id)) {
+      const ind = list.findIndex((obj) => obj.id === inputData.id);
+      list[ind] = inputData;
+      // await axios.put('/data/watchlists', inputData);
+      setList(list);
+    } else {
+      // await axios.post('/data/watchlists', inputData);
+      setList([inputData, ...list]);
+    }
+    resetInput();
+  };
+
+  const itemSelect = (id) => {
+    setInputData(list.find((item) => item.id === id));
+  };
+
+  console.log(inputData);
+
   return (
-    <>
-      <Row>
-        <Col span={5} offset={1} className={styles.lists_left_column}>
-          <div className={styles.holder_div}></div>
-          <div className={`${styles.list_button_wrapper} ${styles.button1}`}>
-            <Button
-              text={'New WatchList'}
-              width={'100%'}
-              height={'7vh'}
-              onClick={(x) => setSelectedData({ name: '', content: '' })}
-            />
-            {/* <Divider /> */}
+    <div className={styles.container}>
+      <div className={styles.panelContainer}>
+        {list.map((item, key) => (
+          <div key={key} className={styles.panelItem} onClick={() => itemSelect(item.id)}>
+            {item.name}
           </div>
-          <List
-            className={styles.watchlist_list}
-            itemLayout="horizontal"
-            dataSource={listsData}
-            renderItem={(item) => (
-              <List.Item>
-                {/* <List.Item.Meta
-              // avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-              title={<a href="https://ant.design">{item.name}</a>}
-              // description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-              /> */}
-                <div className={styles.list_button_wrapper}>
-                  <Button
-                    text={item.name}
-                    width={'100%'}
-                    height={'7vh'}
-                    onClick={(x) => setSelectedData(item)}
-                  />
-                </div>
-              </List.Item>
-            )}
-          />
-          ,
-        </Col>
-        <Col span={1}></Col>
-        <Col span={17} className={styles.lists_right_column}>
-          <ShowRightPanelData />
-        </Col>
-      </Row>
-    </>
+        ))}
+      </div>
+      <div className={styles.section}>
+        <h1>Enter Details</h1>
+        <div className={styles.formContainer}>
+          <div className={styles.formRow}>
+            <div className={styles.formTitle}>Watch List Name</div>
+            <Input
+              placeholder="Enter Name"
+              value={inputData.name}
+              onChange={(e) => inputHandler('name', e.target.value)}
+              className={styles.inputTextBox}
+            />
+          </div>
+          <div className={styles.formRow}>
+            <div className={styles.formTitle}>Watch List Data</div>
+            <TextArea
+              rows={6}
+              className={styles.inputTextBox}
+              value={inputData.raw_data}
+              onChange={(e) => inputHandler('content', e.target.value)}
+              style={{ background: '#fff' }}
+              placeholder="Enter Data Here"
+            />
+          </div>
+          <div className={styles.formButtonSet}>
+            <Button text="Create New" onClick={resetInput} />
+            <Button text="Save" onClick={saveInput} />
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

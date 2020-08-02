@@ -22,7 +22,10 @@ function App() {
             <Route path="/auth" exact>
               <Auth />
             </Route>
-            <Route path="/upload">
+            <Route exact path="/upload">
+              <Upload />
+            </Route>
+            <Route path="/upload/:id">
               <Upload />
             </Route>
             <Route path="/map/:id">
