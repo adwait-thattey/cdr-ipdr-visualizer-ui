@@ -21,7 +21,7 @@ const getNodeData = async () =>
     setTimeout(() => {
       res({
         name: 'Brijesh Bumrela',
-        address: 'Death Valley',
+        address: 'IIIT Sri City',
         phone_numbers: [
           { number: '7985641784', imsi: '9878ARUSNCJA1234' },
           { number: '9898784515', imsi: '7878AQNSANWJ1234' },
@@ -42,6 +42,12 @@ const cdrData = [
   { id: 53, from: 3, to: 6, frequency: 5, calls: [] },
   { id: 54, from: 4, to: 6, frequency: 3, calls: [] },
   { id: 55, from: 5, to: 6, frequency: 5, calls: [] },
+  { id: 56, from: 7, to: 9, frequency: 5, calls: [] },
+  { id: 57, from: 9, to: 8, frequency: 5, calls: [] },
+  { id: 58, from: 9, to: 5, frequency: 5, calls: [] },
+  { id: 59, from: 8, to: 2, frequency: 5, calls: [] },
+  { id: 60, from: 9, to: 3, frequency: 5, calls: [] },
+  { id: 61, from: 5, to: 7, frequency: 5, calls: [] },
 ];
 
 const ipdrData = [
@@ -81,6 +87,22 @@ const usersData = [
     name: 'Ram',
     phone_numbers: ['1234567890', '0987654321', '3628292838'],
   },
+  {
+    id: 7,
+    name: 'Vijendar',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
+  {
+    id: 8,
+    name: 'Saini',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
+  {
+    id: 9,
+    name: 'Ankur',
+    phone_numbers: ['1234567890', '0987654321', '3628292838'],
+  },
+  
 ];
 
 const servicesData = [
