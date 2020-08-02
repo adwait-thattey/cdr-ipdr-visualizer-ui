@@ -10,6 +10,7 @@ const getFilteredData = async (filters) => {
         frequency_min, frequency_max,
         phone_number, exclude_these_phone_number,
         user_id, exclude_these_user_id,
+        cell_id, exclude_these_cell_id,
     } = filters;
     
     
@@ -46,6 +47,11 @@ const getFilteredData = async (filters) => {
     if (user_id && user_id.length > 0) {
         if (exclude_these_user_id) params.not_user_id = user_id
         else params.user_id = user_id
+    }
+
+    if (cell_id && cell_id.length > 0) {
+        if (exclude_these_cell_id) params.not_cell_id = cell_id
+        else params.cell_id = cell_id
     }
 
     return await axios.get('/filters', {

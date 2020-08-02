@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import styles from './Filter.module.scss';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
-import { DatePicker } from 'antd';
+import { TimePicker } from 'antd';
 import CCheckBox from '../../components/Checkbox/CCheckbox';
 import CSlider from '../../components/CSlider/CSlider';
+import moment from 'moment';
 
+const format = 'HH:mm';
 
-const { RangePicker } = DatePicker;
+const { RangePicker } = TimePicker;
 
 const initialFilters = {
     cdr: true,
@@ -36,7 +38,10 @@ const initialFilters = {
 
 
     user_id: null,
-    exclude_these_user_id: false
+    exclude_these_user_id: false,
+
+    cell_id: null,
+    exclude_these_cell_id: false
 }
 
 const Filter = ({ updateChange, modalChange }) => {
@@ -68,9 +73,9 @@ const Filter = ({ updateChange, modalChange }) => {
 
     return (
         <>
-            <div className={styles.rows}>
-                <CCheckBox handleChange={handleChangeCheckbox} name="cdr" defaultChecked={true}/>
-                <CCheckBox handleChange={handleChangeCheckbox} name="ipdr" defaultChecked={true}/>
+            <div className={`${styles.rows} ${styles.checkbox}`}>
+                <CCheckBox handleChange={handleChangeCheckbox} name="cdr" checked={filters.cdr}/>
+                <CCheckBox handleChange={handleChangeCheckbox} name="ipdr" checked={filters.ipdr}/>
             </div>
             <div className={styles.dual}>
                 <Input
@@ -106,8 +111,11 @@ const Filter = ({ updateChange, modalChange }) => {
                 <Input name="user_id" onChange={handleChange} title="User ID's" placeholder="Enter comma seperated user id's"/>
                 <CCheckBox handleChange={handleChangeCheckbox} name="exclude_these_user_id" defaultChecked={false}/>
             </div>
+            <div className={styles.rows}>
+                <Input name="cell_id" onChange={handleChange} title="Cell ID's" placeholder="Enter comma seperated cell id's"/>
+                <CCheckBox handleChange={handleChangeCheckbox} name="exclude_these_cell_id" defaultChecked={false}/>
+            </div>
             <div>
-                {/* <RangePicker /> */}
             </div>
             <div className={styles.dual}>
                 <Button text="Save" onClick={submitChange}></Button>

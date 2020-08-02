@@ -129,7 +129,11 @@ const initialFilters = {
 
 
     user_id: null,
-    exclude_these_user_id: false
+    exclude_these_user_id: false,
+
+    
+    cell_id: null,
+    exclude_these_cell_id: false
 }
 
 
@@ -241,7 +245,7 @@ const Home = () => {
 
         window.d3.selectAll('.node').on('click', async (d) => {
             const nodeData = await getNodeData(d.node);
-            const updatedData = { id: d.node, ...nodeData, type: d.data.type, ...d.data };
+            const updatedData = { id: d.node, type: d.data.type, ...d.data, ...nodeData };
             setDetailPanel([true, updatedData]);
         });
 
