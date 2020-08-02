@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+
 import styles from './MapFilter.module.scss';
+
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import CCheckBox from '../../components/Checkbox/CCheckbox';

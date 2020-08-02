@@ -1,19 +1,4 @@
-.graphCanvas {
-  height: 89vh;
-  width: 70%;
-}
-
-.sidepanelWrapper {
-  width: 30%;
-  height: 89vh;
-  overflow: scroll;
-  border-left: 10px solid #f4f8fe;
-}
-
-.networkWrapper {
-  display: flex;
-  margin-top: 20px;
-}
+@import 'Division';
 
 .hoverModal {
   position: fixed;

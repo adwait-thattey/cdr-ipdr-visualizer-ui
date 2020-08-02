@@ -147,7 +147,7 @@ const Map = () => {
 
   return (
     <>
-      <Redirect to={`/map/${filters.user_id}`} />;
+      <Redirect to={`/map/${filters.user_id}`} />
       <Modal
         title="Apply Filters"
         visible={showFilterModal}
@@ -160,13 +160,15 @@ const Map = () => {
           initial={filters}
         />
       </Modal>
-      <SearchBar onFilterClick={() => handleFilterModal(true)} />
-      <div className={styles.networkWrapper}>
-        <div className={styles.graphCanvas}>
-          <MapView pointsGeoJSON={geoJSONData} />
-        </div>
-        <div className={styles.sidepanelWrapper}>
-          {detailPanel && <SidePanel data={detailPanel} />}
+      <div className={styles.fullContainer}>
+        <SearchBar onFilterClick={() => handleFilterModal(true)} />
+        <div className={styles.networkWrapper}>
+          <div className={styles.graphCanvas}>
+            <MapView pointsGeoJSON={geoJSONData} />
+          </div>
+          <div className={styles.sidepanelWrapper}>
+            {detailPanel && <SidePanel data={detailPanel} />}
+          </div>
         </div>
       </div>
     </>

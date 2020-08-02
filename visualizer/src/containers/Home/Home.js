@@ -466,23 +466,25 @@ const Home = () => {
       >
         <Filter updateChange={handleFilters} modalChange={handleFilterModal} />
       </Modal>
-      <SearchBar onFilterClick={() => handleFilterModal(true)} />
+      <div className={styles.fullContainer}>
+        <SearchBar onFilterClick={() => handleFilterModal(true)} />
 
-      <div className={styles.networkWrapper}>
-        <div className={styles.graphCanvas} id="demo-canvas"></div>
-        <div className={styles.sidepanelWrapper}>
-          {
-            <SidePanel
-              removeNode={handleRemoveNode}
-              data={detailPanel[1]}
-              highLightNode={handleHighLightNode}
-              cdr={cdr}
-              ipdr={ipdr}
-              detailedCdr={detailedCdr}
-              detailedIpdr={detailedIpdr}
-              servicesData={servicesData}
-            />
-          }
+        <div className={styles.networkWrapper}>
+          <div className={styles.graphCanvas} id="demo-canvas"></div>
+          <div className={styles.sidepanelWrapper}>
+            {
+              <SidePanel
+                removeNode={handleRemoveNode}
+                data={detailPanel[1]}
+                highLightNode={handleHighLightNode}
+                cdr={cdr}
+                ipdr={ipdr}
+                detailedCdr={detailedCdr}
+                detailedIpdr={detailedIpdr}
+                servicesData={servicesData}
+              />
+            }
+          </div>
         </div>
       </div>
 
