@@ -8,3 +8,27 @@
   background: gray;
   transition: all 0.5s;
 }
+
+// For navbar
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.buttons > * {
+  margin-right: 20px;
+}
+
+.dropdownbtn {
+  border: 1px solid #0252fc !important;
+  border-radius: 7px !important;
+  color: #0252fc !important;
+  font-weight: bold !important;
+}
+
+.dropdownbtn:hover {
+  background-color: #0252fc !important;
+  color: #fff !important;
+  cursor: pointer;
+}

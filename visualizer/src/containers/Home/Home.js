@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import styles from './Home.module.scss';
 import SearchBar from '../../components/SearchBar/SearchBar';
-import { Modal } from 'antd';
+import { Modal, Dropdown, Menu, Button as AiButton } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
 import { getFilteredData } from '../../services/filters';
+import Header from '../../components/Header/Header';
+import Button from '../../components/Button/Button';
 
 const getRandomColor = () => {
   var letters = '0123456789ABCDEF';
@@ -301,6 +303,40 @@ const initialFilters = {
   exclude_these_phone_number: false,
 };
 
+const FilterButtons = ({
+  onFilterClick,
+  wishlists,
+  updateWishList,
+  selectedUserList,
+}) => {
+  const genDropD = (wishlists) => {
+    return (
+      <Menu>
+        {wishlists &&
+          wishlists.map((wishlist) => (
+            <Menu.Item>
+              <a href="#" onClick={() => updateWishList(wishlist.id)}>
+                {wishlist.name}
+              </a>
+            </Menu.Item>
+          ))}
+      </Menu>
+    );
+  };
+
+  const menu = genDropD(wishlists);
+  return (
+    <div className={styles.buttons}>
+      <Button text="Filter" onClick={onFilterClick} />
+      <Dropdown overlay={menu} placement="topCenter">
+        <AiButton className={styles.dropdownbtn} size="large">
+          {(selectedUserList && selectedUserList.name) || 'Watch Lists'}
+        </AiButton>
+      </Dropdown>
+    </div>
+  );
+};
+
 const Home = () => {
   // Modal to showcase the pop up modal on hovering the node
   const [showFilterModal, setShowFilterModal] = useState(false);
@@ -517,11 +553,23 @@ const Home = () => {
       </Modal>
 
       <div className={styles.fullContainer}>
-        <SearchBar
+        {/* <SearchBar
           wishlists={userLists}
           updateWishList={handleUserListSelect}
           onFilterClick={() => handleFilterModal(true)}
           selectedUserList={selectedUserList}
+        /> */}
+        <Header
+          title="Visualise"
+          onFilterClick={() => handleFilterModal(true)}
+          child={
+            <FilterButtons
+              wishlists={userLists}
+              updateWishList={handleUserListSelect}
+              onFilterClick={() => handleFilterModal(true)}
+              selectedUserList={selectedUserList}
+            />
+          }
         />
 
         <div className={styles.networkWrapper}>
