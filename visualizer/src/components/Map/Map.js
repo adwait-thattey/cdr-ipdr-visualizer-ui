@@ -26,7 +26,7 @@ const DEFAULT_ZOOM = 4;
 
 const Map = ({ pointsGeoJSON }) => {
   const [viewport, setViewPort] = useState({
-    height: '50vh',
+    height: '100%',
     width: '100%',
     zoom: DEFAULT_ZOOM,
     latitude: INDIA_LAT,
@@ -60,13 +60,16 @@ const Map = ({ pointsGeoJSON }) => {
     ? mapRef.current.getMap().getBounds().toArray().flat()
     : null;
 
-  console.log(bounds, viewport);
-
-  const clusters = useMemo(() => {
-    return bounds
-      ? supercluster.getClusters(bounds, Math.round(viewport.zoom))
-      : [];
-  }, [supercluster, viewport, bounds]);
+  const clusters = (() => {
+    if (bounds !== null) {
+      const clusters = supercluster.getClusters(
+        bounds,
+        Math.round(viewport.zoom),
+      );
+      return clusters;
+    }
+    return [];
+  })();
 
   return (
     <ReactMapGL

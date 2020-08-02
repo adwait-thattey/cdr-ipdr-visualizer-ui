@@ -6,12 +6,27 @@ export function dataToGeoJSON(data) {
       coordinates: [data.lng, data.lat],
     },
     properties: {
-      timestamp: [data.timestamp],
+      timestamp: [new Date(data.timestamp).getTime()],
       type: data.type,
       cluster: false,
       id: data.id,
     },
   };
+}
+
+export function arrangeGeoJSONData(data) {
+  const sortData = [];
+
+  for (const point of data) {
+    sortData.push({
+      timestamp: point.properties.timestamp[0],
+      data: point,
+    });
+  }
+
+  return sortData
+    .sort((a, b) => a.timestamp - b.timestamp)
+    .map((val) => val.data);
 }
 
 export function reduceCluster(accumulated, point) {
@@ -23,18 +38,7 @@ export function reduceCluster(accumulated, point) {
 }
 
 export function getLineGeoJSON(data) {
-  const sortData = [];
-
-  for (const point of data) {
-    sortData.push({
-      timestamp: point.properties.timestamp,
-      coordinates: point.geometry.coordinates,
-    });
-  }
-
-  const coordinates = sortData
-    .sort((a, b) => a.timestamp - b.timestamp)
-    .map((val) => val.coordinates);
+  const coordinates = data.map((val) => val.geometry.coordinates);
 
   return {
     type: 'geojson',
