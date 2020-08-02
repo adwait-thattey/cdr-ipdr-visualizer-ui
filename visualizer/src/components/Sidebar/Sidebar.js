@@ -2,8 +2,9 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {
   AiOutlineBarChart,
-  AiOutlineLogout,
+  AiFillBell,
   AiOutlineUpload,
+  AiFillFileText,
 } from 'react-icons/ai';
 
 import styling from './Sidebar.module.scss';
@@ -16,6 +17,10 @@ const Sidebar = ({ history }) => {
           <div className={styling.logo}>A</div>
 
           <ul className={styling.menu}>
+            <li onClick={() => history.push('/dashboard')}>
+              <AiFillFileText />
+            </li>
+
             <li onClick={() => history.push('/visualize')}>
               <AiOutlineBarChart />
             </li>
@@ -24,8 +29,8 @@ const Sidebar = ({ history }) => {
               <AiOutlineUpload />
             </li>
 
-            <li>
-              <AiOutlineLogout onClick={() => history.push('/alerts')} />
+            <li onClick={() => history.push('/alerts')}>
+              <AiFillBell />
             </li>
           </ul>
         </div>

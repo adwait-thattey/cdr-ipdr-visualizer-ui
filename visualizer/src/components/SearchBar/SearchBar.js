@@ -5,7 +5,7 @@ import Input from '../Input/Input';
 import Button from '../Button/Button';
 import styles from './SearchBar.module.scss';
 
-const Nav = ({ onFilterClick, wishlists, updateWishList, selectedUserList }) => {
+const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList }) => {
 
 
   const genDropD = (wishlists) => {
@@ -31,16 +31,11 @@ const Nav = ({ onFilterClick, wishlists, updateWishList, selectedUserList }) => 
       <div className={styles.buttons}>
         <Button text="Filter" onClick={onFilterClick} />
         <Dropdown overlay={menu} placement="topCenter">
-          <AiButton className={styles.dropdownbtn} size="large">{selectedUserList && selectedUserList.name || "Wish Lists"}</AiButton>
+          <AiButton className={styles.dropdownbtn} size="large">{selectedUserList && selectedUserList.name || "Watch Lists"}</AiButton>
         </Dropdown>
-      </div>
-
-
-      <div className={styling.user}>
-        
       </div>
     </nav>
   );
 };
 
-export default Nav;
+export default SearchBar;

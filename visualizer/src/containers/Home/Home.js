@@ -23,7 +23,7 @@ const userListsData = [
     "users_list": [
         1
     ],
-    "name": "New W obj",
+    "name": "Watchlist 1",
     "to_display": true,
     "raw_data": "user_id,125"
   },
@@ -32,7 +32,7 @@ const userListsData = [
     "users_list": [
         2, 3, 4
     ],
-    "name": "Daud army",
+    "name": "Watchlist 2",
     "to_display": true,
     "raw_data": "user_id,125"
   }
@@ -453,7 +453,7 @@ const Home = () => {
       element: '#demo-canvas',
       withLabels: true,
       nodeAttr: {
-        r: (d) => (d.data.type === 'service' ? 35 : 20),
+        r: (d) => (d.data.type === 'service' ? 35 : 26),
       },
       layoutAttr: {
         charge: -120,
@@ -463,7 +463,11 @@ const Home = () => {
         fill: (d) => (d.data.highlighted ? 'red' : d.data.color),
       },
       labels: (d) => {
-        return d.data.name;
+        let name = d.data.name;
+        if (name.length > 6) {
+          name = name.slice(0, 6) + '...';
+        }
+        return name;
       },
       stickyDrag: true,
     });
@@ -476,9 +480,9 @@ const Home = () => {
       const nodeData = await getNodeData(d.node);
       const updatedData = {
         id: d.node,
+        ...d.data,
         ...nodeData,
         type: d.data.type,
-        ...d.data,
       };
       setDetailPanel([true, updatedData]);
     });

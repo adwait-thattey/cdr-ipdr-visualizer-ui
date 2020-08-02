@@ -39,7 +39,6 @@ const Activity = ({
   console.log(data);
   return (
     <h1>
-      {/* <Steps progressDot current={finalValues.length} direction="vertical"> */}
       {data ? (
         finalValues.length > 0 ? (
           <Steps progressDot current={finalValues.length} direction="vertical">
