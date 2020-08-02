@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 
-import styling from "./Header.module.scss";
-import Avatar from "../Avatar/Avatar";
-import Input from "../Input/Input";
-import Button from "../Button/Button";
+import styling from './Header.module.scss';
+import Avatar from '../Avatar/Avatar';
 
-const Nav = (props) => {
+const Nav = ({ title, child }) => {
   return (
     <nav className={styling.nav}>
-      <div className={styling.title}>{props.title}</div>
+      {title && <div className={styling.title}>{title}</div>}
+
+      {child}
 
       <div className={styling.user}>
         <Avatar firstName="Brijesh" lastName="Bumrela" />

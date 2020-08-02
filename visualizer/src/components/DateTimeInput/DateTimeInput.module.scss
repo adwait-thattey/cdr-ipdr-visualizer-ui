@@ -1,11 +1,20 @@
-.input {
+.inputContainer {
   height: 50px;
   border-radius: 7px;
   border: none;
   box-shadow: 0 0 0 1px #2a64cf;
-  background: #fff;
-  padding-left: 10px;
   margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.input {
+  background: #fff;
+  border: none;
+  margin: 0;
+  padding: 0;
+  border-radius: 7px;
+  height: 100%;
 }
 
 label {
@@ -14,7 +23,7 @@ label {
   font-size: 16px;
 }
 
-.input:focus {
+.inputContainer:focus-within {
   transition-duration: 0.2s;
   box-shadow: 0 0 0 1px #f4f8fe, 0 0 3px 2px #2a64cf;
 }

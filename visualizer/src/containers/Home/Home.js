@@ -427,9 +427,9 @@ const Home = () => {
       const nodeData = await getNodeData(d.node);
       const updatedData = {
         id: d.node,
+        ...d.data,
         ...nodeData,
         type: d.data.type,
-        ...d.data,
       };
       setDetailPanel([true, updatedData]);
     });
