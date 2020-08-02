@@ -43,7 +43,8 @@ const Activity = ({
       {data ? (
         finalValues.length > 0 ? (
           <Steps progressDot current={finalValues.length} direction="vertical">
-            {finalValues.map((item) => {
+            {finalValues.map((item, key) => {
+              if (!item) return;
               const date = new Date(
                 item.timestamp ? item.timestamp : item.start_time,
               );
@@ -77,7 +78,7 @@ const Activity = ({
               } else {
                 title = `Called ${item.to_number}`;
               }
-              return <Step title={title} description={description} />;
+              return <Step key={key} title={title} description={description} />;
             })}
           </Steps>
         ) : (

@@ -5,7 +5,7 @@ import { Modal } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
-import { getFilteredData, getUserData, getCdrData } from '../../services/filters';
+import { getFilteredData, getUserData, getCdrData, getServiceInfo } from '../../services/filters';
 
 const getRandomColor = () => {
   var letters = '0123456789ABCDEF';
@@ -37,16 +37,6 @@ const cdrData = [
   { id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] },
   { id: 50, from: 1, to: 3, frequency: 5, calls: [71, 74] },
   { id: 51, from: 2, to: 3, frequency: 5, calls: [] },
-  { id: 52, from: 2, to: 3, frequency: 5, calls: [] },
-  { id: 53, from: 3, to: 6, frequency: 5, calls: [] },
-  { id: 54, from: 4, to: 6, frequency: 3, calls: [] },
-  { id: 55, from: 5, to: 6, frequency: 5, calls: [] },
-  { id: 56, from: 7, to: 9, frequency: 5, calls: [] },
-  { id: 57, from: 9, to: 8, frequency: 5, calls: [] },
-  { id: 58, from: 9, to: 5, frequency: 5, calls: [] },
-  { id: 59, from: 8, to: 2, frequency: 5, calls: [] },
-  { id: 60, from: 9, to: 3, frequency: 5, calls: [] },
-  { id: 61, from: 5, to: 7, frequency: 5, calls: [] },
 ];
 
 const ipdrData = [
@@ -68,85 +58,7 @@ const detailedCdrData = [
     cell_id: null,
     location_lat: null,
     location_long: null,
-  },
-  {
-    id: 69,
-    timestamp: '2019-04-08T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 70,
-    timestamp: '2019-03-18T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 71,
-    timestamp: '2019-07-21T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 72,
-    timestamp: '2019-12-01T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 73,
-    timestamp: '2019-01-15T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 74,
-    timestamp: '2019-03-30T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
+  }
 ];
 
 const detailedIpdrData = [
@@ -196,46 +108,6 @@ const usersData = [
     name: 'Brijesh',
     phone_numbers: ['1234567890', '0987654321', '3628292838'],
   },
-  {
-    id: 2,
-    name: 'Adwait',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 3,
-    name: 'Parth',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 4,
-    name: 'Riya',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 5,
-    name: 'Shlok',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 6,
-    name: 'Ram',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 7,
-    name: 'Vijendar',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 8,
-    name: 'Saini',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 9,
-    name: 'Ankur',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
 ];
 
 const servicesData = [
@@ -243,16 +115,6 @@ const servicesData = [
     id: 1 + 50000,
     name: 'WhatsApp',
     port: 5432,
-  },
-  {
-    id: 2 + 50000,
-    name: 'Messenger',
-    port: 8000,
-  },
-  {
-    id: 3 + 50000,
-    name: 'Telegram',
-    port: 8001,
   },
 ];
 
@@ -315,11 +177,21 @@ const Home = () => {
 
       try {
         const updatedData = await getFilteredData(filters);
-        const { cdrData } = updatedData;
+        const { cdrData, ipdrData } = updatedData;
     
-        const userIds = getUserNodes(cdrData);
-        const userInfo = await getUserInfo(userIds);
-        setAllValues(cdrData, [], userInfo, [])
+
+        const userIdsFromCdr = getUserNodes(cdrData, "cdr");
+        const userInfoOne = await getUserInfo(userIdsFromCdr);
+
+
+        const userIdsFromIpdr = getUserNodes(ipdrData, "ipdr");
+        const userInfoTwo = await getUserInfo(userIdsFromIpdr)
+
+        const serviceNodes = getServiceNodes(ipdrData);
+        const getServices = await getServiceInfo(serviceNodes);
+
+
+        setAllValues(cdrData, ipdrData, [...userInfoOne, ...userInfoTwo], getServices)
       } catch(e) {
         console.log(e);
       }
@@ -328,15 +200,26 @@ const Home = () => {
     fetchData();
   }, [filters]);
 
+  console.log("SERVICE", services);
+  console.log("USERS", users);
+  console.log("IPDR", ipdr);
 
-
-  const getUserNodes = (cdrData) => {
+  const getUserNodes = (apiData, type) => {
       const users = new Set()
-      cdrData.forEach(data => {
+      apiData.forEach(data => {
         users.add(data.from);
-        users.add(data.to);
+        // For IPDR check is required
+        if (type === "cdr") users.add(data.to);
       })
       return users;
+  }
+
+  const getServiceNodes = (apiData) => {
+      const services = new Set()
+      apiData.forEach(data => {
+          services.add(data.to);
+      })
+      return services;
   }
 
 
@@ -451,11 +334,11 @@ const Home = () => {
 
     // IPDR edges
     for (let ele of ipdr) {
-      const { from, service, id } = ele;
-      if (users.find((user) => user.id === from && user.removed)) {
+      const { from, to, id } = ele;
+      if (users.find((user) => (user.id === from || user.id === to) && user.removed)) {
         continue;
       }
-      G.addEdge(from, service, { id });
+      G.addEdge(from, to, { id });
     }
 
     window.jsnx.draw(G, {

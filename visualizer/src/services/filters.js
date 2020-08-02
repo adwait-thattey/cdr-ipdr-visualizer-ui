@@ -132,4 +132,15 @@ const getUserData = async (userIds) => {
 }
 
 
-export { getFilteredData, getUserData, getCdrData }
+const getServiceInfo = async (serviceIds) => {
+    const key = "service";
+
+    const userListId = Array.from(serviceIds);
+    const queryString = genQueryString(userListId, key)
+
+    const result = await axios.get(`/data/services/${queryString}`)
+    return result.data;
+}
+
+
+export { getFilteredData, getUserData, getCdrData, getServiceInfo }

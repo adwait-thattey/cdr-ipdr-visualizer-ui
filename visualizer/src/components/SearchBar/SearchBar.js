@@ -11,7 +11,7 @@ const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList 
   const genDropD = (wishlists) => {
     return (
       <Menu>
-        {wishlists && wishlists.map(wishlist => (<Menu.Item>
+        {wishlists && wishlists.map((wishlist, key) => (<Menu.Item key={key}>
           <a href="#" onClick={() => updateWishList(wishlist.id)}>
             {wishlist.name}
           </a>
