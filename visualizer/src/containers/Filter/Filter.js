@@ -72,7 +72,7 @@ const Filter = ({ updateChange, modalChange }) => {
                 <CCheckBox handleChange={handleChangeCheckbox} name="cdr" defaultChecked={true}/>
                 <CCheckBox handleChange={handleChangeCheckbox} name="ipdr" defaultChecked={true}/>
             </div>
-            <div className={styles.rows} className={styles.dual}>
+            <div className={styles.dual}>
                 <Input
                     onChange={handleChange}
                     name="location_lat"

@@ -172,7 +172,18 @@ const Home = () => {
         setUsers(users);
         setServices(services);
     }
-  
+
+    const handleHighLightNode = (node, checked) => {
+        const selectedNode = users.find(ele => ele.id === node.id);
+        selectedNode.highlighted = checked;
+
+        // Need to update details panel for it to rerender
+        setDetailPanel((prev) => ([true, { ...prev[1], highlighted: checked }]))
+
+        const otherNodes = users.filter(ele => ele.id !== node.id);
+        setUsers([ ...otherNodes, selectedNode ])
+    }
+
     useEffect(() => {
         var G = new window.jsnx.Graph();
         // G.addNode(1, { count: 12, color: getRandomColor() });
@@ -209,16 +220,17 @@ const Home = () => {
             element: '#demo-canvas',
             withLabels: true,
             nodeAttr: {
-                r: function (d) {
-                return d.data.value > 100 || d.data.value <= 10 ? 15 : d.data.value;
-                },
+                r: d => d.data.type === "service" ? 35 : 15
             },
             layoutAttr: {
                 charge: -120,
                 linkDistance: 160,
             },
             nodeStyle: {
-                fill: (d) => d.data.color,
+                fill: d => d.data.highlighted ? 'red' : d.data.color,
+            },
+            labels: d => {
+                return d.data.name;
             },
             stickyDrag: true,
         });
@@ -229,7 +241,7 @@ const Home = () => {
 
         window.d3.selectAll('.node').on('click', async (d) => {
             const nodeData = await getNodeData(d.node);
-            const updatedData = { id: d.node, ...nodeData, type: d.data.type };
+            const updatedData = { id: d.node, ...nodeData, type: d.data.type, ...d.data };
             setDetailPanel([true, updatedData]);
         });
 
@@ -237,8 +249,6 @@ const Home = () => {
             setHoverModal([false, null]);
         });
     }, [cdr, ipdr, users, services]);
-
-    console.log(filters);
 
     const hoverDiv = () => {
         const { x, y } = hoverModal[1];
@@ -266,7 +276,7 @@ const Home = () => {
             <div className={styles.networkWrapper}>
                 <div className={styles.graphCanvas} id="demo-canvas"></div>
                 <div className={styles.sidepanelWrapper}>
-                {<SidePanel data={detailPanel[1]} />}
+                {<SidePanel data={detailPanel[1]} highLightNode={handleHighLightNode}/>}
                 </div>
             </div>
 

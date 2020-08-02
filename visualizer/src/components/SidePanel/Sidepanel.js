@@ -1,12 +1,24 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs } from 'antd';
 import Activity from '../Activity/Activity';
 import styles from './Sidepanel.module.scss';
+import CCheckBox from '../Checkbox/CCheckbox';
 
 const { TabPane } = Tabs;
 
-const SidePanel = ({ data }) => {
-  console.log(data);
+const SidePanel = ({ data: propData, highLightNode, removeNode }) => {
+  console.log("PROP", propData)
+  const [data, setData] = useState(propData)
+
+  useEffect(() => {
+    setData(propData);
+  }, [propData]);
+
+  const highlight = (e, name) => highLightNode(data, e.target.checked);
+  const remove = (data) => removeNode(data);
+
+  console.log(data && data.highlighted);
+
   return (
     <div>
       <div>
@@ -43,6 +55,10 @@ const SidePanel = ({ data }) => {
                       </div>
                     );
                   })}
+                </div>
+                <div className={styles.item}>
+                  <CCheckBox handleChange={highlight} name="Highlight Node" checked={data.highlighted}/>
+                  <CCheckBox handleChange={removeNode} name="Remove Node" checked={false}/>
                 </div>
               </div>
             )}

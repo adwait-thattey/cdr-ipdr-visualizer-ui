@@ -1,7 +1,6 @@
 import React from 'react';
 import styles from './Cdr.module.scss';
 import { Typography } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
 import Button from '../../../components/Button/Button';
 
 const { Title } = Typography;
