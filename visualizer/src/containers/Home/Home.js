@@ -17,7 +17,26 @@ const getRandomColor = () => {
 };
 
 
-const userLists = [];
+const userListsData = [
+  {
+    "id": 1,
+    "users_list": [
+        1
+    ],
+    "name": "New W obj",
+    "to_display": true,
+    "raw_data": "user_id,125"
+  },
+  {
+    "id": 2,
+    "users_list": [
+        2
+    ],
+    "name": "Daud army",
+    "to_display": true,
+    "raw_data": "user_id,125"
+  }
+];
 
 const getNodeData = async () =>
   new Promise((res, rej) => {
@@ -131,10 +150,6 @@ const initialFilters = {
   
   phone_number: null,
   exclude_these_phone_number: false,
-
-
-  user_id: null,
-  exclude_these_user_id: false,
 };
 
 const Home = () => {
@@ -154,6 +169,10 @@ const Home = () => {
 
   // Filters state
   const [filters, setFilters] = useState(initialFilters);
+
+  // Users list
+  const [userLists, setUserLists] = useState(userListsData);
+  const [selectedUserList, setSelectedUserList] = useState(null);
 
   const handleFilterModal = (status) => setShowFilterModal(status);
 
@@ -201,6 +220,28 @@ const Home = () => {
 
     const otherNodes = users.filter(ele => ele.id !== node.id);
     setUsers([ ...otherNodes, selectedNode ])
+  }
+
+
+  const handleUserListSelect = id => {
+    const wishlist = userLists.find(user => user.id === id);
+    if (!wishlist) throw new Error("wishlist not found")
+
+    const newUsers = []
+    for (let user of users) {
+        let userFound = false;
+        for (let user_id of wishlist.users_list) {
+            if (user.id === user_id) {
+               userFound = true;
+               user.highlighted = true
+            };
+        }
+        if (!userFound) user.highlighted = false;
+        newUsers.push({ ...user });
+    }
+
+    setSelectedUserList(wishlist);
+    setUsers(newUsers);
   }
 
   useEffect(() => {
@@ -303,7 +344,13 @@ const Home = () => {
             >
                 <Filter updateChange={handleFilters} modalChange={handleFilterModal}/>
             </Modal>
-            <SearchBar onFilterClick={() => handleFilterModal(true)} />
+
+            <SearchBar 
+                wishlists={userLists} 
+                updateWishList={handleUserListSelect} 
+                onFilterClick={() => handleFilterModal(true)} 
+                selectedUserList={selectedUserList}
+            />
 
             <div className={styles.networkWrapper}>
                 <div className={styles.graphCanvas} id="demo-canvas"></div>
