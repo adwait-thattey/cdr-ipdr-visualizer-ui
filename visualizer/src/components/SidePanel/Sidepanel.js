@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import Activity from '../Activity/Activity';
 import styles from './Sidepanel.module.scss';
 import CCheckBox from '../Checkbox/CCheckbox';
+import UserData from '../UserData/UserData';
 
 const { TabPane } = Tabs;
 
@@ -32,35 +33,18 @@ const SidePanel = (props) => {
             {data && data.type === 'user' && (
               <div className={styles.container}>
                 <div className={styles.item}>
-                  <CCheckBox handleChange={highlight} name="Highlight Node" checked={data.highlighted}/>
-                  <CCheckBox handleChange={remove} name="Remove Node" checked={false}/>
+                  <CCheckBox
+                    handleChange={highlight}
+                    name="Highlight Node"
+                    checked={data.highlighted}
+                  />
+                  <CCheckBox
+                    handleChange={remove}
+                    name="Remove Node"
+                    checked={false}
+                  />
                 </div>
-                <div className={styles.item}>
-                  <h5>Name</h5>
-                  <h3>{data.name}</h3>
-                </div>
-                <div className={styles.item}>
-                  <h5>Address</h5>
-                  <h3>{data.address}</h3>
-                </div>
-                <div className={styles.item}>
-                  <h5>Mobile Details</h5>
-                  {data.phone_numbers.map((each, key) => {
-                    return (
-                      <div key={key} className={styles.phoneContainer}>
-                        <div className={styles.phoneItemContainer}>
-                          <h3>Phone Number</h3>
-                          <h3>{each.number}</h3>
-                        </div>
-                        <div className={styles.phoneItemContainer}>
-                          <h3>Imsi Number</h3>
-                          <h3>{each.imsi}</h3>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-                
+                <UserData data={data} />
               </div>
             )}
           </TabPane>

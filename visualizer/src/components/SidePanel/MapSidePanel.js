@@ -1,10 +1,10 @@
 import React from 'react';
 
-import SidePanel from './Sidepanel';
-import { Steps } from 'antd';
+import { Steps, Tabs } from 'antd';
 import UserData from '../UserData/UserData';
 
 const { Step } = Steps;
+const { TabPane } = Tabs;
 
 function dateTimeString(timestamp) {
   const date = new Date(timestamp);
@@ -15,24 +15,41 @@ function dateTimeString(timestamp) {
 }
 
 const MapSidePanel = ({ data }) => {
-  const tabs = ['User', 'Activity'];
-  const content = [
-    data && data.user && <UserData data={data.user} />,
-    data && data.points && (
-      <h1>
-        <Steps progressDot current={data.points.length} direction="vertical">
-          {data.points.map((val, index) => (
-            <Step
-              key={index}
-              title={val.properties.type.toUpperCase()}
-              description={dateTimeString(val.properties.timestamp[0])}
-            />
-          ))}
-        </Steps>
-      </h1>
-    ),
-  ];
-  return <SidePanel tabs={tabs} content={content} />;
+  return (
+    <div>
+      <div>
+        <Tabs
+          type="card"
+          defaultActiveKey={0}
+          size="large"
+          onChange={() => null}
+        >
+          <TabPane tab="Details" key="1">
+            {data && data.user && <UserData data={data.user} />}
+          </TabPane>
+          <TabPane tab="Details" key="2">
+            {data && data.points && (
+              <h1>
+                <Steps
+                  progressDot
+                  current={data.points.length}
+                  direction="vertical"
+                >
+                  {data.points.map((val, index) => (
+                    <Step
+                      key={index}
+                      title={val.properties.type.toUpperCase()}
+                      description={dateTimeString(val.properties.timestamp[0])}
+                    />
+                  ))}
+                </Steps>
+              </h1>
+            )}
+          </TabPane>
+        </Tabs>
+      </div>
+    </div>
+  );
 };
 
 export default MapSidePanel;

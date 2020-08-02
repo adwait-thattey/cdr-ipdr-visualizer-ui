@@ -1,24 +1,24 @@
 .input {
-    height: 50px;
-    border-radius: 7px;
-    border: none;
-    box-shadow: 0 0 0 1px #2a64cf;
-    background: #fff;
-    padding-left: 10px;
-    margin: 10px 0;
+  height: 50px;
+  border-radius: 7px;
+  border: none;
+  box-shadow: 0 0 0 1px #2a64cf;
+  background: #fff;
+  padding-left: 10px;
+  margin: 10px 0;
 }
 
 label {
-    font-weight: 600;
-    display: block;
-    font-size: 16px;
+  font-weight: 600;
+  display: block;
+  font-size: 16px;
 }
 
 .input:focus {
-    transition-duration: 0.2s;
-    box-shadow: 0 0 0 1px #f4f8fe, 0 0 3px 2px #2a64cf;
+  transition-duration: 0.2s;
+  box-shadow: 0 0 0 1px #f4f8fe, 0 0 3px 2px #2a64cf;
 }
 
 .inputHead > * {
-    width: 100%;
+  width: 100%;
 }

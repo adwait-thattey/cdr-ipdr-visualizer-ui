@@ -1,29 +1,20 @@
 import React from 'react';
 
-import styling from './SearchBar.module.scss';
-import Avatar from '../Avatar/Avatar';
 import Input from '../Input/Input';
 import Button from '../Button/Button';
+import Nav from '../Header/Header';
 
-const Nav = ({ onFilterClick }) => {
-  return (
-    <nav className={styling.nav}>
+const SearchBar = ({ onFilterClick }) => {
+  const child = (
+    <>
       <div>
         <Input placeholder="Search here" width="40rem" />
       </div>
 
       <Button text="Filter" onClick={onFilterClick} />
-
-      <div className={styling.user}>
-        <Avatar firstName="Brijesh" lastName="Bumrela" />
-
-        <div>
-          <div className={styling.name}>Brijesh Bumrela</div>
-          <div className={styling.email}>brijesh@gmail.com</div>
-        </div>
-      </div>
-    </nav>
+    </>
   );
+  return <Nav child={child} />;
 };
 
-export default Nav;
+export default SearchBar;
