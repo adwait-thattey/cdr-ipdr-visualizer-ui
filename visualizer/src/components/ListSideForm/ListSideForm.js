@@ -23,10 +23,17 @@ const Demo = ({ obj }) => {
     <Form
       {...layout}
       name="basic"
-      initialValues={{ watchlistdata: obj['content'] }}
+      initialValues={{ watchlistdata: obj['raw_data'], id: obj['id'] }}
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
     >
+      <Form.Item
+        name="id"
+        style={{display:'none'}}
+      >
+        <Input defaultValue={obj.id} />
+      </Form.Item>
+      
       <Form.Item
         label="Watch List Name"
         name="watchlistname"

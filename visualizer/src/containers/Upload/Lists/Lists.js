@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Lists.module.scss';
 // import { Tabs, Row, Col } from 'antd';
 import { Row, Col, List, Avatar, Form, Divider } from 'antd';
@@ -6,6 +6,7 @@ import Button from '../../../components/Button/Button';
 import ListSideForm from '../../../components/ListSideForm/ListSideForm';
 // import { Divider } from 'rc-menu';
 import { black } from 'color-name';
+import axios from '../../../services/axios';
 
 const listsData = [
   {
@@ -25,6 +26,8 @@ const listsData = [
 ];
 
 const Lists = () => {
+
+  const  [newlistsData, setNewlistsData] = useState([]);
   const [selectedData, setSelectedData] = useState();
 
   const ShowRightPanelData = () => {
@@ -36,6 +39,16 @@ const Lists = () => {
     }
   };
 
+  const getWatchlistsData = async () => {
+    let response =  await axios.get('/data/watchlists')
+    console.log(response.data)
+    setNewlistsData(response.data)
+  }
+
+  useEffect(() => {
+    getWatchlistsData()
+  }, [] );
+  
   return (
     <>
       <Row>
@@ -53,7 +66,7 @@ const Lists = () => {
           <List
             className={styles.watchlist_list}
             itemLayout="horizontal"
-            dataSource={listsData}
+            dataSource={newlistsData}
             renderItem={(item) => (
               <List.Item>
                 {/* <List.Item.Meta
