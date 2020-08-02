@@ -1,0 +1,63 @@
+@mixin flex(
+  $align-items: flex-start,
+  $justify-content: flex-start,
+  $flex-direction: row
+) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
+.container {
+  @include flex($align-items: stretch, $flex-direction: column);
+  width: 100%;
+  height: 100vh;
+}
+
+.section {
+  @include flex();
+  flex: 1;
+}
+
+.section1,
+.section2,
+.section3 {
+  @include flex(center, flex-start, column);
+  flex: 1;
+  border: thin solid black;
+  height: 100%;
+  overflow: auto;
+}
+
+.logItem {
+  padding: 20px 10px;
+  background: #fff0f5;
+  width: 90%;
+  cursor: pointer;
+  margin: 10px 0;
+  border-radius: 3px;
+  transition: 0.5s ease;
+}
+
+.logItem:hover {
+  background: #f5b9cd;
+}
+
+.section2 {
+  flex: 2;
+}
+
+.subsection1,
+.subsection2 {
+  @include flex(center, flex-start, column);
+  border: thin solid black;
+  width: 100%;
+  flex: 1;
+}
+
+.details {
+  background: #f0ffff;
+  padding: 10px;
+  width: 90%;
+}
