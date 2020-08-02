@@ -43,6 +43,7 @@ const SidePanel = (props) => {
                     name="Remove Node"
                     checked={false}
                   />
+                  <a href="/map/1" target="_blank">View User timeline</a>
                 </div>
                 <UserData data={data} />
               </div>
