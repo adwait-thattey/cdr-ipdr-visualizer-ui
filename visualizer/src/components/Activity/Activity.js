@@ -13,18 +13,21 @@ const Activity = ({
 }) => {
   let finalValues = [];
   if (data) {
+
     const cdrIds = []
       .concat(
         ...cdr
-          .filter((item) => item.from === data.id)
+          .filter((item) => item.from === data.id || item.to === data.id)
           .map((item) => item.calls),
       )
-      .map((item) => detailedCdr.find((obj) => obj.id === item));
+      .map((item) => {
+        return detailedCdr.find((obj) => obj.id === item)
+      });
 
     const ipdrIds = []
       .concat(
         ...ipdr
-          .filter((item) => item.from === data.id)
+          .filter((item) => item.from === data.id || item.to === data.id)
           .map((item) => item.calls),
       )
       .map((item) => detailedIpdr.find((obj) => obj.id === item));
@@ -35,8 +38,6 @@ const Activity = ({
       return new Date(d2) - new Date(d1);
     });
   }
-  console.log('==');
-  console.log(data);
   return (
     <h1>
       {data ? (

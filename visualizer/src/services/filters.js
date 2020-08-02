@@ -81,9 +81,10 @@ const getFilteredData = async (filters) => {
 }
 
 
-const getCdrData = async (id) => {
-    const result = await axios.get(`/data/cdrs?cdrs=${id}`)
-    console.log(result);
+const getCdrData = async (ids) => {
+    const queryString = genQueryString2(ids, "cdr")
+    const result = await axios.get(`/data/cdrs?cdr=${queryString}`)
+    return result.data;
 }
 
 

@@ -18,8 +18,6 @@ const SidePanel = (props) => {
   const highlight = (e) => highLightNode(data, e.target.checked);
   const remove = () => removeNode(data);
 
-  console.log("INSIDE SIDEPANEL", data);
-
   return (
     <div>
       <div>

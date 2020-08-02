@@ -316,12 +316,10 @@ const Home = () => {
       try {
         const updatedData = await getFilteredData(filters);
         const { cdrData } = updatedData;
-  
-        const tempCdrData = cdrData.slice(5);
-  
-        const userIds = getUserNodes(tempCdrData);
+    
+        const userIds = getUserNodes(cdrData);
         const userInfo = await getUserInfo(userIds);
-        setAllValues(tempCdrData, [], userInfo, [])
+        setAllValues(cdrData, [], userInfo, [])
       } catch(e) {
         console.log(e);
       }
@@ -350,12 +348,9 @@ const Home = () => {
     try {
       const updatedData = await getFilteredData(newFilterState);
       const { cdrData } = updatedData;
-
-      const tempCdrData = cdrData.slice(5);
-
-      const userIds = getUserNodes(tempCdrData);
+      const userIds = getUserNodes(cdrData);
       const userInfo = await getUserInfo(userIds);
-      setAllValues(tempCdrData, [], userInfo, [])
+      setAllValues(cdrData, [], userInfo, [])
     } catch (e) {
       console.log(e);
     }
@@ -497,6 +492,12 @@ const Home = () => {
         ...d.data,
         type: d.data.type,
       };
+
+      const cdrs = getAllCdrsFromUserNode(d.node)
+      const detailedCdrs = await getCdrData(cdrs);
+      setDetailedCdr(detailedCdrs);
+      // localhost:8000/data/cdrs?cdr=15
+
       setDetailPanel([true, updatedData]);
     });
 
@@ -504,6 +505,18 @@ const Home = () => {
       setHoverModal([false, null]);
     });
   }, [cdr, ipdr, users, services]);
+
+
+  const getAllCdrsFromUserNode = (node) => {
+    
+    const nodes = [];
+    
+    cdr.filter(ele => ele.from === node || ele.to === node).forEach(node => {
+      nodes.push(...node.calls)
+    })
+
+    return nodes;
+  }
 
   const hoverDiv = () => {
     const event = window.d3.event;
@@ -522,6 +535,8 @@ const Home = () => {
       return <></>;
     }
   };
+
+  console.log(detailedCdr);
 
   return (
     <>
