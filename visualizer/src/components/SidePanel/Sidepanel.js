@@ -6,8 +6,9 @@ import CCheckBox from '../Checkbox/CCheckbox';
 
 const { TabPane } = Tabs;
 
-const SidePanel = ({ data: propData, highLightNode, removeNode }) => {
-  const [data, setData] = useState(propData)
+const SidePanel = (props) => {
+  const { data: propData, highLightNode, removeNode } = props;
+  const [data, setData] = useState(propData);
 
   useEffect(() => {
     setData(propData);
@@ -66,7 +67,7 @@ const SidePanel = ({ data: propData, highLightNode, removeNode }) => {
           <TabPane tab="Activity" key="2">
             {data && data.type === 'user' && (
               <>
-                <Activity />
+                <Activity {...props} />
               </>
             )}
           </TabPane>

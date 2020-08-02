@@ -17,26 +17,26 @@ const getRandomColor = () => {
 };
 
 const getNodeData = async () =>
-  new Promise((res, rej) => {
-    setTimeout(() => {
-      res({
-        name: 'Brijesh Bumrela',
-        address: 'IIIT Sri City',
-        phone_numbers: [
-          { number: '7985641784', imsi: '9878ARUSNCJA1234' },
-          { number: '9898784515', imsi: '7878AQNSANWJ1234' },
-        ],
-        devices: [
-          { imei: 'AYDBWTAJRK23', mac: '80:20:42:41:41' },
-          { imei: 'QEUSMSGFYS98', mac: '80:20:42:11:90' },
-        ],
-      });
-    }, 1000);
-  });
+new Promise((res, rej) => {
+  setTimeout(() => {
+    res({
+      name: 'Brijesh Bumrela',
+      address: 'IIIT Sri City',
+      phone_numbers: [
+        { number: '7985641784', imsi: '9878ARUSNCJA1234' },
+        { number: '9898784515', imsi: '7878AQNSANWJ1234' },
+      ],
+      devices: [
+        { imei: 'AYDBWTAJRK23', mac: '80:20:42:41:41' },
+        { imei: 'QEUSMSGFYS98', mac: '80:20:42:11:90' },
+      ],
+    });
+  }, 1000);
+});
 
 const cdrData = [
-  { from: 1, to: 2, frequency: 5, calls: [] },
-  { id: 50, from: 1, to: 3, frequency: 5, calls: [] },
+  { id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] },
+  { id: 50, from: 1, to: 3, frequency: 5, calls: [71, 74] },
   { id: 51, from: 2, to: 3, frequency: 5, calls: [] },
   { id: 52, from: 2, to: 3, frequency: 5, calls: [] },
   { id: 53, from: 3, to: 6, frequency: 5, calls: [] },
@@ -51,9 +51,144 @@ const cdrData = [
 ];
 
 const ipdrData = [
-  { id: 70, from: 1, service: 1 + 50000, records: 3 },
-  { id: 71, from: 2, service: 3 + 50000, records: 2 },
-  { id: 72, from: 1, service: 3 + 50000, records: 4 },
+  { id: 70, from: 1, service: 1 + 50000, records: 3, calls: [21] },
+  { id: 71, from: 2, service: 3 + 50000, records: 2, calls: [] },
+  { id: 72, from: 1, service: 3 + 50000, records: 4, calls: [22] },
+];
+
+const detailedCdrData = [
+  {
+    id: 68,
+    timestamp: '2020-08-01T18:56:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 69,
+    timestamp: '2019-04-08T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 70,
+    timestamp: '2019-03-18T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 71,
+    timestamp: '2019-07-21T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 72,
+    timestamp: '2019-12-01T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 73,
+    timestamp: '2019-01-15T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 74,
+    timestamp: '2019-03-30T19:02:41+05:30',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+];
+
+const detailedIpdrData = [
+  {
+    id: 21,
+    start_time: '2019-03-30T19:02:41+05:30',
+    duration: 523,
+    private_ip: null,
+    private_port: null,
+    public_ip: null,
+    public_port: null,
+    destination_ip: null,
+    destination_port: 5432,
+    from_number: null,
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+    upload_data_volume: null,
+    download_data_volume: null,
+  },
+  {
+    id: 22,
+    start_time: '2019-04-30T19:02:41+05:30',
+    duration: 975,
+    private_ip: null,
+    private_port: null,
+    public_ip: null,
+    public_port: null,
+    destination_ip: null,
+    destination_port: 8001,
+    from_number: null,
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+    upload_data_volume: null,
+    download_data_volume: null,
+  },
 ];
 
 const usersData = [
@@ -126,32 +261,32 @@ const servicesData = [
 const initialFilters = {
   cdr: true,
   ipdr: true,
-
+  
   location_lat: null,
   location_long: null,
   radius: null,
-
+  
   time_start: null,
   time_end: null,
-
+  
   duration_min: null,
   duration_max: null,
-
+  
   frequency_min: null,
   frequency_max: null,
-
+  
   user_id: null,
   exclude_these_user_id: false,
-
-    
+  
+  
   cell_id: null,
   exclude_these_cell_id: false,
-
+  
   
   phone_number: null,
   exclude_these_phone_number: false,
-
-
+  
+  
   user_id: null,
   exclude_these_user_id: false,
 };
@@ -159,23 +294,25 @@ const initialFilters = {
 const Home = () => {
   // Modal to showcase the pop up modal on hovering the node
   const [showFilterModal, setShowFilterModal] = useState(false);
-
+  
   // Modal to showcase the pop up modal on hovering the node
   const [hoverModal, setHoverModal] = useState([false, null]);
-
+  
   // Sidepanel to showcase the detailed side panel
   const [detailPanel, setDetailPanel] = useState([false, null]);
-
+  
   const [cdr, setCdrData] = useState(cdrData);
+  const [detailedCdr, setDetailedCdr] = useState(detailedCdrData);
   const [ipdr, setIpdr] = useState(ipdrData);
+  const [detailedIpdr, setDetailedIpdr] = useState(detailedIpdrData);
   const [users, setUsers] = useState(usersData);
   const [services, setServices] = useState(servicesData);
-
+  
   // Filters state
   const [filters, setFilters] = useState(initialFilters);
-
+  
   const handleFilterModal = (status) => setShowFilterModal(status);
-
+  
   const handleFilters = async (newFilterState) => {
     setFilters(newFilterState);
     setShowFilterModal(false);
@@ -186,7 +323,7 @@ const Home = () => {
       console.log(e);
     }
   };
-
+  
   const setAllValues = (updatedData) => {
     const { cdr, ipdr, users, services } = updatedData;
     setCdrData(cdr);
@@ -194,140 +331,155 @@ const Home = () => {
     setUsers(users);
     setServices(services);
   };
-
+  
   const handleHighLightNode = (node, checked) => {
     const selectedNode = users.find(ele => ele.id === node.id);
     selectedNode.highlighted = checked;
-
+    
     // Need to update details panel for it to rerender
     setDetailPanel((prev) => ([true, { ...prev[1], highlighted: checked }]))
-
+    
     const otherNodes = users.filter(ele => ele.id !== node.id);
     setUsers([ ...otherNodes, selectedNode ])
   }
-
+  
   const handleRemoveNode = (node) => {
     const selectedNode = users.find(ele => ele.id === node.id);
     selectedNode.removed = true;
-
+    
     setDetailPanel([false, null])
-
+    
     const otherNodes = users.filter(ele => ele.id !== node.id);
     setUsers([ ...otherNodes, selectedNode ])
   }
-
+  
   useEffect(() => {
-      var G = new window.jsnx.Graph();
-      // G.addNode(1, { count: 12, color: getRandomColor() });
-      // G.addNode(2, { count: 8, color: getRandomColor() });
-      // G.addNode(3, { count: 15, color: getRandomColor() });
-      // G.addEdge(3, 1, { edge_labels: "node1" });
-      // G.addEdge(3, 2, { edge_labels: "node2" });
-      // User nodes
-      for (let ele of users) {
-        if (ele.removed) {
-          continue;
-        }
-        const { id, ...rest } = ele;
-        G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
+    var G = new window.jsnx.Graph();
+    // G.addNode(1, { count: 12, color: getRandomColor() });
+    // G.addNode(2, { count: 8, color: getRandomColor() });
+    // G.addNode(3, { count: 15, color: getRandomColor() });
+    // G.addEdge(3, 1, { edge_labels: "node1" });
+    // G.addEdge(3, 2, { edge_labels: "node2" });
+    // User nodes
+    for (let ele of users) {
+      if (ele.removed) {
+        continue;
       }
-
-      // Service nodes
-      for (let ele of services) {
-        if (ele.removed) {
-          continue;
-        }
-        const { id, ...rest } = ele;
-        G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
+      const { id, ...rest } = ele;
+      G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
+    }
+    
+    // Service nodes
+    for (let ele of services) {
+      if (ele.removed) {
+        continue;
       }
-
-      // CDR edges
-      for (let ele of cdr) {
-        const { from, to, frequency, id } = ele;
-        if (users.find(user => (user.id === from || user.id === to) && user.removed)) {
-          continue;
-        }
-        G.addEdge(from, to, { frequency, color: 'blue', id });
+      const { id, ...rest } = ele;
+      G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
+    }
+    
+    // CDR edges
+    for (let ele of cdr) {
+      const { from, to, frequency, id } = ele;
+      if (users.find(user => (user.id === from || user.id === to) && user.removed)) {
+        continue;
       }
-
-      // IPDR edges
-      for (let ele of ipdr) {
-        const { from, service, id } = ele;
-        if (users.find(user => user.id === from && user.removed)) {
-          continue;
-        }
-        G.addEdge(from, service, { id });
+      G.addEdge(from, to, { frequency, color: 'blue', id });
+    }
+    
+    // IPDR edges
+    for (let ele of ipdr) {
+      const { from, service, id } = ele;
+      if (users.find(user => user.id === from && user.removed)) {
+        continue;
       }
-
-      window.jsnx.draw(G, {
-        element: '#demo-canvas',
-        withLabels: true,
-        nodeAttr: {
-            r: d => d.data.type === "service" ? 35 : 20
-        },
-        layoutAttr: {
-            charge: -120,
-            linkDistance: 160,
-        },
-        nodeStyle: {
-            fill: d => d.data.highlighted ? 'red' : d.data.color,
-        },
-        labels: d => {
-            return d.data.name;
-        },
-        stickyDrag: true,
-      });
-
-
-      window.d3.selectAll('.node').on('mouseenter', (d) => {
-        setHoverModal([true, d]);
-      });
-
-      window.d3.selectAll('.node').on('click', async (d) => {
-          const nodeData = await getNodeData(d.node);
-          const updatedData = { id: d.node, ...nodeData, type: d.data.type, ...d.data };
-          setDetailPanel([true, updatedData]);
-      });
-
-      window.d3.selectAll('.node').on('mouseleave', (d) => {
-          setHoverModal([false, null]);
-      });
-
-    }, [cdr, ipdr, users, services]);
-
-    const hoverDiv = () => {
-        const { x, y } = hoverModal[1];
-        return (
-            <CustomPopup
-                data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
-                x={x}
-                y={y}
-            />
+      G.addEdge(from, service, { id });
+    }
+    
+    window.jsnx.draw(G, {
+      element: '#demo-canvas',
+      withLabels: true,
+      nodeAttr: {
+        r: d => d.data.type === "service" ? 35 : 20
+      },
+      layoutAttr: {
+        charge: -120,
+        linkDistance: 160,
+      },
+      nodeStyle: {
+        fill: d => d.data.highlighted ? 'red' : d.data.color,
+      },
+      labels: d => {
+        return d.data.name;
+      },
+      stickyDrag: true,
+    });
+    
+    
+    window.d3.selectAll('.node').on('mouseenter', (d) => {
+      setHoverModal([true, d]);
+    });
+    
+    window.d3.selectAll('.node').on('click', async (d) => {
+      const nodeData = await getNodeData(d.node);
+      const updatedData = { id: d.node, ...nodeData, type: d.data.type, ...d.data };
+      setDetailPanel([true, updatedData]);
+    });
+    
+    window.d3.selectAll('.node').on('mouseleave', (d) => {
+      setHoverModal([false, null]);
+    });
+    
+  }, [cdr, ipdr, users, services]);
+  
+  const hoverDiv = () => {
+    // const { x, y } = hoverModal[1];
+    // console.log(hoverModal[1]);
+    
+    const event = window.d3.event;
+    
+    if (event) {
+      const x = window.d3.event.pageX;
+      const y = window.d3.event.pageY;
+      return (
+        <CustomPopup
+        data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
+        x={x}
+        y={y}
+        />
         );
+      } else {
+        return <></>;
+      }
     };
-
+    
     return (
-        <>
-            <Modal
-                title="Apply Filters"
-                visible={showFilterModal}
-                onCancel={() => handleFilterModal(false)}
-                footer={null}
-            >
-                <Filter updateChange={handleFilters} modalChange={handleFilterModal}/>
-            </Modal>
-            <SearchBar onFilterClick={() => handleFilterModal(true)} />
-
-            <div className={styles.networkWrapper}>
-                <div className={styles.graphCanvas} id="demo-canvas"></div>
-                <div className={styles.sidepanelWrapper}>
-                {<SidePanel removeNode={handleRemoveNode} data={detailPanel[1]} highLightNode={handleHighLightNode}/>}
-                </div>
-            </div>
-
-            {hoverModal[0] && hoverDiv()}
-        </>
-    );
-};
-
-export default Home;
+      <>
+      <Modal
+      title="Apply Filters"
+      visible={showFilterModal}
+      onCancel={() => handleFilterModal(false)}
+      footer={null}
+      >
+      <Filter updateChange={handleFilters} modalChange={handleFilterModal}/>
+      </Modal>
+      <SearchBar onFilterClick={() => handleFilterModal(true)} />
+      
+      <div className={styles.networkWrapper}>
+      <div className={styles.graphCanvas} id="demo-canvas"></div>
+      <div className={styles.sidepanelWrapper}>
+      {<SidePanel removeNode={handleRemoveNode} data={detailPanel[1]} highLightNode={handleHighLightNode} cdr={cdr}
+      ipdr={ipdr}
+      detailedCdr={detailedCdr}
+      detailedIpdr={detailedIpdr}
+      servicesData={servicesData}/>}
+      </div>
+      </div>
+      
+      {hoverModal[0] && hoverDiv()}
+      </>
+      );
+  };
+  
+  export default Home;
+  

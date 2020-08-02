@@ -6,6 +6,7 @@ import Sidebar from './components/Sidebar/Sidebar.js';
 import Auth from './containers/Auth/Auth';
 import Upload from './containers/Upload/Upload';
 import Map from './containers/Map/Map';
+import Alerts from './containers/Alerts/Alerts';
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
             </Route>
             <Route path="/map/:id">
               <Map />
+            </Route>
+            <Route path="/alerts">
+              <Alerts />
             </Route>
           </Switch>
         </div>
