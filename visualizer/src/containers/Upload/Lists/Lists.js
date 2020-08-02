@@ -15,57 +15,7 @@ const listsData = [
     name: 'Watchlist 1',
     content:
       'imei,1234567\nimei,0987654\nphone,0987656\nphone,345678345\nimei,23456754\n',
-  },
-  {
-    id: 2,
-    name: 'Watchlist 2',
-    content:
-      'imei,351527043500000\nimei,351527043500000\nphone,9284612974\nphone,7507763619\nimei,35200909880000\n',
-  },
-  { id: 3, name: 'New Watchlist', content: 'phone,1234567' },
-  { id: 4, name: 'watchlist 002', content: 'imsi,123456787' },
-  {
-    id: 1,
-    name: 'Watchlist 1',
-    content:
-      'imei,1234567\nimei,0987654\nphone,0987656\nphone,345678345\nimei,23456754\n',
-  },
-  {
-    id: 2,
-    name: 'Watchlist 2',
-    content:
-      'imei,351527043500000\nimei,351527043500000\nphone,9284612974\nphone,7507763619\nimei,35200909880000\n',
-  },
-  { id: 3, name: 'New Watchlist', content: 'phone,1234567' },
-  { id: 4, name: 'watchlist 002', content: 'imsi,123456787' },
-  {
-    id: 1,
-    name: 'Watchlist 1',
-    content:
-      'imei,1234567\nimei,0987654\nphone,0987656\nphone,345678345\nimei,23456754\n',
-  },
-  {
-    id: 2,
-    name: 'Watchlist 2',
-    content:
-      'imei,351527043500000\nimei,351527043500000\nphone,9284612974\nphone,7507763619\nimei,35200909880000\n',
-  },
-  { id: 3, name: 'New Watchlist', content: 'phone,1234567' },
-  { id: 4, name: 'watchlist 002', content: 'imsi,123456787' },
-  {
-    id: 1,
-    name: 'Watchlist 1',
-    content:
-      'imei,1234567\nimei,0987654\nphone,0987656\nphone,345678345\nimei,23456754\n',
-  },
-  {
-    id: 2,
-    name: 'Watchlist 2',
-    content:
-      'imei,351527043500000\nimei,351527043500000\nphone,9284612974\nphone,7507763619\nimei,35200909880000\n',
-  },
-  { id: 3, name: 'New Watchlist', content: 'phone,1234567' },
-  { id: 4, name: 'watchlist 002', content: 'imsi,123456787' },
+  }
 ];
 
 const Lists = () => {
@@ -76,11 +26,13 @@ const Lists = () => {
     content: '',
   });
 
-  const getData = async () => {
-    let res = await axios.get('/data/watchlists');
-    console.log(res);
-    return res.data;
-  };
+  useEffect(() => {
+    const getData = async() => {
+      let res = await axios.get('/data/watchlists');
+      setList(res.data)
+    }
+    getData();
+  }, []);
 
   // useEffect(() => {
   //   setList(getData());
@@ -109,7 +61,7 @@ const Lists = () => {
       setList(list);
     } else {
       // await axios.post('/data/watchlists', inputData);
-      setList([...list, inputData]);
+      setList([inputData, ...list]);
     }
     resetInput();
   };
@@ -118,11 +70,13 @@ const Lists = () => {
     setInputData(list.find((item) => item.id === id));
   };
 
+  console.log(inputData);
+
   return (
     <div className={styles.container}>
       <div className={styles.panelContainer}>
-        {list.map((item) => (
-          <div className={styles.panelItem} onClick={() => itemSelect(item.id)}>
+        {list.map((item, key) => (
+          <div key={key} className={styles.panelItem} onClick={() => itemSelect(item.id)}>
             {item.name}
           </div>
         ))}
@@ -144,7 +98,7 @@ const Lists = () => {
             <TextArea
               rows={6}
               className={styles.inputTextBox}
-              value={inputData.content}
+              value={inputData.raw_data}
               onChange={(e) => inputHandler('content', e.target.value)}
               style={{ background: '#fff' }}
               placeholder="Enter Data Here"
