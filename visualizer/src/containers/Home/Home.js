@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './Home.module.scss';
 import SearchBar from '../../components/SearchBar/SearchBar';
 import { Modal } from 'antd';
-import SidePanel from '../../components/SidePanel/Sidepanel';
+import SidePanel from '../../components/SidePanel/HomeSidePanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
 import { getFilteredData } from '../../services/filters';
@@ -101,177 +101,168 @@ const servicesData = [
   },
 ];
 
-
 const initialFilters = {
-    cdr: true,
-    ipdr: true,
-    
+  cdr: true,
+  ipdr: true,
 
-    location_lat: null,
-    location_long: null,
-    radius: null,
+  location_lat: null,
+  location_long: null,
+  radius: null,
 
+  time_start: null,
+  time_end: null,
 
-    time_start: null,
-    time_end: null,
+  duration_min: null,
+  duration_max: null,
 
+  frequency_min: null,
+  frequency_max: null,
 
-    duration_min: null,
-    duration_max: null,
+  phone_number: null,
+  exclude_these_phone_number: false,
 
-
-    frequency_min: null,
-    frequency_max: null,
-
-
-    phone_number: null,
-    exclude_these_phone_number: false,
-
-
-    user_id: null,
-    exclude_these_user_id: false
-}
-
+  user_id: null,
+  exclude_these_user_id: false,
+};
 
 const Home = () => {
-    // Modal to showcase the pop up modal on hovering the node
-    const [showFilterModal, setShowFilterModal] = useState(false);
+  // Modal to showcase the pop up modal on hovering the node
+  const [showFilterModal, setShowFilterModal] = useState(false);
 
-    // Modal to showcase the pop up modal on hovering the node
-    const [hoverModal, setHoverModal] = useState([false, null]);
+  // Modal to showcase the pop up modal on hovering the node
+  const [hoverModal, setHoverModal] = useState([false, null]);
 
-    // Sidepanel to showcase the detailed side panel
-    const [detailPanel, setDetailPanel] = useState([false, null]);
+  // Sidepanel to showcase the detailed side panel
+  const [detailPanel, setDetailPanel] = useState([false, null]);
 
-    const [cdr, setCdrData] = useState(cdrData);
-    const [ipdr, setIpdr] = useState(ipdrData);
-    const [users, setUsers] = useState(usersData);
-    const [services, setServices] = useState(servicesData);
+  const [cdr, setCdrData] = useState(cdrData);
+  const [ipdr, setIpdr] = useState(ipdrData);
+  const [users, setUsers] = useState(usersData);
+  const [services, setServices] = useState(servicesData);
 
+  // Filters state
+  const [filters, setFilters] = useState(initialFilters);
 
-    // Filters state
-    const [filters, setFilters] = useState(initialFilters);
+  const handleFilterModal = (status) => setShowFilterModal(status);
 
-    const handleFilterModal = (status) => setShowFilterModal(status);
+  const handleFilters = async (newFilterState) => {
+    setFilters(newFilterState);
+    setShowFilterModal(false);
+    try {
+      const updatedData = await getFilteredData(newFilterState);
+      setAllValues(updatedData);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
-    const handleFilters = async (newFilterState) => {
-        setFilters(newFilterState);
-        setShowFilterModal(false);
-        try {
-            const updatedData = await getFilteredData(newFilterState)
-            setAllValues(updatedData)
-        } catch(e) {
-            console.log(e);
-        }
+  const setAllValues = (updatedData) => {
+    const { cdr, ipdr, users, services } = updatedData;
+    setCdrData(cdr);
+    setIpdr(ipdr);
+    setUsers(users);
+    setServices(services);
+  };
+
+  useEffect(() => {
+    var G = new window.jsnx.Graph();
+    // G.addNode(1, { count: 12, color: getRandomColor() });
+    // G.addNode(2, { count: 8, color: getRandomColor() });
+    // G.addNode(3, { count: 15, color: getRandomColor() });
+    // G.addEdge(3, 1, { edge_labels: "node1" });
+    // G.addEdge(3, 2, { edge_labels: "node2" });
+
+    // User nodes
+    for (let ele of users) {
+      const { id, ...rest } = ele;
+      G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
     }
 
-    const setAllValues = (updatedData) => {
-        const { cdr, ipdr, users, services } = updatedData;
-        setCdrData(cdr);
-        setIpdr(ipdr);
-        setUsers(users);
-        setServices(services);
+    // Service nodes
+    for (let ele of services) {
+      const { id, ...rest } = ele;
+      G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
     }
-  
-    useEffect(() => {
-        var G = new window.jsnx.Graph();
-        // G.addNode(1, { count: 12, color: getRandomColor() });
-        // G.addNode(2, { count: 8, color: getRandomColor() });
-        // G.addNode(3, { count: 15, color: getRandomColor() });
-        // G.addEdge(3, 1, { edge_labels: "node1" });
-        // G.addEdge(3, 2, { edge_labels: "node2" });
 
-        // User nodes
-        for (let ele of users) {
-            const { id, ...rest } = ele;
-            G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
-        }
+    // CDR edges
+    for (let ele of cdr) {
+      const { from, to, frequency, id } = ele;
+      G.addEdge(from, to, { frequency, color: 'blue', id });
+    }
 
-        // Service nodes
-        for (let ele of services) {
-            const { id, ...rest } = ele;
-            G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
-        }
+    // IPDR edges
+    for (let ele of ipdr) {
+      const { from, service, id } = ele;
+      G.addEdge(from, service, { id });
+    }
 
-        // CDR edges
-        for (let ele of cdr) {
-            const { from, to, frequency, id } = ele;
-            G.addEdge(from, to, { frequency, color: 'blue', id });
-        }
+    window.jsnx.draw(G, {
+      element: '#demo-canvas',
+      withLabels: true,
+      nodeAttr: {
+        r: function (d) {
+          return d.data.value > 100 || d.data.value <= 10 ? 15 : d.data.value;
+        },
+      },
+      layoutAttr: {
+        charge: -120,
+        linkDistance: 160,
+      },
+      nodeStyle: {
+        fill: (d) => d.data.color,
+      },
+      stickyDrag: true,
+    });
 
-        // IPDR edges
-        for (let ele of ipdr) {
-            const { from, service, id } = ele;
-            G.addEdge(from, service, { id });
-        }
+    window.d3.selectAll('.node').on('mouseenter', (d) => {
+      setHoverModal([true, d]);
+    });
 
-        window.jsnx.draw(G, {
-            element: '#demo-canvas',
-            withLabels: true,
-            nodeAttr: {
-                r: function (d) {
-                return d.data.value > 100 || d.data.value <= 10 ? 15 : d.data.value;
-                },
-            },
-            layoutAttr: {
-                charge: -120,
-                linkDistance: 160,
-            },
-            nodeStyle: {
-                fill: (d) => d.data.color,
-            },
-            stickyDrag: true,
-        });
+    window.d3.selectAll('.node').on('click', async (d) => {
+      const nodeData = await getNodeData(d.node);
+      const updatedData = { id: d.node, ...nodeData, type: d.data.type };
+      setDetailPanel([true, updatedData]);
+    });
 
-        window.d3.selectAll('.node').on('mouseenter', (d) => {
-            setHoverModal([true, d]);
-        });
+    window.d3.selectAll('.node').on('mouseleave', (d) => {
+      setHoverModal([false, null]);
+    });
+  }, [cdr, ipdr, users, services]);
 
-        window.d3.selectAll('.node').on('click', async (d) => {
-            const nodeData = await getNodeData(d.node);
-            const updatedData = { id: d.node, ...nodeData, type: d.data.type };
-            setDetailPanel([true, updatedData]);
-        });
+  console.log(filters);
 
-        window.d3.selectAll('.node').on('mouseleave', (d) => {
-            setHoverModal([false, null]);
-        });
-    }, [cdr, ipdr, users, services]);
-
-    console.log(filters);
-
-    const hoverDiv = () => {
-        const { x, y } = hoverModal[1];
-        return (
-            <CustomPopup
-                data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
-                x={x}
-                y={y}
-            />
-        );
-    };
+  const hoverDiv = () => {
+    const { x, y } = hoverModal[1];
+    return (
+      <CustomPopup
+        data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
+        x={x}
+        y={y}
+      />
+    );
+  };
 
   return (
-        <>
-            <Modal
-                title="Apply Filters"
-                visible={showFilterModal}
-                onCancel={() => handleFilterModal(false)}
-                footer={null}
-            >
-                <Filter updateChange={handleFilters} modalChange={handleFilterModal}/>
-            </Modal>
-            <SearchBar onFilterClick={() => handleFilterModal(true)} />
+    <>
+      <Modal
+        title="Apply Filters"
+        visible={showFilterModal}
+        onCancel={() => handleFilterModal(false)}
+        footer={null}
+      >
+        <Filter updateChange={handleFilters} modalChange={handleFilterModal} />
+      </Modal>
+      <SearchBar onFilterClick={() => handleFilterModal(true)} />
 
-            <div className={styles.networkWrapper}>
-                <div className={styles.graphCanvas} id="demo-canvas"></div>
-                <div className={styles.sidepanelWrapper}>
-                {<SidePanel data={detailPanel[1]} />}
-                </div>
-            </div>
+      <div className={styles.networkWrapper}>
+        <div className={styles.graphCanvas} id="demo-canvas"></div>
+        <div className={styles.sidepanelWrapper}>
+          {<SidePanel data={detailPanel[1]} />}
+        </div>
+      </div>
 
-            {hoverModal[0] && hoverDiv()}
-        </>
+      {hoverModal[0] && hoverDiv()}
+    </>
   );
 };
 
