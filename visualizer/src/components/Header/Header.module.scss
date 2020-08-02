@@ -1,6 +1,6 @@
 .nav {
   top: 0;
-  height: 5.5rem;
+  // height: 5.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -10,6 +10,8 @@
   animation: slideIn 0.7s forwards;
   z-index: 9;
   padding: 0 7rem;
+  height: 10vh;
+  box-sizing: border-box;
 }
 
 .user {

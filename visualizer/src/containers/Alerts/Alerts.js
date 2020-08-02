@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './Alerts.module.scss';
-import { Tabs, Select, Input } from 'antd';
+import { Tabs, Select, Input, Radio } from 'antd';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
 
@@ -106,6 +106,48 @@ const logData = [
     location_lat: null,
     location_long: null,
   },
+  {
+    id: 8,
+    timestamp: '2019-03-30T19:02:41+05:30',
+    text: 'Sudden usage increase in watchlist watchlist2396',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 9,
+    timestamp: '2019-03-30T19:02:41+05:30',
+    text: 'Sudden usage increase in watchlist watchlist2396',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 10,
+    timestamp: '2019-03-30T19:02:41+05:30',
+    text: 'Sudden usage increase in watchlist watchlist2396',
+    from_number: '9447774476',
+    to_number: '9876543211',
+    duration: 471,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
 ];
 
 const monitoredItem = [
@@ -145,6 +187,7 @@ const monitoredItem = [
 
 const Log = () => {
   const [logId, setLogId] = useState(-1);
+  const [val, setVal] = useState(1);
 
   return (
     <div className={styles.container}>
@@ -194,6 +237,14 @@ const Log = () => {
                 <Option value="phone">Phone</Option>
               </Select>
               <Input placeholder="Enter Details" className={styles.input} />
+              <Radio.Group
+                onChange={(e) => setVal(e.target.value)}
+                value={val}
+                className={styles.inputOpt}
+              >
+                <Radio value={1}>On Spike</Radio>
+                <Radio value={2}>On New Record</Radio>
+              </Radio.Group>
               <Button text={'Save'} />
             </div>
           </div>

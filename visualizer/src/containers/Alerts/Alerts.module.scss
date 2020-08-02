@@ -10,14 +10,20 @@
 }
 
 .container {
-  @include flex($align-items: stretch, $flex-direction: column);
+  // @include flex($align-items: stretch, $flex-direction: column);
+  // display: flex;
+  // flex-direction: column;
   width: 100%;
   height: 100vh;
+  // overflow: hidden;
 }
 
 .section {
   @include flex();
-  flex: 1;
+  // flex: 1;
+  // border: thin solid black;
+  height: 90vh;
+  // height: 100%;
 }
 
 .section1,
@@ -25,7 +31,7 @@
 .section3 {
   @include flex(center, flex-start, column);
   flex: 1;
-  border: thin solid black;
+  // border: thin solid black;
   height: 100%;
 }
 
@@ -45,33 +51,49 @@
 
 .section2 {
   flex: 2;
+  background: #fff5ee;
 }
 
 .subsection1,
 .subsection2 {
-  @include flex(center, flex-start, column);
-  border: thin solid black;
+  @include flex(center, center, column);
+  // border: thin solid black;
   width: 100%;
   flex: 1;
 }
 
 .details {
   @include flex(center, center, column);
-  background: #fff5ee;
-  padding: 10px;
-  width: 90%;
-  height: 80%;
+  // background: #fff5ee;
+  // padding: 10px;
+  // width: 90%;
+  min-height: 70%;
 }
 
 .monitoringForm {
   @include flex(center, space-around, column);
   width: 90%;
   height: 80%;
-  background: #fff5ee;
+  // background: #fff5ee;
   padding: 40px;
 }
 
 .input {
   width: 100%;
-  margin: 20px 0 !important;
+  margin: 10px 0 !important;
+}
+
+.inputOpt {
+  margin: 10px 0 !important;
+}
+
+.section1,
+.section3 {
+  height: 100%;
+  overflow: auto;
+}
+
+.subsection1 {
+  border-bottom: 4px dashed #ffbb8b;
+  overflow: auto;
 }

@@ -4,7 +4,7 @@ import {
   AiOutlineBarChart,
   AiFillBell,
   AiOutlineUpload,
-  AiFillFileText
+  AiFillFileText,
 } from 'react-icons/ai';
 
 import styling from './Sidebar.module.scss';
@@ -17,7 +17,7 @@ const Sidebar = ({ history }) => {
           <div className={styling.logo}>A</div>
 
           <ul className={styling.menu}>
-            <li onClick={() => history.push('/alerts')}>
+            <li onClick={() => history.push('/dashboard')}>
               <AiFillFileText />
             </li>
 
@@ -28,7 +28,6 @@ const Sidebar = ({ history }) => {
             <li onClick={() => history.push('/upload')}>
               <AiOutlineUpload />
             </li>
-
 
             <li onClick={() => history.push('/alerts')}>
               <AiFillBell />

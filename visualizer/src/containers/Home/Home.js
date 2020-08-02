@@ -400,7 +400,7 @@ const Home = () => {
       element: '#demo-canvas',
       withLabels: true,
       nodeAttr: {
-        r: (d) => (d.data.type === 'service' ? 35 : 20),
+        r: (d) => (d.data.type === 'service' ? 35 : 26),
       },
       layoutAttr: {
         charge: -120,
@@ -410,7 +410,11 @@ const Home = () => {
         fill: (d) => (d.data.highlighted ? 'red' : d.data.color),
       },
       labels: (d) => {
-        return d.data.name;
+        let name = d.data.name;
+        if (name.length > 6) {
+          name = name.slice(0, 6) + '...';
+        }
+        return name;
       },
       stickyDrag: true,
     });
