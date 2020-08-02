@@ -1,0 +1,25 @@
+.graphCanvas {
+  height: 89vh;
+  width: 70%;
+}
+
+.sidepanelWrapper {
+  width: 30%;
+  height: 89vh;
+  overflow: scroll;
+  border-left: 10px solid #f4f8fe;
+}
+
+.networkWrapper {
+  display: flex;
+  margin-top: 20px;
+}
+
+.hoverModal {
+  position: fixed;
+  width: 100px;
+  height: 100px;
+  border-radius: 7px;
+  background: gray;
+  transition: all 0.5s;
+}

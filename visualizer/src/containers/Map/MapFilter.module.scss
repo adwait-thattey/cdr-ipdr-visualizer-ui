@@ -1,0 +1,13 @@
+.dual {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.rows {
+    margin: 20px 0;
+}
+
+.rows * {
+    font-size: 16px;
+}
