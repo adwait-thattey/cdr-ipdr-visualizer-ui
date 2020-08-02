@@ -105,15 +105,15 @@ const Filter = ({ updateChange, modalChange }) => {
             </div>
             <div className={styles.rows}>
                 <Input name="phone_number" onChange={handleChange} title="Phone numbers" placeholder="Enter comma seperated phone numbers"/>
-                <CCheckBox handleChange={handleChangeCheckbox} name="exclude_these_phone_number" defaultChecked={false}/>
+                <CCheckBox checked={filters.exclude_these_phone_number} handleChange={handleChangeCheckbox} name="exclude_these_phone_number" defaultChecked={false}/>
             </div>
             <div className={styles.rows}>
                 <Input name="user_id" onChange={handleChange} title="User ID's" placeholder="Enter comma seperated user id's"/>
-                <CCheckBox handleChange={handleChangeCheckbox} name="exclude_these_user_id" defaultChecked={false}/>
+                <CCheckBox checked={filters.exclude_these_user_id} handleChange={handleChangeCheckbox} name="exclude_these_user_id" defaultChecked={false}/>
             </div>
             <div className={styles.rows}>
                 <Input name="cell_id" onChange={handleChange} title="Cell ID's" placeholder="Enter comma seperated cell id's"/>
-                <CCheckBox handleChange={handleChangeCheckbox} name="exclude_these_cell_id" defaultChecked={false}/>
+                <CCheckBox checked={filters.exclude_these_cell_id} handleChange={handleChangeCheckbox} name="exclude_these_cell_id" defaultChecked={false}/>
             </div>
             <div>
             </div>

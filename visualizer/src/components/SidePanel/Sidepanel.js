@@ -7,15 +7,14 @@ import CCheckBox from '../Checkbox/CCheckbox';
 const { TabPane } = Tabs;
 
 const SidePanel = ({ data: propData, highLightNode, removeNode }) => {
-  console.log("PROP", propData)
   const [data, setData] = useState(propData)
 
   useEffect(() => {
     setData(propData);
   }, [propData]);
 
-  const highlight = (e, name) => highLightNode(data, e.target.checked);
-  const remove = (data) => removeNode(data);
+  const highlight = (e) => highLightNode(data, e.target.checked);
+  const remove = () => removeNode(data);
 
   console.log(data && data.phone_numbers);
 
@@ -24,7 +23,7 @@ const SidePanel = ({ data: propData, highLightNode, removeNode }) => {
       <div>
         <Tabs
           type="card"
-          defaultActiveKey="1"
+          defaultActiveKey={0}
           size="large"
           onChange={() => null}
         >
@@ -58,7 +57,7 @@ const SidePanel = ({ data: propData, highLightNode, removeNode }) => {
                 </div>
                 <div className={styles.item}>
                   <CCheckBox handleChange={highlight} name="Highlight Node" checked={data.highlighted}/>
-                  <CCheckBox handleChange={removeNode} name="Remove Node" checked={false}/>
+                  <CCheckBox handleChange={remove} name="Remove Node" checked={false}/>
                 </div>
               </div>
             )}

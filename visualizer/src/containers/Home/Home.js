@@ -101,157 +101,176 @@ const servicesData = [
   },
 ];
 
-
 const initialFilters = {
-    cdr: true,
-    ipdr: true,
-    
+  cdr: true,
+  ipdr: true,
 
-    location_lat: null,
-    location_long: null,
-    radius: null,
+  location_lat: null,
+  location_long: null,
+  radius: null,
 
+  time_start: null,
+  time_end: null,
 
-    time_start: null,
-    time_end: null,
+  duration_min: null,
+  duration_max: null,
 
+  frequency_min: null,
+  frequency_max: null,
 
-    duration_min: null,
-    duration_max: null,
-
-
-    frequency_min: null,
-    frequency_max: null,
-
-
-    phone_number: null,
-    exclude_these_phone_number: false,
-
-
-    user_id: null,
-    exclude_these_user_id: false,
+  user_id: null,
+  exclude_these_user_id: false,
 
     
-    cell_id: null,
-    exclude_these_cell_id: false
-}
+  cell_id: null,
+  exclude_these_cell_id: false,
 
+  
+  phone_number: null,
+  exclude_these_phone_number: false,
+
+
+  user_id: null,
+  exclude_these_user_id: false,
+};
 
 const Home = () => {
-    // Modal to showcase the pop up modal on hovering the node
-    const [showFilterModal, setShowFilterModal] = useState(false);
+  // Modal to showcase the pop up modal on hovering the node
+  const [showFilterModal, setShowFilterModal] = useState(false);
 
-    // Modal to showcase the pop up modal on hovering the node
-    const [hoverModal, setHoverModal] = useState([false, null]);
+  // Modal to showcase the pop up modal on hovering the node
+  const [hoverModal, setHoverModal] = useState([false, null]);
 
-    // Sidepanel to showcase the detailed side panel
-    const [detailPanel, setDetailPanel] = useState([false, null]);
+  // Sidepanel to showcase the detailed side panel
+  const [detailPanel, setDetailPanel] = useState([false, null]);
 
-    const [cdr, setCdrData] = useState(cdrData);
-    const [ipdr, setIpdr] = useState(ipdrData);
-    const [users, setUsers] = useState(usersData);
-    const [services, setServices] = useState(servicesData);
+  const [cdr, setCdrData] = useState(cdrData);
+  const [ipdr, setIpdr] = useState(ipdrData);
+  const [users, setUsers] = useState(usersData);
+  const [services, setServices] = useState(servicesData);
 
+  // Filters state
+  const [filters, setFilters] = useState(initialFilters);
 
-    // Filters state
-    const [filters, setFilters] = useState(initialFilters);
+  const handleFilterModal = (status) => setShowFilterModal(status);
 
-    const handleFilterModal = (status) => setShowFilterModal(status);
-
-    const handleFilters = async (newFilterState) => {
-        setFilters(newFilterState);
-        setShowFilterModal(false);
-        try {
-            const updatedData = await getFilteredData(newFilterState)
-            setAllValues(updatedData)
-        } catch(e) {
-            console.log(e);
-        }
+  const handleFilters = async (newFilterState) => {
+    setFilters(newFilterState);
+    setShowFilterModal(false);
+    try {
+      const updatedData = await getFilteredData(newFilterState);
+      setAllValues(updatedData);
+    } catch (e) {
+      console.log(e);
     }
+  };
 
-    const setAllValues = (updatedData) => {
-        const { cdr, ipdr, users, services } = updatedData;
-        setCdrData(cdr);
-        setIpdr(ipdr);
-        setUsers(users);
-        setServices(services);
-    }
+  const setAllValues = (updatedData) => {
+    const { cdr, ipdr, users, services } = updatedData;
+    setCdrData(cdr);
+    setIpdr(ipdr);
+    setUsers(users);
+    setServices(services);
+  };
 
-    const handleHighLightNode = (node, checked) => {
-        const selectedNode = users.find(ele => ele.id === node.id);
-        selectedNode.highlighted = checked;
+  const handleHighLightNode = (node, checked) => {
+    const selectedNode = users.find(ele => ele.id === node.id);
+    selectedNode.highlighted = checked;
 
-        // Need to update details panel for it to rerender
-        setDetailPanel((prev) => ([true, { ...prev[1], highlighted: checked }]))
+    // Need to update details panel for it to rerender
+    setDetailPanel((prev) => ([true, { ...prev[1], highlighted: checked }]))
 
-        const otherNodes = users.filter(ele => ele.id !== node.id);
-        setUsers([ ...otherNodes, selectedNode ])
-    }
+    const otherNodes = users.filter(ele => ele.id !== node.id);
+    setUsers([ ...otherNodes, selectedNode ])
+  }
 
-    useEffect(() => {
-        var G = new window.jsnx.Graph();
-        // G.addNode(1, { count: 12, color: getRandomColor() });
-        // G.addNode(2, { count: 8, color: getRandomColor() });
-        // G.addNode(3, { count: 15, color: getRandomColor() });
-        // G.addEdge(3, 1, { edge_labels: "node1" });
-        // G.addEdge(3, 2, { edge_labels: "node2" });
+  const handleRemoveNode = (node) => {
+    const selectedNode = users.find(ele => ele.id === node.id);
+    selectedNode.removed = true;
 
-        // User nodes
-        for (let ele of users) {
-            const { id, ...rest } = ele;
-            G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
+    setDetailPanel([false, null])
+
+    const otherNodes = users.filter(ele => ele.id !== node.id);
+    setUsers([ ...otherNodes, selectedNode ])
+  }
+
+  useEffect(() => {
+      var G = new window.jsnx.Graph();
+      // G.addNode(1, { count: 12, color: getRandomColor() });
+      // G.addNode(2, { count: 8, color: getRandomColor() });
+      // G.addNode(3, { count: 15, color: getRandomColor() });
+      // G.addEdge(3, 1, { edge_labels: "node1" });
+      // G.addEdge(3, 2, { edge_labels: "node2" });
+      // User nodes
+      for (let ele of users) {
+        if (ele.removed) {
+          continue;
         }
+        const { id, ...rest } = ele;
+        G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
+      }
 
-        // Service nodes
-        for (let ele of services) {
-            const { id, ...rest } = ele;
-            G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
+      // Service nodes
+      for (let ele of services) {
+        if (ele.removed) {
+          continue;
         }
+        const { id, ...rest } = ele;
+        G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
+      }
 
-        // CDR edges
-        for (let ele of cdr) {
-            const { from, to, frequency, id } = ele;
-            G.addEdge(from, to, { frequency, color: 'blue', id });
+      // CDR edges
+      for (let ele of cdr) {
+        const { from, to, frequency, id } = ele;
+        if (users.find(user => (user.id === from || user.id === to) && user.removed)) {
+          continue;
         }
+        G.addEdge(from, to, { frequency, color: 'blue', id });
+      }
 
-        // IPDR edges
-        for (let ele of ipdr) {
-            const { from, service, id } = ele;
-            G.addEdge(from, service, { id });
+      // IPDR edges
+      for (let ele of ipdr) {
+        const { from, service, id } = ele;
+        if (users.find(user => user.id === from && user.removed)) {
+          continue;
         }
+        G.addEdge(from, service, { id });
+      }
 
-        window.jsnx.draw(G, {
-            element: '#demo-canvas',
-            withLabels: true,
-            nodeAttr: {
-                r: d => d.data.type === "service" ? 35 : 15
-            },
-            layoutAttr: {
-                charge: -120,
-                linkDistance: 160,
-            },
-            nodeStyle: {
-                fill: d => d.data.highlighted ? 'red' : d.data.color,
-            },
-            labels: d => {
-                return d.data.name;
-            },
-            stickyDrag: true,
-        });
+      window.jsnx.draw(G, {
+        element: '#demo-canvas',
+        withLabels: true,
+        nodeAttr: {
+            r: d => d.data.type === "service" ? 35 : 20
+        },
+        layoutAttr: {
+            charge: -120,
+            linkDistance: 160,
+        },
+        nodeStyle: {
+            fill: d => d.data.highlighted ? 'red' : d.data.color,
+        },
+        labels: d => {
+            return d.data.name;
+        },
+        stickyDrag: true,
+      });
 
-        window.d3.selectAll('.node').on('mouseenter', (d) => {
-            setHoverModal([true, d]);
-        });
 
-        window.d3.selectAll('.node').on('click', async (d) => {
-            const nodeData = await getNodeData(d.node);
-            const updatedData = { id: d.node, type: d.data.type, ...d.data, ...nodeData };
-            setDetailPanel([true, updatedData]);
-        });
+      window.d3.selectAll('.node').on('mouseenter', (d) => {
+        setHoverModal([true, d]);
+      });
 
-        window.d3.selectAll('.node').on('mouseleave', (d) => {
-            setHoverModal([false, null]);
-        });
+      window.d3.selectAll('.node').on('click', async (d) => {
+          const nodeData = await getNodeData(d.node);
+          const updatedData = { id: d.node, ...nodeData, type: d.data.type, ...d.data };
+          setDetailPanel([true, updatedData]);
+      });
+
+      window.d3.selectAll('.node').on('mouseleave', (d) => {
+          setHoverModal([false, null]);
+      });
+
     }, [cdr, ipdr, users, services]);
 
     const hoverDiv = () => {
@@ -265,7 +284,7 @@ const Home = () => {
         );
     };
 
-  return (
+    return (
         <>
             <Modal
                 title="Apply Filters"
@@ -280,13 +299,13 @@ const Home = () => {
             <div className={styles.networkWrapper}>
                 <div className={styles.graphCanvas} id="demo-canvas"></div>
                 <div className={styles.sidepanelWrapper}>
-                {<SidePanel data={detailPanel[1]} highLightNode={handleHighLightNode}/>}
+                {<SidePanel removeNode={handleRemoveNode} data={detailPanel[1]} highLightNode={handleHighLightNode}/>}
                 </div>
             </div>
 
             {hoverModal[0] && hoverDiv()}
         </>
-  );
+    );
 };
 
 export default Home;

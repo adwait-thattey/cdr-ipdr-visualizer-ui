@@ -5,6 +5,7 @@ import Home from './containers/Home/Home';
 import Sidebar from './components/Sidebar/Sidebar.js';
 import Auth from './containers/Auth/Auth';
 import Upload from './containers/Upload/Upload';
+import Map from './containers/Map/Map';
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
             </Route>
             <Route path="/upload">
               <Upload />
+            </Route>
+            <Route path="/map/:id">
+              <Map />
             </Route>
           </Switch>
         </div>
