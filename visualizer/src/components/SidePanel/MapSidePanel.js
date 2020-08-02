@@ -3,16 +3,10 @@ import React from 'react';
 import { Steps, Tabs } from 'antd';
 import UserData from '../UserData/UserData';
 
+import { dateTimeString } from '../../services/dateUtils';
+
 const { Step } = Steps;
 const { TabPane } = Tabs;
-
-function dateTimeString(timestamp) {
-  const date = new Date(timestamp);
-
-  return `${date.getDate()}-${
-    date.getMonth() + 1
-  }-${date.getFullYear()} ${date.toLocaleTimeString()}`;
-}
 
 const MapSidePanel = ({ data }) => {
   return (
