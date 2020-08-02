@@ -15,7 +15,7 @@ const getFilteredData = async (filters) => {
     
     
     const params = {}
-    
+
     if (!cdr || !ipdr) {
         if (cdr) params.type = "cdr";
         else if(ipdr) params.type = "ipdr";
@@ -40,23 +40,95 @@ const getFilteredData = async (filters) => {
 
 
     if (phone_number && phone_number.length > 0) {
-        if (exclude_these_phone_number) params.not_phone_number = phone_number
-        else params.phone_number = phone_number
+        if (exclude_these_phone_number) {
+            const query = genQueryString2(phone_number, "not_phone_number")
+            params["not_phone_number"] = query;
+        }
+        else {
+            const query = genQueryString2(phone_number, "phone_number")
+            params["phone_number"] = query;
+        }
     }
 
     if (user_id && user_id.length > 0) {
-        if (exclude_these_user_id) params.not_user_id = user_id
-        else params.user_id = user_id
+        if (exclude_these_user_id) {
+            const query = genQueryString2(phone_number, "not_user_id")
+            params["not_user_id"] = query;
+        }
+        else {
+            const query = genQueryString2(phone_number, "user_id")
+            params["user_id"] = query;
+        }
     }
 
     if (cell_id && cell_id.length > 0) {
+        if (exclude_these_user_id) {
+            const query = genQueryString2(phone_number, "not_user_id")
+            params["not_user_id"] = query;
+        }
+        else {
+            const query = genQueryString2(phone_number, "user_id")
+            params["user_id"] = query;
+        }
         if (exclude_these_cell_id) params.not_cell_id = cell_id
         else params.cell_id = cell_id
     }
 
-    return await axios.get('/filters', {
+    const result = await axios.get('/data', {
         params
     })
+    return result.data;
 }
 
-export { getFilteredData }
+
+const getCdrData = async (id) => {
+    const result = await axios.get(`/data/cdrs?cdrs=${id}`)
+    console.log(result);
+}
+
+
+
+// Helpers
+
+const genQueryString = (list, key) => {
+    let queryString = "";
+
+    for (let i = 0; i < list.length; i++) {
+        if (i === 0) queryString += `?${key}=${list[i]}&`;
+        else if (i === list.length - 1) queryString += `${key}=${list[i]}`;
+        else queryString += `${key}=${list[i]}&`
+    }
+
+    return queryString;
+}
+
+
+const genQueryString2 = (list, key) => {
+    let queryString = "";
+    // 9095646986
+
+    for (let i = 0; i < list.length; i++) {
+        if (i === list.length - 1 && i == 0) queryString += `${list[i]}`;
+        else if (i === list.length - 1) queryString += `${key}=${list[i]}`;
+        else if (i === 0) queryString += `${list[i]}&`;
+        else queryString += `${key}=${list[i]}&`
+    }
+
+    return queryString;
+}
+
+
+const getUserData = async (userIds) => {
+
+    const key = "person";
+
+    const userListId = Array.from(userIds);
+
+    const queryString = genQueryString(userListId, key)
+
+    const result = await axios.get(`/data/persons/${queryString}`)
+    return result.data;
+}
+
+
+export { getFilteredData, getUserData, getCdrData }

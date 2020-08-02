@@ -5,7 +5,7 @@ import { Modal } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
-import { getFilteredData } from '../../services/filters';
+import { getFilteredData, getUserData, getCdrData } from '../../services/filters';
 
 const getRandomColor = () => {
   var letters = '0123456789ABCDEF';
@@ -32,24 +32,6 @@ const userListsData = [
     raw_data: 'user_id,125',
   },
 ];
-
-const getNodeData = async () =>
-  new Promise((res, rej) => {
-    setTimeout(() => {
-      res({
-        name: 'Brijesh Bumrela',
-        address: 'IIIT Sri City',
-        phone_numbers: [
-          { number: '7985641784', imsi: '9878ARUSNCJA1234' },
-          { number: '9898784515', imsi: '7878AQNSANWJ1234' },
-        ],
-        devices: [
-          { imei: 'AYDBWTAJRK23', mac: '80:20:42:41:41' },
-          { imei: 'QEUSMSGFYS98', mac: '80:20:42:11:90' },
-        ],
-      });
-    }, 1000);
-  });
 
 const cdrData = [
   { id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] },
@@ -311,11 +293,11 @@ const Home = () => {
   // Sidepanel to showcase the detailed side panel
   const [detailPanel, setDetailPanel] = useState([false, null]);
 
-  const [cdr, setCdrData] = useState(cdrData);
+  const [cdr, setCdrData] = useState([]);
   const [detailedCdr, setDetailedCdr] = useState(detailedCdrData);
   const [ipdr, setIpdr] = useState(ipdrData);
   const [detailedIpdr, setDetailedIpdr] = useState(detailedIpdrData);
-  const [users, setUsers] = useState(usersData);
+  const [users, setUsers] = useState([]);
   const [services, setServices] = useState(servicesData);
 
   // Filters state
@@ -327,22 +309,62 @@ const Home = () => {
 
   const handleFilterModal = (status) => setShowFilterModal(status);
 
+
+  useEffect(() => {
+    async function fetchData() {
+
+      try {
+        const updatedData = await getFilteredData(filters);
+        const { cdrData } = updatedData;
+  
+        const tempCdrData = cdrData.slice(5);
+  
+        const userIds = getUserNodes(tempCdrData);
+        const userInfo = await getUserInfo(userIds);
+        setAllValues(tempCdrData, [], userInfo, [])
+      } catch(e) {
+        console.log(e);
+      }
+
+    }
+    fetchData();
+  }, [filters]);
+
+
+
+  const getUserNodes = (cdrData) => {
+      const users = new Set()
+      cdrData.forEach(data => {
+        users.add(data.from);
+        users.add(data.to);
+      })
+      return users;
+  }
+
+
+  const getUserInfo = async (userIds) => await getUserData(userIds);
+
   const handleFilters = async (newFilterState) => {
     setFilters(newFilterState);
     setShowFilterModal(false);
     try {
       const updatedData = await getFilteredData(newFilterState);
-      setAllValues(updatedData);
+      const { cdrData } = updatedData;
+
+      const tempCdrData = cdrData.slice(5);
+
+      const userIds = getUserNodes(tempCdrData);
+      const userInfo = await getUserInfo(userIds);
+      setAllValues(tempCdrData, [], userInfo, [])
     } catch (e) {
       console.log(e);
     }
   };
 
-  const setAllValues = (updatedData) => {
-    const { cdr, ipdr, users, services } = updatedData;
+  const setAllValues = (cdr, ipdr, users, services) => {
     setCdrData(cdr);
     setIpdr(ipdr);
-    setUsers(users);
+    setUsers([...users]);
     setServices(services);
   };
 
@@ -456,7 +478,7 @@ const Home = () => {
       },
       labels: (d) => {
         let name = d.data.name;
-        if (name.length > 6) {
+        if (name && name.length > 6) {
           name = name.slice(0, 6) + '...';
         }
         return name;
@@ -469,11 +491,10 @@ const Home = () => {
     });
 
     window.d3.selectAll('.node').on('click', async (d) => {
-      const nodeData = await getNodeData(d.node);
+
       const updatedData = {
         id: d.node,
         ...d.data,
-        ...nodeData,
         type: d.data.type,
       };
       setDetailPanel([true, updatedData]);
@@ -485,9 +506,6 @@ const Home = () => {
   }, [cdr, ipdr, users, services]);
 
   const hoverDiv = () => {
-    // const { x, y } = hoverModal[1];
-    // console.log(hoverModal[1]);
-
     const event = window.d3.event;
 
     if (event) {
