@@ -19,9 +19,6 @@ function App() {
             <Route path="/visualize">
               <Home />
             </Route>
-            <Route path="/dashboard">
-              <div>Dashboard TO-DO</div>
-            </Route>
             <Route path="/auth" exact>
               <Auth />
             </Route>
