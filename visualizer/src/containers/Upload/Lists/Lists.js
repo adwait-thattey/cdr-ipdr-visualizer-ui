@@ -16,7 +16,7 @@ const listsData = [
   },
   {
     id: 2,
-    name: 'Demo Watchlist',
+    name: 'Watchlist 2',
     content:
       'imei,351527043500000\nimei,351527043500000\nphone,9284612974\nphone,7507763619\nimei,35200909880000\n',
   },

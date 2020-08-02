@@ -16,6 +16,23 @@ const getRandomColor = () => {
   return color;
 };
 
+const userListsData = [
+  {
+    id: 1,
+    users_list: [1],
+    name: 'Watchlist 1',
+    to_display: true,
+    raw_data: 'user_id,125',
+  },
+  {
+    id: 2,
+    users_list: [2, 3, 4],
+    name: 'Watchlist 2',
+    to_display: true,
+    raw_data: 'user_id,125',
+  },
+];
+
 const getNodeData = async () =>
   new Promise((res, rej) => {
     setTimeout(() => {
@@ -282,9 +299,6 @@ const initialFilters = {
 
   phone_number: null,
   exclude_these_phone_number: false,
-
-  user_id: null,
-  exclude_these_user_id: false,
 };
 
 const Home = () => {
@@ -306,6 +320,10 @@ const Home = () => {
 
   // Filters state
   const [filters, setFilters] = useState(initialFilters);
+
+  // Users list
+  const [userLists, setUserLists] = useState(userListsData);
+  const [selectedUserList, setSelectedUserList] = useState(null);
 
   const handleFilterModal = (status) => setShowFilterModal(status);
 
@@ -335,6 +353,11 @@ const Home = () => {
     // Need to update details panel for it to rerender
     setDetailPanel((prev) => [true, { ...prev[1], highlighted: checked }]);
 
+    // const selected = window.d3.selectAll(".node").attr("fill", (d) => {
+    //   console.log(d);
+    //   return "#000";
+    // })
+
     const otherNodes = users.filter((ele) => ele.id !== node.id);
     setUsers([...otherNodes, selectedNode]);
   };
@@ -347,6 +370,28 @@ const Home = () => {
 
     const otherNodes = users.filter((ele) => ele.id !== node.id);
     setUsers([...otherNodes, selectedNode]);
+  };
+
+  const handleUserListSelect = (id) => {
+    const wishlist = userLists.find((user) => user.id === id);
+    if (!wishlist) throw new Error('wishlist not found');
+
+    const newUsers = [];
+
+    for (let user of users) {
+      let userFound = false;
+      for (let user_id of wishlist.users_list) {
+        if (user.id === user_id) {
+          userFound = true;
+          user.highlighted = true;
+        }
+      }
+      if (!userFound) user.highlighted = false;
+      newUsers.push({ ...user });
+    }
+
+    setSelectedUserList(wishlist);
+    setUsers(newUsers);
   };
 
   useEffect(() => {
@@ -470,8 +515,14 @@ const Home = () => {
       >
         <Filter updateChange={handleFilters} modalChange={handleFilterModal} />
       </Modal>
+
       <div className={styles.fullContainer}>
-        <SearchBar onFilterClick={() => handleFilterModal(true)} />
+        <SearchBar
+          wishlists={userLists}
+          updateWishList={handleUserListSelect}
+          onFilterClick={() => handleFilterModal(true)}
+          selectedUserList={selectedUserList}
+        />
 
         <div className={styles.networkWrapper}>
           <div className={styles.graphCanvas} id="demo-canvas"></div>
@@ -490,9 +541,9 @@ const Home = () => {
             }
           </div>
         </div>
-      </div>
 
-      {hoverModal[0] && hoverDiv()}
+        {hoverModal[0] && hoverDiv()}
+      </div>
     </>
   );
 };

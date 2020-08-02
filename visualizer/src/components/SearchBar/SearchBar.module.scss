@@ -1,0 +1,70 @@
+.nav {
+  top: 0;
+  height: 5.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e5ecf9;
+  box-shadow: #e5ecf9 0 5px 20px 0;
+  background-color: white;
+  animation: slideIn 0.7s forwards;
+  z-index: 9;
+  padding: 0 7rem;
+}
+
+.user {
+  display: flex;
+  align-items: center;
+
+  > div:first-child {
+    margin-right: 1rem;
+  }
+}
+
+.name {
+  max-width: 20rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-weight: 500;
+  overflow: hidden;
+}
+
+.email {
+  @extend .name;
+  line-height: 1.2;
+  font-weight: normal;
+  font-size: 1.2rem;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(-100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+}
+
+.buttons > * {
+  margin-right: 20px;
+
+}
+
+.dropdownbtn {
+  border: 1px solid #0252fc !important;
+  border-radius: 7px !important;
+  color: #0252fc !important;
+  font-weight: bold !important;
+}
+
+.dropdownbtn:hover {
+  background-color: #0252fc !important;
+  color: #fff !important;
+  cursor: pointer;
+}
