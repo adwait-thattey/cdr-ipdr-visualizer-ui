@@ -1,7 +1,23 @@
+@mixin flex(
+  $align-items: flex-start,
+  $justify-content: flex-start,
+  $flex-direction: row
+) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
 .container {
   height: 100vh;
 }
 
 .section {
   overflow: auto;
+}
+
+.section1 {
+  @include flex(center, space-around);
+  margin: 40px 20px;
 }
