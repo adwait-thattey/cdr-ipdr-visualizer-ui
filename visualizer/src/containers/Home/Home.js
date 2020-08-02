@@ -17,22 +17,22 @@ const getRandomColor = () => {
 };
 
 const getNodeData = async () =>
-new Promise((res, rej) => {
-  setTimeout(() => {
-    res({
-      name: 'Brijesh Bumrela',
-      address: 'IIIT Sri City',
-      phone_numbers: [
-        { number: '7985641784', imsi: '9878ARUSNCJA1234' },
-        { number: '9898784515', imsi: '7878AQNSANWJ1234' },
-      ],
-      devices: [
-        { imei: 'AYDBWTAJRK23', mac: '80:20:42:41:41' },
-        { imei: 'QEUSMSGFYS98', mac: '80:20:42:11:90' },
-      ],
-    });
-  }, 1000);
-});
+  new Promise((res, rej) => {
+    setTimeout(() => {
+      res({
+        name: 'Brijesh Bumrela',
+        address: 'IIIT Sri City',
+        phone_numbers: [
+          { number: '7985641784', imsi: '9878ARUSNCJA1234' },
+          { number: '9898784515', imsi: '7878AQNSANWJ1234' },
+        ],
+        devices: [
+          { imei: 'AYDBWTAJRK23', mac: '80:20:42:41:41' },
+          { imei: 'QEUSMSGFYS98', mac: '80:20:42:11:90' },
+        ],
+      });
+    }, 1000);
+  });
 
 const cdrData = [
   { id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] },
@@ -237,7 +237,6 @@ const usersData = [
     name: 'Ankur',
     phone_numbers: ['1234567890', '0987654321', '3628292838'],
   },
-  
 ];
 
 const servicesData = [
@@ -261,32 +260,29 @@ const servicesData = [
 const initialFilters = {
   cdr: true,
   ipdr: true,
-  
+
   location_lat: null,
   location_long: null,
   radius: null,
-  
+
   time_start: null,
   time_end: null,
-  
+
   duration_min: null,
   duration_max: null,
-  
+
   frequency_min: null,
   frequency_max: null,
-  
+
   user_id: null,
   exclude_these_user_id: false,
-  
-  
+
   cell_id: null,
   exclude_these_cell_id: false,
-  
-  
+
   phone_number: null,
   exclude_these_phone_number: false,
-  
-  
+
   user_id: null,
   exclude_these_user_id: false,
 };
@@ -294,25 +290,25 @@ const initialFilters = {
 const Home = () => {
   // Modal to showcase the pop up modal on hovering the node
   const [showFilterModal, setShowFilterModal] = useState(false);
-  
+
   // Modal to showcase the pop up modal on hovering the node
   const [hoverModal, setHoverModal] = useState([false, null]);
-  
+
   // Sidepanel to showcase the detailed side panel
   const [detailPanel, setDetailPanel] = useState([false, null]);
-  
+
   const [cdr, setCdrData] = useState(cdrData);
   const [detailedCdr, setDetailedCdr] = useState(detailedCdrData);
   const [ipdr, setIpdr] = useState(ipdrData);
   const [detailedIpdr, setDetailedIpdr] = useState(detailedIpdrData);
   const [users, setUsers] = useState(usersData);
   const [services, setServices] = useState(servicesData);
-  
+
   // Filters state
   const [filters, setFilters] = useState(initialFilters);
-  
+
   const handleFilterModal = (status) => setShowFilterModal(status);
-  
+
   const handleFilters = async (newFilterState) => {
     setFilters(newFilterState);
     setShowFilterModal(false);
@@ -323,7 +319,7 @@ const Home = () => {
       console.log(e);
     }
   };
-  
+
   const setAllValues = (updatedData) => {
     const { cdr, ipdr, users, services } = updatedData;
     setCdrData(cdr);
@@ -331,28 +327,28 @@ const Home = () => {
     setUsers(users);
     setServices(services);
   };
-  
+
   const handleHighLightNode = (node, checked) => {
-    const selectedNode = users.find(ele => ele.id === node.id);
+    const selectedNode = users.find((ele) => ele.id === node.id);
     selectedNode.highlighted = checked;
-    
+
     // Need to update details panel for it to rerender
-    setDetailPanel((prev) => ([true, { ...prev[1], highlighted: checked }]))
-    
-    const otherNodes = users.filter(ele => ele.id !== node.id);
-    setUsers([ ...otherNodes, selectedNode ])
-  }
-  
+    setDetailPanel((prev) => [true, { ...prev[1], highlighted: checked }]);
+
+    const otherNodes = users.filter((ele) => ele.id !== node.id);
+    setUsers([...otherNodes, selectedNode]);
+  };
+
   const handleRemoveNode = (node) => {
-    const selectedNode = users.find(ele => ele.id === node.id);
+    const selectedNode = users.find((ele) => ele.id === node.id);
     selectedNode.removed = true;
-    
-    setDetailPanel([false, null])
-    
-    const otherNodes = users.filter(ele => ele.id !== node.id);
-    setUsers([ ...otherNodes, selectedNode ])
-  }
-  
+
+    setDetailPanel([false, null]);
+
+    const otherNodes = users.filter((ele) => ele.id !== node.id);
+    setUsers([...otherNodes, selectedNode]);
+  };
+
   useEffect(() => {
     var G = new window.jsnx.Graph();
     // G.addNode(1, { count: 12, color: getRandomColor() });
@@ -368,7 +364,7 @@ const Home = () => {
       const { id, ...rest } = ele;
       G.addNode(id, { type: 'user', color: 'orange', value: id, ...rest });
     }
-    
+
     // Service nodes
     for (let ele of services) {
       if (ele.removed) {
@@ -377,109 +373,122 @@ const Home = () => {
       const { id, ...rest } = ele;
       G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
     }
-    
+
     // CDR edges
     for (let ele of cdr) {
       const { from, to, frequency, id } = ele;
-      if (users.find(user => (user.id === from || user.id === to) && user.removed)) {
+      if (
+        users.find(
+          (user) => (user.id === from || user.id === to) && user.removed,
+        )
+      ) {
         continue;
       }
       G.addEdge(from, to, { frequency, color: 'blue', id });
     }
-    
+
     // IPDR edges
     for (let ele of ipdr) {
       const { from, service, id } = ele;
-      if (users.find(user => user.id === from && user.removed)) {
+      if (users.find((user) => user.id === from && user.removed)) {
         continue;
       }
       G.addEdge(from, service, { id });
     }
-    
+
     window.jsnx.draw(G, {
       element: '#demo-canvas',
       withLabels: true,
       nodeAttr: {
-        r: d => d.data.type === "service" ? 35 : 20
+        r: (d) => (d.data.type === 'service' ? 35 : 20),
       },
       layoutAttr: {
         charge: -120,
         linkDistance: 160,
       },
       nodeStyle: {
-        fill: d => d.data.highlighted ? 'red' : d.data.color,
+        fill: (d) => (d.data.highlighted ? 'red' : d.data.color),
       },
-      labels: d => {
+      labels: (d) => {
         return d.data.name;
       },
       stickyDrag: true,
     });
-    
-    
+
     window.d3.selectAll('.node').on('mouseenter', (d) => {
       setHoverModal([true, d]);
     });
-    
+
     window.d3.selectAll('.node').on('click', async (d) => {
       const nodeData = await getNodeData(d.node);
-      const updatedData = { id: d.node, ...nodeData, type: d.data.type, ...d.data };
+      const updatedData = {
+        id: d.node,
+        ...nodeData,
+        type: d.data.type,
+        ...d.data,
+      };
       setDetailPanel([true, updatedData]);
     });
-    
+
     window.d3.selectAll('.node').on('mouseleave', (d) => {
       setHoverModal([false, null]);
     });
-    
   }, [cdr, ipdr, users, services]);
-  
+
   const hoverDiv = () => {
     // const { x, y } = hoverModal[1];
     // console.log(hoverModal[1]);
-    
+
     const event = window.d3.event;
-    
+
     if (event) {
       const x = window.d3.event.pageX;
       const y = window.d3.event.pageY;
       return (
         <CustomPopup
-        data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
-        x={x}
-        y={y}
+          data={{ id: hoverModal[1].node, name: hoverModal[1].data.name }}
+          x={x}
+          y={y}
         />
-        );
-      } else {
-        return <></>;
-      }
-    };
-    
-    return (
-      <>
+      );
+    } else {
+      return <></>;
+    }
+  };
+
+  return (
+    <>
       <Modal
-      title="Apply Filters"
-      visible={showFilterModal}
-      onCancel={() => handleFilterModal(false)}
-      footer={null}
+        title="Apply Filters"
+        visible={showFilterModal}
+        onCancel={() => handleFilterModal(false)}
+        footer={null}
       >
-      <Filter updateChange={handleFilters} modalChange={handleFilterModal}/>
+        <Filter updateChange={handleFilters} modalChange={handleFilterModal} />
       </Modal>
       <SearchBar onFilterClick={() => handleFilterModal(true)} />
-      
+
       <div className={styles.networkWrapper}>
-      <div className={styles.graphCanvas} id="demo-canvas"></div>
-      <div className={styles.sidepanelWrapper}>
-      {<SidePanel removeNode={handleRemoveNode} data={detailPanel[1]} highLightNode={handleHighLightNode} cdr={cdr}
-      ipdr={ipdr}
-      detailedCdr={detailedCdr}
-      detailedIpdr={detailedIpdr}
-      servicesData={servicesData}/>}
+        <div className={styles.graphCanvas} id="demo-canvas"></div>
+        <div className={styles.sidepanelWrapper}>
+          {
+            <SidePanel
+              removeNode={handleRemoveNode}
+              data={detailPanel[1]}
+              highLightNode={handleHighLightNode}
+              cdr={cdr}
+              ipdr={ipdr}
+              detailedCdr={detailedCdr}
+              detailedIpdr={detailedIpdr}
+              servicesData={servicesData}
+            />
+          }
+        </div>
       </div>
-      </div>
-      
+
       {hoverModal[0] && hoverDiv()}
-      </>
-      );
-  };
-  
-  export default Home;
-  
+    </>
+  );
+};
+
+export default Home;
