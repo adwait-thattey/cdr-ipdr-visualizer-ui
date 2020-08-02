@@ -5,7 +5,8 @@ import { Modal } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
-import { getFilteredData, getUserData, getCdrData, getServiceInfo } from '../../services/filters';
+import { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists } from '../../services/filters';
+
 
 const getRandomColor = () => {
   var letters = '0123456789ABCDEF';
@@ -16,6 +17,13 @@ const getRandomColor = () => {
   return color;
 };
 
+
+const colors = [];
+for (let i = 0; i < 10; i++) {
+  colors.push(getRandomColor());
+}
+
+
 const userListsData = [
   {
     id: 1,
@@ -24,25 +32,14 @@ const userListsData = [
     to_display: true,
     raw_data: 'user_id,125',
   },
-  {
-    id: 2,
-    users_list: [2, 3, 4],
-    name: 'Watchlist 2',
-    to_display: true,
-    raw_data: 'user_id,125',
-  },
 ];
 
 const cdrData = [
   { id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] },
-  { id: 50, from: 1, to: 3, frequency: 5, calls: [71, 74] },
-  { id: 51, from: 2, to: 3, frequency: 5, calls: [] },
 ];
 
 const ipdrData = [
   { id: 70, from: 1, service: 1 + 50000, records: 3, calls: [21] },
-  { id: 71, from: 2, service: 3 + 50000, records: 2, calls: [] },
-  { id: 72, from: 1, service: 3 + 50000, records: 4, calls: [22] },
 ];
 
 const detailedCdrData = [
@@ -72,25 +69,6 @@ const detailedIpdrData = [
     public_port: null,
     destination_ip: null,
     destination_port: 5432,
-    from_number: null,
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-    upload_data_volume: null,
-    download_data_volume: null,
-  },
-  {
-    id: 22,
-    start_time: '2019-04-30T19:02:41+05:30',
-    duration: 975,
-    private_ip: null,
-    private_port: null,
-    public_ip: null,
-    public_port: null,
-    destination_ip: null,
-    destination_port: 8001,
     from_number: null,
     imei: null,
     imsi: null,
@@ -166,8 +144,8 @@ const Home = () => {
   const [filters, setFilters] = useState(initialFilters);
 
   // Users list
-  const [userLists, setUserLists] = useState(userListsData);
-  const [selectedUserList, setSelectedUserList] = useState(null);
+  const [watchLists, setWatchLists] = useState(userListsData);
+
 
   const handleFilterModal = (status) => setShowFilterModal(status);
 
@@ -191,6 +169,10 @@ const Home = () => {
         const getServices = await getServiceInfo(serviceNodes);
 
 
+        const watchLists = await getWatchLists();
+        const watchListWithColor = watchLists.map((list, index) => ({ ...list, color: colors[index % colors.length], selected: false }))
+        setWatchLists(watchListWithColor);
+
         setAllValues(cdrData, ipdrData, [...userInfoOne, ...userInfoTwo], getServices)
       } catch(e) {
         console.log(e);
@@ -199,10 +181,6 @@ const Home = () => {
     }
     fetchData();
   }, [filters]);
-
-  console.log("SERVICE", services);
-  console.log("USERS", users);
-  console.log("IPDR", ipdr);
 
   const getUserNodes = (apiData, type) => {
       const users = new Set()
@@ -221,7 +199,6 @@ const Home = () => {
       })
       return services;
   }
-
 
   const getUserInfo = async (userIds) => await getUserData(userIds);
 
@@ -272,27 +249,24 @@ const Home = () => {
     setUsers([...otherNodes, selectedNode]);
   };
 
-  const handleUserListSelect = (id) => {
-    const wishlist = userLists.find((user) => user.id === id);
-    if (!wishlist) throw new Error('wishlist not found');
+  const handleUserListSelect = (checked, id) => {
+    const watchList = watchLists.find(user => user.id === id);
+    const otherWatchLists = watchLists.filter(user => user.id !== id);
+    if (!watchList) throw new Error('watchList not found');
+    watchList.selected = checked;
+    
+    setWatchLists([...otherWatchLists, { ...watchList }])
+  };
 
-    const newUsers = [];
-
-    for (let user of users) {
-      let userFound = false;
-      for (let user_id of wishlist.users_list) {
-        if (user.id === user_id) {
-          userFound = true;
-          user.highlighted = true;
+  const getNodeColor = (node) => {
+      for (let list of watchLists) {
+        if (!list.selected) continue;
+        if (list.users_list.includes(node.node)) {
+          return list.color;
         }
       }
-      if (!userFound) user.highlighted = false;
-      newUsers.push({ ...user });
-    }
-
-    setSelectedUserList(wishlist);
-    setUsers(newUsers);
-  };
+      return "orange";
+  }
 
   useEffect(() => {
     var G = new window.jsnx.Graph();
@@ -352,7 +326,7 @@ const Home = () => {
         linkDistance: 160,
       },
       nodeStyle: {
-        fill: (d) => (d.data.highlighted ? 'red' : d.data.color),
+        fill: (d) => getNodeColor(d),
       },
       labels: (d) => {
         let name = d.data.name;
@@ -387,7 +361,7 @@ const Home = () => {
     window.d3.selectAll('.node').on('mouseleave', (d) => {
       setHoverModal([false, null]);
     });
-  }, [cdr, ipdr, users, services]);
+  }, [cdr, ipdr, users, services, watchLists]);
 
 
   const getAllCdrsFromUserNode = (node) => {
@@ -419,7 +393,6 @@ const Home = () => {
     }
   };
 
-  console.log(detailedCdr);
 
   return (
     <>
@@ -434,10 +407,9 @@ const Home = () => {
 
       <div className={styles.fullContainer}>
         <SearchBar
-          wishlists={userLists}
+          wishlists={watchLists}
           updateWishList={handleUserListSelect}
           onFilterClick={() => handleFilterModal(true)}
-          selectedUserList={selectedUserList}
         />
 
         <div className={styles.networkWrapper}>

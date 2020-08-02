@@ -142,5 +142,9 @@ const getServiceInfo = async (serviceIds) => {
     return result.data;
 }
 
+const getWatchLists = async () => {
+    const response = await axios.get('/data/watchlists');
+    return response.data;
+};
 
-export { getFilteredData, getUserData, getCdrData, getServiceInfo }
+export { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists }
