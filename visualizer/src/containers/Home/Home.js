@@ -16,6 +16,9 @@ const getRandomColor = () => {
   return color;
 };
 
+
+const userLists = [];
+
 const getNodeData = async () =>
   new Promise((res, rej) => {
     setTimeout(() => {
@@ -35,7 +38,7 @@ const getNodeData = async () =>
   });
 
 const cdrData = [
-  { from: 1, to: 2, frequency: 5, calls: [] },
+  { id: 56, from: 1, to: 2, frequency: 5, calls: [] },
   { id: 50, from: 1, to: 3, frequency: 5, calls: [] },
   { id: 51, from: 2, to: 3, frequency: 5, calls: [] },
   { id: 52, from: 2, to: 3, frequency: 5, calls: [] },
@@ -180,6 +183,12 @@ const Home = () => {
     // Need to update details panel for it to rerender
     setDetailPanel((prev) => ([true, { ...prev[1], highlighted: checked }]))
 
+    // const selected = window.d3.selectAll(".node").attr("fill", (d) => {
+    //   console.log(d);
+    //   return "#000";
+    // })
+
+
     const otherNodes = users.filter(ele => ele.id !== node.id);
     setUsers([ ...otherNodes, selectedNode ])
   }
@@ -244,7 +253,7 @@ const Home = () => {
             r: d => d.data.type === "service" ? 35 : 20
         },
         layoutAttr: {
-            charge: -120,
+            charge: -360,
             linkDistance: 160,
         },
         nodeStyle: {

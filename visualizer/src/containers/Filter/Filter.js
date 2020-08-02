@@ -2,14 +2,11 @@ import React, { useState } from 'react';
 import styles from './Filter.module.scss';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
-import { TimePicker } from 'antd';
 import CCheckBox from '../../components/Checkbox/CCheckbox';
 import CSlider from '../../components/CSlider/CSlider';
-import moment from 'moment';
+import DatePicker from 'react-datepicker'
 
-const format = 'HH:mm';
-
-const { RangePicker } = TimePicker;
+import "react-datepicker/dist/react-datepicker.css";
 
 const initialFilters = {
     cdr: true,
@@ -69,7 +66,11 @@ const Filter = ({ updateChange, modalChange }) => {
 
     const handleSliderChange = (value, name) => setFilters((prev) => ({ ...prev, [name]: value }))
 
-    const { location_lat, location_long } = filters;
+    const handleDateChange = (value) => {
+        setFilters(prev => ({ ...prev, time_start: value[0], time_end: value[1] }))
+    };
+
+    const { location_lat, location_long, time_start, time_end } = filters;
 
     return (
         <>
@@ -115,7 +116,16 @@ const Filter = ({ updateChange, modalChange }) => {
                 <Input name="cell_id" onChange={handleChange} title="Cell ID's" placeholder="Enter comma seperated cell id's"/>
                 <CCheckBox checked={filters.exclude_these_cell_id} handleChange={handleChangeCheckbox} name="exclude_these_cell_id" defaultChecked={false}/>
             </div>
-            <div>
+            <div className={styles.rows}>
+                <h5>Date Range</h5>
+                <DatePicker
+                    selected={time_start}
+                    onChange={handleDateChange}
+                    startDate={time_start}
+                    endDate={time_end}
+                    selectsRange
+                    inline
+                />
             </div>
             <div className={styles.dual}>
                 <Button text="Save" onClick={submitChange}></Button>
