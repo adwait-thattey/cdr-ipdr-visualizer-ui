@@ -27,7 +27,6 @@
   flex: 1;
   border: thin solid black;
   height: 100%;
-  overflow: auto;
 }
 
 .logItem {
@@ -57,7 +56,22 @@
 }
 
 .details {
-  background: #f0ffff;
+  @include flex(center, center, column);
+  background: #fff5ee;
   padding: 10px;
   width: 90%;
+  height: 80%;
+}
+
+.monitoringForm {
+  @include flex(center, space-around, column);
+  width: 90%;
+  height: 80%;
+  background: #fff5ee;
+  padding: 40px;
+}
+
+.input {
+  width: 100%;
+  margin: 20px 0 !important;
 }

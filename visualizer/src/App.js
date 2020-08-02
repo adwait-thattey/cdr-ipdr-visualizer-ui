@@ -5,7 +5,7 @@ import Home from './containers/Home/Home';
 import Sidebar from './components/Sidebar/Sidebar.js';
 import Auth from './containers/Auth/Auth';
 import Upload from './containers/Upload/Upload';
-import Log from './containers/Log/Log';
+import Alerts from './containers/Alerts/Alerts';
 
 function App() {
   return (
@@ -23,8 +23,8 @@ function App() {
             <Route path="/upload">
               <Upload />
             </Route>
-            <Route path="/log">
-              <Log />
+            <Route path="/alerts">
+              <Alerts />
             </Route>
           </Switch>
         </div>

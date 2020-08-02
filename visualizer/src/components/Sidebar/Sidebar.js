@@ -25,7 +25,7 @@ const Sidebar = ({ history }) => {
             </li>
 
             <li>
-              <AiOutlineLogout onClick={() => history.push('/auth')} />
+              <AiOutlineLogout onClick={() => history.push('/alerts')} />
             </li>
           </ul>
         </div>
