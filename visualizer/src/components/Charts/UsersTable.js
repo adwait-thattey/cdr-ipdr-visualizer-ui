@@ -1,8 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 
 import styles from './UsersTable.module.scss';
 
 import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai';
+
+import { dateTimeString } from '../../services/dateUtils';
 
 const UsersTable = ({ data }) => {
   const [sort, reSort] = useState('i');
@@ -40,8 +42,6 @@ const UsersTable = ({ data }) => {
       return data;
     }
   }, [data, sort]);
-
-  console.log(sort, sortedData);
 
   const handleChange = (t) => {
     if (sort === 'i' || sort[0] !== t) {
@@ -94,7 +94,7 @@ const UsersTable = ({ data }) => {
             <td className={styles.td}>{val.name}</td>
             <td className={styles.td}>{val.total_duration}</td>
             <td className={styles.td}>{val.total_times}</td>
-            <td className={styles.td}>{val.last_called}</td>
+            <td className={styles.td}>{dateTimeString(val.last_called)}</td>
           </tr>
         ))}
       </tbody>

@@ -9,93 +9,20 @@ import SidePanel from '../../components/SidePanel/MapSidePanel';
 import MapView from '../../components/Map/Map';
 
 import { dataToGeoJSON, arrangeGeoJSONData } from '../../services/MapData';
+import { getTimelineDataFilters_Stub as getTimeLineDataFilters } from '../../services/timeline';
 
-const getUserData = async () =>
-  new Promise((res, rej) => {
-    setTimeout(() => {
-      res({
-        name: 'Brijesh Bumrela',
-        address: 'Death Valley',
-        phone_numbers: [
-          { number: '7985641784', imsi: '9878ARUSNCJA1234' },
-          { number: '9898784515', imsi: '7878AQNSANWJ1234' },
-        ],
-        devices: [
-          { imei: 'AYDBWTAJRK23', mac: '80:20:42:41:41' },
-          { imei: 'QEUSMSGFYS98', mac: '80:20:42:11:90' },
-        ],
-      });
-    }, 1000);
-  });
-
-const cdrData = [
-  {
-    lat: 23.1234,
-    lng: 78.124,
-    timestamp: '2020-07-05T19:17:31',
-    id: 1,
-    type: 'cdr',
-  },
-  {
-    lat: 22.5234,
-    lng: 77.942,
-    timestamp: '2020-01-25T22:30:38',
-    id: 2,
-    type: 'cdr',
-  },
-  {
-    lat: 24.7834,
-    lng: 76.524,
-    timestamp: '2020-07-16T22:58:21',
-    id: 3,
-    type: 'cdr',
-  },
-  {
-    lat: 22.8934,
-    lng: 78.324,
-    timestamp: '2020-05-16T18:49:36',
-    id: 4,
-    type: 'cdr',
-  },
-];
-
-const ipdrData = [
-  {
-    lat: 22.1234,
-    lng: 75.154,
-    timestamp: '2020-04-22T08:10:57',
-    id: 1,
-    type: 'ipdr',
-  },
-  {
-    lat: 24.6234,
-    lng: 79.943,
-    timestamp: '2020-05-03T09:21:24',
-    id: 2,
-    type: 'ipdr',
-  },
-  {
-    lat: 23.5734,
-    lng: 79.524,
-    timestamp: '2020-04-28T23:50:07',
-    id: 3,
-    type: 'ipdr',
-  },
-  {
-    lat: 22.1234,
-    lng: 77.324,
-    timestamp: '2020-07-01T18:54:54',
-    id: 4,
-    type: 'ipdr',
-  },
-];
+import {
+  getCDRData_Stub as getCDRData,
+  getIPDRData_Stub as getIPDRData,
+  getUserData_Stub as getUserData,
+} from '../../services/getData';
 
 const initialFilters = {
   cdr: true,
   ipdr: true,
 
-  time_start: null,
-  time_end: null,
+  time_start: undefined,
+  time_end: undefined,
 
   user_id: null,
 };
@@ -122,27 +49,40 @@ const Map = () => {
 
   const handleFilterModal = (status) => setShowFilterModal(status);
 
-  const handleFilters = async (newFilterState) => {
-    setShowFilterModal(false);
-    const mapData = [];
-    if (newFilterState.ipdr) {
-      mapData.push(...ipdrData);
+  const showData = async (type, id) => {
+    let netData;
+    if (type == 'ipdr') {
+      netData = await getIPDRData(id);
+    } else {
+      netData = await getCDRData(id);
     }
-    if (newFilterState.cdr) {
-      mapData.push(...cdrData);
-    }
+
+    setDetailPanel((prev) => {
+      return { ...prev, data: { data: netData[0], type: type } };
+    });
+  };
+
+  const updateWithData = async (newFilterState) => {
+    const mapData = await getTimeLineDataFilters(newFilterState);
     const data = {
-      user: await getUserData(newFilterState.user_id),
+      user: (await getUserData(newFilterState.user_id))[0],
       data: mapData,
     };
-    updateData(data);
     const geoJSONData = arrangeGeoJSONData(mapData.map(dataToGeoJSON));
     updateGeoJSONData(geoJSONData);
+    updateData(data);
     setDetailPanel({
       user: data.user,
       points: geoJSONData,
+      showData: showData,
+      data: null,
     });
+  };
+
+  const handleFilters = (newFilterState) => {
+    setShowFilterModal(false);
     setFilters(newFilterState);
+    updateWithData(newFilterState);
   };
 
   return (

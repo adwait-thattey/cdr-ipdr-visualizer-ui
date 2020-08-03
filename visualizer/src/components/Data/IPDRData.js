@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styles from './Data.scss';
+import styles from './Data.module.scss';
 
 import { dateTimeString } from '../../services/dateUtils';
 
@@ -34,7 +34,7 @@ const IPDRData = ({ data }) => {
         <h5>Duration</h5>
         <h3>
           {Math.floor(data.duration / 60)} mins
-          {data.duration % 60 > 0 ? (data.duration % 60) + ' secs' : ''}
+          {data.duration % 60 > 0 ? ' ' + (data.duration % 60) + ' secs' : ''}
         </h3>
       </div>
       <div className={styles.item}>

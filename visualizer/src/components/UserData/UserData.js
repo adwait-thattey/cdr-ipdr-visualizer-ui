@@ -15,17 +15,19 @@ const UserData = ({ data }) => {
       </div>
       <div className={styles.item}>
         <h5>Mobile Numbers</h5>
-        {data.phone_numbers.map((each, key) => {
+        {Object.keys(data.phone_numbers).map((key, index) => {
           return (
-            <div key={key} className={styles.phoneContainer}>
+            <div key={index} className={styles.phoneContainer}>
               <div className={styles.phoneItemContainer}>
                 <h3>Phone Number</h3>
-                <h3>{each.number}</h3>
+                <h3>{key}</h3>
               </div>
-              <div className={styles.phoneItemContainer}>
-                <h3>IMSI Number</h3>
-                <h3>{each.imsi}</h3>
-              </div>
+              {data.phone_numbers[key][0].map((val, key) => (
+                <div className={styles.phoneItemContainer} key={key}>
+                  <h3>IMSI Number</h3>
+                  <h3>{val}</h3>
+                </div>
+              ))}
             </div>
           );
         })}
@@ -35,14 +37,18 @@ const UserData = ({ data }) => {
         {data.devices.map((each, key) => {
           return (
             <div key={key} className={styles.phoneContainer}>
-              <div className={styles.phoneItemContainer}>
-                <h3>IMEI Number</h3>
-                <h3>{each.imei}</h3>
-              </div>
-              <div className={styles.phoneItemContainer}>
-                <h3>MAC Address</h3>
-                <h3>{each.mac}</h3>
-              </div>
+              {each.imei && (
+                <div className={styles.phoneItemContainer}>
+                  <h3>IMEI Number</h3>
+                  <h3>{each.imei}</h3>
+                </div>
+              )}
+              {each.mac && (
+                <div className={styles.phoneItemContainer}>
+                  <h3>MAC Address</h3>
+                  <h3>{each.mac}</h3>
+                </div>
+              )}
             </div>
           );
         })}
