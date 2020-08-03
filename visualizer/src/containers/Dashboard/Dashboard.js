@@ -10,6 +10,7 @@ import Icon, {
   AlertOutlined,
 } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import SingleUserAnalysis from './SingleUserAnalysis/SingleUserAnalysis';
 
 const Dashboard = () => {
   let history = useHistory();
@@ -62,7 +63,9 @@ const Dashboard = () => {
               onClick={() => {}}
             />
           </div>
-          <div className={styles.subsection2}></div>
+          <div className={styles.subsection2}>
+            <SingleUserAnalysis />
+          </div>
         </div>
       </div>
     </div>
