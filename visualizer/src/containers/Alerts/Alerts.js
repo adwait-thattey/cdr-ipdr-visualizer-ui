@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './Alerts.module.scss';
 import { Tabs, Select, Input, Radio } from 'antd';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
 import { DeleteOutlined } from '@ant-design/icons';
+import axios from '../../services/axios'
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -221,6 +222,17 @@ const Log = () => {
     setMonitoredList(monitoredList.filter((item) => item.id !== id));
   };
 
+  const getData = async () => {
+    let res = await axios.get('/data/alerts');
+    console.log(res.data);
+    setMonitoredList(res.data);
+  };
+
+  useEffect(() => {
+    getData();
+    // setMonitoredList(await getData());
+  }, []);
+
   return (
     <div className={styles.container}>
       <Header title="Alerts" onFilterClick={() => {}} />
@@ -301,7 +313,7 @@ const Log = () => {
                 key={item.id}
                 // onClick={() => setLogId(item.id)}
               >
-                <div className={styles.logText}>{item.text}</div>
+                <div className={styles.logText}>{item.name + " : " + item.entity + "-" + item.value }</div>
                 <DeleteOutlined onClick={() => handleDelete(item.id)} />
               </div>
             );
