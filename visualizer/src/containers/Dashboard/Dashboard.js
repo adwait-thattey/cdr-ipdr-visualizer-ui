@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styles from './Dashboard.module.scss';
 import Header from '../../components/Header/Header';
 import CustomCard from '../../components/CustomCard/CustomCard';
@@ -10,9 +10,17 @@ import Icon, {
   AlertOutlined,
 } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
+import SingleUserAnalysis from './SingleUserAnalysis/SingleUserAnalysis';
+import DualUserAnalysis from './DualUserAnalysis/DualUserAnalysis';
+import TowerAnalysis from './TowerAnalysis/TowerAnalysis';
+import SameNumber from './SameNumber/SameNumber';
+import SpamDetection from './SpamDetection/SpamDetection';
+import SpeechRecog from './SpeechRecog/SpeechRecog';
+import VoiceRecog from './VoiceRecog/VoiceRecog';
 
 const Dashboard = () => {
   let history = useHistory();
+  const [miniTool, setMiniTool] = useState(<SingleUserAnalysis />);
 
   return (
     <div className={styles.container}>
@@ -42,27 +50,36 @@ const Dashboard = () => {
         </div>
         <div className={styles.section2}>
           <div className={styles.subsection1}>
-            <CustomTile title="Single User Analysis" onClick={() => {}} />
-            <CustomTile title="Dual User Analysis" onClick={() => {}} />
-            <CustomTile title="Tower analysis" onClick={() => {}} />
-            <CustomTile title="IPDR correlations" onClick={() => {}} />
             <CustomTile
-              title="Same Phone number predictions"
-              bgcolor="#B2EBF2"
-              onClick={() => {}}
+              title="Single User Analysis"
+              onClick={() => setMiniTool(<SingleUserAnalysis />)}
             />
             <CustomTile
-              title="IMEI Charts"
-              bgcolor="#B2EBF2"
-              onClick={() => {}}
+              title="Dual User Analysis"
+              onClick={() => setMiniTool(<DualUserAnalysis />)}
+            />
+            <CustomTile
+              title="Tower analysis"
+              onClick={() => setMiniTool(<TowerAnalysis />)}
+            />
+            <CustomTile
+              title="Same Phone number predictions"
+              onClick={() => setMiniTool(<SameNumber />)}
+            />
+            <CustomTile
+              title="Spam Detection"
+              onClick={() => setMiniTool(<SpamDetection />)}
+            />
+            <CustomTile
+              title="Speech Recognition"
+              onClick={() => setMiniTool(<SpeechRecog />)}
             />
             <CustomTile
               title="Voice Recognition"
-              bgcolor="#B2EBF2"
-              onClick={() => {}}
+              onClick={() => setMiniTool(<VoiceRecog />)}
             />
           </div>
-          <div className={styles.subsection2}></div>
+          <div className={styles.subsection2}>{miniTool}</div>
         </div>
       </div>
     </div>

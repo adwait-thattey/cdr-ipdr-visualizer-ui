@@ -1,0 +1,59 @@
+@mixin flex(
+  $align-items: flex-start,
+  $justify-content: flex-start,
+  $flex-direction: row
+) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
+.container {
+  @include flex(center, center, column);
+  height: 100%;
+  overflow: hidden;
+  // width: 100%;
+  margin: 0 80px;
+}
+
+.formContainer {
+  @include flex(center, space-around, column);
+  width: 60%;
+}
+
+.input {
+  width: 100%;
+  margin: 20px 0 !important;
+}
+
+.listContainer {
+  @include flex(center, space-around, column);
+  height: 50%;
+  background: #dcdcdc;
+  animation: anim 0.7s forwards;
+  width: 50%;
+}
+
+.listItem {
+  @include flex(center, center, column);
+  flex: 1;
+  width: 100%;
+  // padding: 20px;
+  font-size: 25px;
+}
+.listItem:hover {
+  background: #c9c7c7;
+}
+
+@keyframes anim {
+  from {
+    opacity: 0;
+    // transform: translateX(100%);
+  }
+
+  to {
+    opacity: 1;
+    // transform: translateY(0);
+  }
+}
