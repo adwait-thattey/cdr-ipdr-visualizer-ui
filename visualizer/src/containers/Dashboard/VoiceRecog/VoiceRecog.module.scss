@@ -1,0 +1,26 @@
+@mixin flex(
+  $align-items: flex-start,
+  $justify-content: flex-start,
+  $flex-direction: row
+) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
+.container {
+  @include flex(center, center, column);
+  height: 100%;
+  overflow: hidden;
+}
+
+.formContainer {
+  @include flex(center, space-around, column);
+  width: 60%;
+}
+
+.input {
+  width: 100%;
+  margin: 20px 0 !important;
+}

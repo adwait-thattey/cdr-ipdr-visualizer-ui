@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './SingleUserAnalysis.module.scss';
+import styles from './DualUserAnalysis.module.scss';
 import Icon, {
   UploadOutlined,
   LineChartOutlined,
@@ -13,7 +13,7 @@ import Button from '../../../components/Button/Button';
 
 const { Option } = Select;
 
-const SingleUserAnalysis = () => {
+const DualUserAnalysis = () => {
   const history = useHistory();
   const [inputVal, setInputVal] = useState({
     mode: 'phone',
@@ -35,10 +35,10 @@ const SingleUserAnalysis = () => {
 
   return (
     <div className={styles.container}>
-      <h1>Single User Analysis</h1>
+      <h1>Dual User Analysis</h1>
       <div className={styles.formContainer}>
         <Select
-          defaultValue="phone"
+          // defaultValue="phone"
           className={styles.input}
           value={inputVal.mode}
           onChange={(value) => handleInput('mode', value)}
@@ -53,10 +53,16 @@ const SingleUserAnalysis = () => {
           value={inputVal.value}
           onChange={(e) => handleInput('value', e.target.value)}
         />
+        <Input
+          placeholder="Enter Data"
+          className={styles.input}
+          value={inputVal.value}
+          onChange={(e) => handleInput('value', e.target.value)}
+        />
         <Button text={'Search'} onClick={searchRecord} />
       </div>
     </div>
   );
 };
 
-export default SingleUserAnalysis;
+export default DualUserAnalysis;

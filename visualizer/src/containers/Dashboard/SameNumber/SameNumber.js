@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './SingleUserAnalysis.module.scss';
+import styles from './SameNumber.module.scss';
 import Icon, {
   UploadOutlined,
   LineChartOutlined,
@@ -13,12 +13,16 @@ import Button from '../../../components/Button/Button';
 
 const { Option } = Select;
 
-const SingleUserAnalysis = () => {
+const SameNumber = () => {
   const history = useHistory();
   const [inputVal, setInputVal] = useState({
     mode: 'phone',
     value: '',
   });
+
+  const [show, setShow] = useState(false);
+  const [result, setResult] = useState([1231231234, 1231231234, 1231231234]);
+
   const handleInput = (key, value) => {
     setInputVal({ ...inputVal, [key]: value });
   };
@@ -29,24 +33,14 @@ const SingleUserAnalysis = () => {
     });
   };
   const searchRecord = () => {
-    history.push('/user/21553');
+    setShow(true);
     clearInput();
   };
 
   return (
     <div className={styles.container}>
-      <h1>Single User Analysis</h1>
+      <h1>Same Phone Number Prediction</h1>
       <div className={styles.formContainer}>
-        <Select
-          defaultValue="phone"
-          className={styles.input}
-          value={inputVal.mode}
-          onChange={(value) => handleInput('mode', value)}
-        >
-          <Option value="phone">Phone</Option>
-          <Option value="imei">IMEI</Option>
-          <Option value="userId">User ID</Option>
-        </Select>
         <Input
           placeholder="Enter Data"
           className={styles.input}
@@ -55,8 +49,15 @@ const SingleUserAnalysis = () => {
         />
         <Button text={'Search'} onClick={searchRecord} />
       </div>
+      {show ? (
+        <div className={styles.resultContainer}>
+          {result.map((obj) => (
+            <div className={styles.resultItem}>{obj}</div>
+          ))}
+        </div>
+      ) : null}
     </div>
   );
 };
 
-export default SingleUserAnalysis;
+export default SameNumber;

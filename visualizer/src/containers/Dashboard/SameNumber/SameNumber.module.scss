@@ -1,0 +1,59 @@
+@mixin flex(
+  $align-items: flex-start,
+  $justify-content: flex-start,
+  $flex-direction: row
+) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
+.container {
+  @include flex(center, center, column);
+  height: 100%;
+  overflow: hidden;
+}
+
+.formContainer {
+  @include flex(center, space-around, column);
+  width: 60%;
+}
+
+.input {
+  width: 100%;
+  margin: 20px 0 !important;
+}
+
+.resultContainer {
+  @include flex(center, space-around, row);
+  animation: slideIn 0.7s forwards;
+  // transition: 1s forward;
+  background: #dcdcdc;
+  width: 80%;
+
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0);
+  }
+}
+
+.resultItem {
+  flex: 1;
+  height: 100%;
+  text-align: center;
+  padding: 20px;
+  font-size: 25px;
+}
+
+.resultItem:hover {
+  background: #c9c7c7;
+}
