@@ -297,8 +297,6 @@ const Home = () => {
         }
     }
 
-
-
     window.jsnx.draw(G, {
       element: '#demo-canvas',
       withLabels: true,

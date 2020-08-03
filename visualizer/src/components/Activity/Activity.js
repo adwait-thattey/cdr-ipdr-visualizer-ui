@@ -12,6 +12,7 @@ const Activity = ({
   servicesData,
 }) => {
   let finalValues = [];
+
   if (data) {
 
     const cdrIds = []

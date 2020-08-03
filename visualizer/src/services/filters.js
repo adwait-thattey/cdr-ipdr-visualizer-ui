@@ -87,6 +87,12 @@ const getCdrData = async (ids) => {
     return result.data;
 }
 
+const getIpdrData = async(ids) => {
+    const queryString = genQueryString2(ids, "ipdr")
+    const result = await axios.get(`/data/ipdrs?ipdr=${queryString}`)
+    return result.data;
+}
+
 
 
 // Helpers
@@ -147,4 +153,4 @@ const getWatchLists = async () => {
     return response.data;
 };
 
-export { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists }
+export { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists, getIpdrData }

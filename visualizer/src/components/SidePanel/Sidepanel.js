@@ -19,7 +19,6 @@ const SidePanel = (props) => {
   const highlight = (e) => highLightNode(data, e.target.checked);
   const remove = () => removeNode(data);
 
-
   if (cluster) {
     return (
       <div className={styles.datafields}>

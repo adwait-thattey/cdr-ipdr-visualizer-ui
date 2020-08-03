@@ -5,8 +5,7 @@ import { Modal, Dropdown, Menu, Button as AiButton } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
-import { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists } from '../../services/filters';
-import Header from '../../components/Header/Header';
+import { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists, getIpdrData } from '../../services/filters';
 import Button from '../../components/Button/Button';
 import Circle from '../../components/Circle/Circle';
 
@@ -113,8 +112,8 @@ const initialFilters = {
   location_long: null,
   radius: null,
 
-  time_start: "2020-07-25T18:30:00.000Z",
-  time_end: "2020-07-31T18:30:00.000Z",
+  time_start: null,
+  time_end: null,
 
   duration_min: null,
   duration_max: null,
@@ -232,10 +231,12 @@ const Home = () => {
         ipdrData.forEach(data => {
           const { from, calls } = data;
           finalUserList.forEach(user => {
+            if (!user.count) user.count = 0
             if (user.id === from) {
                 user.count += calls.length;
-                user.calls = [...user.calls, ...calls]
             }
+            if (!user.calls) user.calls = []
+            user.calls = [...user.calls, ...calls]
           })
         })
 
@@ -279,8 +280,7 @@ const Home = () => {
 
     if (frequency < 10) return "green";
     if (frequency < 20) return "yellow";
-    else return "red";
-
+     return "red";
   }
 
   const handleFilters = async (newFilterState) => {
@@ -341,16 +341,16 @@ const Home = () => {
 
   const getNodeColor = (node) => {
       let color = "orange";
-      if (node.data.count > 6) color = "red";
-      else if (node.data.count > 3) color = "green";
-      else color = "yellow";
-      for (let list of watchLists) {
-        if (!list.selected) continue;
-        if (list.users_list.includes(node.node)) {
-          return list.color;
-        }
-      }
-      if (node.data.type === "service") return 'lightgray';
+      // if (node.data.count > 6) color = "red";
+      // else if (node.data.count > 3) color = "green";
+      // else color = "yellow";
+      // for (let list of watchLists) {
+      //   if (!list.selected) continue;
+      //   if (list.users_list.includes(node.node)) {
+      //     return list.color;
+      //   }
+      // }
+      if (node.data.type === "service") return 'blue';
 
       return node.data.highlighted ? 'brown' : color;
   }
@@ -376,6 +376,7 @@ const Home = () => {
       if (ele.removed) {
         continue;
       }
+
       const { id, ...rest } = ele;
       G.addNode(id, { type: 'service', color: 'aqua', value: id, ...rest });
     }
@@ -390,12 +391,13 @@ const Home = () => {
       ) {
         continue;
       }
-      G.addEdge(from, to, { frequency: calls.length });
+      G.addEdge(from, to, { frequency: calls.length, });
     }
 
     // IPDR edges
     for (let ele of ipdr) {
       const { from, to, calls } = ele;
+
       if (users.find((user) => (user.id === from || user.id === to) && user.removed)) {
         continue;
       }
@@ -439,10 +441,17 @@ const Home = () => {
         type: d.data.type,
       };
 
-      const cdrs = getAllCdrsFromUserNode(d.node)
-      const detailedCdrs = await getCdrData(cdrs);
-      setDetailedCdr(detailedCdrs);
-      // localhost:8000/data/cdrs?cdr=15
+      if (d.data.type === "service") {
+        const ipdrs = getAllIpdrsFromUserNode(d.node)
+        const detailedIPdrs = await getIpdrData(ipdrs);
+        setDetailedIpdr(detailedIPdrs);
+
+      } else {
+        const cdrs = getAllCdrsFromUserNode(d.node)
+        const detailedCdrs = await getCdrData(cdrs);
+        setDetailedCdr(detailedCdrs);
+      }
+
 
       setDetailPanel([true, updatedData]);
     });
@@ -458,6 +467,17 @@ const Home = () => {
     const nodes = [];
     
     cdr.filter(ele => ele.from === node || ele.to === node).forEach(node => {
+      nodes.push(...node.calls)
+    })
+
+    return nodes;
+  }
+
+  const getAllIpdrsFromUserNode = (node) => {
+    
+    const nodes = [];
+    
+    ipdr.filter(ele => ele.from === node || ele.to === node).forEach(node => {
       nodes.push(...node.calls)
     })
 
