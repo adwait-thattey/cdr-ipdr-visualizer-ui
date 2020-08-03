@@ -74,8 +74,8 @@ const Chart = ({ data }) => {
       <div style={{ overflow: 'hidden' }}>
         {selected === 'Traffic' && labels && (
           <ChartType
-            height={350}
-            width={500}
+            height={450}
+            width={600}
             id={selected}
             labels={labels}
             series={dataSeries}
@@ -86,8 +86,8 @@ const Chart = ({ data }) => {
         )}
         {selected === 'Frequency' && labels && (
           <ChartType
-            height={350}
-            width={500}
+            height={450}
+            width={600}
             id={selected}
             labels={labels}
             series={timeSeries}
@@ -98,8 +98,8 @@ const Chart = ({ data }) => {
         )}
         {selected === 'Duration' && labels && (
           <ChartType
-            height={350}
-            width={500}
+            height={450}
+            width={600}
             id={selected}
             labels={labels}
             series={durationSeries}
