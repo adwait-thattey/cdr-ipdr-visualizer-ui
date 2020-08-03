@@ -48,8 +48,8 @@ const Chart = ({ ipdr, cdr }) => {
       <div style={{ overflow: 'hidden' }}>
         {selected === 'Calls' && cdrLabels && (
           <DataChart
-            height={450}
-            width={600}
+            height={460}
+            width={630}
             id={selected}
             labels={cdrLabels}
             series={cdrSeries}
@@ -61,8 +61,8 @@ const Chart = ({ ipdr, cdr }) => {
         )}
         {selected === 'Internet' && ipdrLabels && (
           <DataChart
-            height={450}
-            width={600}
+            height={460}
+            width={630}
             id={selected}
             labels={ipdrLabels}
             series={ipdrSeries}

@@ -1,7 +1,5 @@
 %heading {
   display: inline;
-  margin: 2px 0;
-  padding: 0 4px;
   line-height: 1.2em;
   font-weight: 700;
   color: #3f76dd;
@@ -19,7 +17,14 @@
   cursor: pointer;
 
   &:hover {
-    color: #67a8f3;
+    color: #296ebd;
+  }
+}
+
+.th_button {
+  background-color: #efefef;
+  &:hover {
+    background-color: #ececec;
   }
 }
 
@@ -31,16 +36,15 @@
   font-size: 20px;
 }
 
+.tr {
+  background-color: #fafafa;
+}
+
 %color {
-  &:nth-of-type(even) {
-    background-color: rgb(226, 226, 226);
-  }
-  &:nth-of-type(odd) {
-    background-color: rgb(255, 255, 255);
-  }
-  padding: 15px;
-  line-height: 1.3em;
+  padding: 10px;
+  line-height: 1.1em;
   text-align: center;
+  box-sizing: border-box;
 }
 
 .th {
@@ -50,5 +54,5 @@
 .td {
   @extend %color;
   border: 0;
-  border-top: 2px solid black;
+  border-top: 1px solid #f0f0f0;
 }

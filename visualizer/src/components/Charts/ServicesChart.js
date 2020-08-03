@@ -19,7 +19,7 @@ const Chart = ({ data }) => {
       ? [
           data.map((val) => val.total_data),
           data.map((val) => val.total_times),
-          data.map((val) => val.duration),
+          data.map((val) => val.total_duration),
         ]
       : [null, null, null];
   }, [data]);
@@ -74,8 +74,8 @@ const Chart = ({ data }) => {
       <div style={{ overflow: 'hidden' }}>
         {selected === 'Traffic' && labels && (
           <ChartType
-            height={450}
-            width={600}
+            height={460}
+            width={630}
             id={selected}
             labels={labels}
             series={dataSeries}
@@ -86,8 +86,8 @@ const Chart = ({ data }) => {
         )}
         {selected === 'Frequency' && labels && (
           <ChartType
-            height={450}
-            width={600}
+            height={460}
+            width={630}
             id={selected}
             labels={labels}
             series={timeSeries}
@@ -98,8 +98,8 @@ const Chart = ({ data }) => {
         )}
         {selected === 'Duration' && labels && (
           <ChartType
-            height={450}
-            width={600}
+            height={460}
+            width={630}
             id={selected}
             labels={labels}
             series={durationSeries}

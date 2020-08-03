@@ -43,8 +43,13 @@ const chartOptions = (id, titleY, color, shadowColor, yQuantity, labels) => {
       },
       datetimeFormatter: {
         year: 'yyyy',
-        month: 'mm-yyyy',
-        day: 'dd-mm-yyyy',
+        month: 'mm-yy',
+        day: 'mm-yy',
+        hour: '',
+      },
+      labels: {
+        trim: true,
+        maxHeight: 40,
       },
     },
     yaxis: {
@@ -53,6 +58,9 @@ const chartOptions = (id, titleY, color, shadowColor, yQuantity, labels) => {
       },
       title: {
         text: titleY,
+        style: {
+          fontSize: '20px',
+        },
       },
     },
     colors: [color],
@@ -76,7 +84,8 @@ const brushOptions = (id, color, labels, height) => {
       offsetY: -Math.round(height / 16),
     },
     yaxis: {
-      show: false,
+      show: true,
+      tickAmount: 2,
     },
     xasis: {
       type: 'date',
@@ -85,8 +94,9 @@ const brushOptions = (id, color, labels, height) => {
       },
       datetimeFormatter: {
         year: 'yyyy',
-        month: 'mm-yyyy',
-        day: 'dd-mm-yyyy',
+        month: 'mm-yy',
+        day: 'mm-yy',
+        hour: '',
       },
     },
     fill: {
@@ -97,7 +107,6 @@ const brushOptions = (id, color, labels, height) => {
       },
     },
     colors: [color],
-    labels: labels,
   };
 };
 

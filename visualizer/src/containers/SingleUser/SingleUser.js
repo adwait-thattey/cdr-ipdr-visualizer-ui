@@ -10,7 +10,7 @@ import UsersTable from '../../components/Charts/UsersTable';
 import UsageChart from '../../components/Charts/UsageChart';
 import ServicesChart from '../../components/Charts/ServicesChart';
 
-import getSingleUserData from '../../services/getSingleUserData';
+import { getSingleUserData_Stub as getSingleUserData } from '../../services/getSingleUserData';
 import Header from '../../components/Header/Header';
 
 const SingleUser = () => {
@@ -20,7 +20,7 @@ const SingleUser = () => {
 
   useEffect(() => {
     (async () => {
-      updateData(await getSingleUserData());
+      updateData(await getSingleUserData(id));
     })();
   }, [id]);
 
@@ -68,8 +68,8 @@ const SingleUser = () => {
               </div>
             </Col>
           </Row>
-          <Row justify="center" align="center">
-            <Col span={11}>
+          <Row justify="space-around" align="center">
+            <Col span={13}>
               <div className={styles.tableContainer}>
                 <UsersTable data={users} />
               </div>

@@ -71,10 +71,14 @@ const barChartOptions = (id, labels, title, color, yQuantity) => {
     plotOptions: {
       bar: {
         horizontal: true,
+        dataLabels: {
+          position: 'center',
+        },
       },
     },
     dataLabels: {
       formatter: (i) => `${i} ${yQuantity}`,
+      textAnchor: 'start',
     },
     xaxis: {
       categories: labels,
@@ -85,7 +89,16 @@ const barChartOptions = (id, labels, title, color, yQuantity) => {
       align: 'center',
     },
     tooltip: {
-      enabled: false,
+      enabled: true,
+      marker: {
+        show: false,
+      },
+      y: {
+        formatter: (val) => `${val} ${yQuantity}`,
+        title: {
+          formatter: (seriesName) => '',
+        },
+      },
     },
   };
 };

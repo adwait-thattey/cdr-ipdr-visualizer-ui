@@ -63,6 +63,9 @@ const UsersTable = ({ data }) => {
             <div className={styles.heading}>Name</div>
           </th>
           <th className={styles.th}>
+            <div className={styles.heading}>Mobile</div>
+          </th>
+          <th className={styles.th + ' ' + styles.th_button}>
             <div className={styles.button} onClick={() => handleChange('d')}>
               Total Duration
               {(sort === 'df' && <AiFillCaretUp />) ||
@@ -70,7 +73,7 @@ const UsersTable = ({ data }) => {
                 ' '}
             </div>
           </th>
-          <th className={styles.th}>
+          <th className={styles.th + ' ' + styles.th_button}>
             <div className={styles.button} onClick={() => handleChange('f')}>
               Total Times
               {(sort === 'ff' && <AiFillCaretUp />) ||
@@ -78,7 +81,7 @@ const UsersTable = ({ data }) => {
                 ' '}
             </div>
           </th>
-          <th className={styles.th}>
+          <th className={styles.th + ' ' + styles.th_button}>
             <div className={styles.button} onClick={() => handleChange('l')}>
               Last Called
               {(sort === 'lf' && <AiFillCaretUp />) ||
@@ -92,6 +95,7 @@ const UsersTable = ({ data }) => {
         {sortedData.map((val, index) => (
           <tr className={styles.tr} key={index}>
             <td className={styles.td}>{val.name}</td>
+            <td className={styles.td}>{val.phone_number}</td>
             <td className={styles.td}>{val.total_duration}</td>
             <td className={styles.td}>{val.total_times}</td>
             <td className={styles.td}>{dateTimeString(val.last_called)}</td>
