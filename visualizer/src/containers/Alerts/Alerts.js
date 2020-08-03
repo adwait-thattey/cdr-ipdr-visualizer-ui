@@ -3,6 +3,7 @@ import styles from './Alerts.module.scss';
 import { Tabs, Select, Input, Radio } from 'antd';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
+import { DeleteOutlined } from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -187,7 +188,38 @@ const monitoredItem = [
 
 const Log = () => {
   const [logId, setLogId] = useState(-1);
-  const [val, setVal] = useState(1);
+  // const [val, setVal] = useState(1);
+  const [monitoredList, setMonitoredList] = useState(monitoredItem);
+
+  const [inputVal, setInputVal] = useState({
+    id: Date.now(),
+    type: 'watchlist',
+    text: '',
+    mode: 1,
+  });
+
+  const handleInput = (key, value) => {
+    console.log(value);
+    setInputVal({ ...inputVal, [key]: value });
+  };
+
+  const resetInput = () => {
+    setInputVal({
+      id: Date.now(),
+      type: 'watchlist',
+      text: '',
+      mode: 1,
+    });
+  };
+
+  const saveInput = () => {
+    setMonitoredList([inputVal, ...monitoredList]);
+    resetInput();
+  };
+
+  const handleDelete = (id) => {
+    setMonitoredList(monitoredList.filter((item) => item.id !== id));
+  };
 
   return (
     <div className={styles.container}>
@@ -231,34 +263,46 @@ const Log = () => {
           <div className={styles.subsection2}>
             <h4>Set Monitored Items</h4>
             <div className={styles.monitoringForm}>
-              <Select defaultValue="watchlist" className={styles.input}>
+              <Select
+                defaultValue="watchlist"
+                className={styles.input}
+                value={inputVal.type}
+                onChange={(value) => handleInput('type', value)}
+              >
                 <Option value="watchlist">Watchlist</Option>
                 <Option value="tower">Tower</Option>
                 <Option value="phone">Phone</Option>
               </Select>
-              <Input placeholder="Enter Details" className={styles.input} />
+              {}
+              <Input
+                placeholder="Enter Details"
+                className={styles.input}
+                value={inputVal.text}
+                onChange={(e) => handleInput('text', e.target.value)}
+              />
               <Radio.Group
-                onChange={(e) => setVal(e.target.value)}
-                value={val}
+                onChange={(e) => handleInput('mode', e.target.value)}
+                value={inputVal.mode}
                 className={styles.inputOpt}
               >
                 <Radio value={1}>On Spike</Radio>
                 <Radio value={2}>On New Record</Radio>
               </Radio.Group>
-              <Button text={'Save'} />
+              <Button text={'Save'} onClick={saveInput} />
             </div>
           </div>
         </div>
         <div className={styles.section3}>
           <h4>List Items being monitored</h4>
-          {monitoredItem.map((item) => {
+          {monitoredList.map((item) => {
             return (
               <div
                 className={`${styles.logItem} ${styles.monitoredItem} `}
                 key={item.id}
                 // onClick={() => setLogId(item.id)}
               >
-                {item.text}
+                <div className={styles.logText}>{item.text}</div>
+                <DeleteOutlined onClick={() => handleDelete(item.id)} />
               </div>
             );
           })}

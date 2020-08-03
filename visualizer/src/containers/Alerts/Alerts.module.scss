@@ -97,3 +97,12 @@
   border-bottom: 4px dashed #ffbb8b;
   overflow: auto;
 }
+
+.monitoredItem {
+  @include flex(center, space-between);
+}
+
+.logText {
+  width: 90%;
+  overflow: hidden;
+}
