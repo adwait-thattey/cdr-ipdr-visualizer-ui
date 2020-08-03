@@ -46,7 +46,7 @@ const AudioUpload =  () => {
 
                 <div className={styles.wrapper}>
                     <Button text="Person Detect" onClick={() => handleUpload("person")}/>
-                    <Button text="Curse Word Detect" onClick={() => handleUpload("word")}/>
+                    <Button text="Trigger Word Detect" onClick={() => handleUpload("word")}/>
                 </div>
 
                 <div>
