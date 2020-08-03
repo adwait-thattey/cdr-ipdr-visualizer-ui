@@ -18,8 +18,8 @@ const initialFilters = {
     location_radius: null,
 
 
-    time_start: new Date().getDate() + 1,
-    time_end: null,
+    time_start: new Date("2020-07-25T18:30:00.000Z"),
+    time_end: new Date("2020-07-31T18:30:00.000Z"),
 
 
     duration_min: null,

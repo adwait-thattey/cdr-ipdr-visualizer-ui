@@ -110,8 +110,8 @@ const initialFilters = {
   location_long: null,
   radius: null,
 
-  time_start: null,
-  time_end: null,
+  time_start: "2020-07-25T18:30:00.000Z",
+  time_end: "2020-07-31T18:30:00.000Z",
 
   duration_min: null,
   duration_max: null,
@@ -281,7 +281,7 @@ const Home = () => {
           return list.color;
         }
       }
-      return "orange";
+      return node.data.highlighted ? 'brown' : 'orange';
   }
 
   useEffect(() => {

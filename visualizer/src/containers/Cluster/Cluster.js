@@ -174,7 +174,7 @@ const Home = () => {
         async function fetchData() {
 
             try {
-                const communityObj = getCommunities(filters);
+                const communityObj = await getClusterInfo(filters);
                 setNodes(communityObj)
             } catch(e) {
                 console.log(e);

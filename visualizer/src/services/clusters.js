@@ -75,10 +75,10 @@ const getClusterInfo = async (filters) => {
     }
 
     // COMMUNITY API
-    const result = await axios.get('/data', {
+    const result = await axios.get('/analytics/community', {
         params
     })
-    return result.data;
+    return result.data[0];
 }
 
 
