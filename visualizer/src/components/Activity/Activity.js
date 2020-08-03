@@ -1,6 +1,6 @@
 import React from 'react';
 import { Steps } from 'antd';
-
+import styles from './Activity.module.scss';
 const { Step } = Steps;
 
 const Activity = ({
@@ -39,7 +39,7 @@ const Activity = ({
     });
   }
   return (
-    <h1>
+    <h1 className={styles.container}>
       {data ? (
         finalValues.length > 0 ? (
           <Steps progressDot current={finalValues.length} direction="vertical">
@@ -82,7 +82,9 @@ const Activity = ({
             })}
           </Steps>
         ) : (
-          <div>No activity found in the database</div>
+          <div className={styles.textDetails}>
+            No activity found in the database
+          </div>
         )
       ) : (
         <div>Please select a person to view activity</div>

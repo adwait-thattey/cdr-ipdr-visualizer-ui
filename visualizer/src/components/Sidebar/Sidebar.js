@@ -18,19 +18,19 @@ const Sidebar = ({ history }) => {
 
           <ul className={styling.menu}>
             <li onClick={() => history.push('/dashboard')}>
-              <AiFillFileText />
+              <AiFillFileText className={styling.icon} />
             </li>
 
             <li onClick={() => history.push('/visualize')}>
-              <AiOutlineBarChart />
+              <AiOutlineBarChart className={styling.icon} />
             </li>
 
             <li onClick={() => history.push('/upload')}>
-              <AiOutlineUpload />
+              <AiOutlineUpload className={styling.icon} />
             </li>
 
             <li onClick={() => history.push('/alerts')}>
-              <AiFillBell />
+              <AiFillBell className={styling.icon} />
             </li>
           </ul>
         </div>

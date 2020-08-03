@@ -1,0 +1,43 @@
+@mixin flex(
+  $align-items: flex-start,
+  $justify-content: flex-start,
+  $flex-direction: row
+) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
+.container {
+  @include flex(center, space-around, column);
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  // box-shadow: 0 0 10px 4px #f8bbd0;
+  // border: thin solid #2e416d;
+  transition: 0.2s ease all;
+  width: 80%;
+  // background: #e6ee9c;
+  background: #e1f5fe;
+  box-sizing: border-box;
+  // margin: 15px 0;
+}
+
+.container:hover {
+  background: #b7e1f5;
+  // border-bottom: 4px solid #ff8a65;
+  // border-left: 1px solid #ff8a65;
+  // box-shadow: 0 0 10px 2px #ff8a65;
+  // width: 22%;
+}
+
+// .cardIcon {
+//   font-size: 50px;
+//   // color: #fff;
+// }
+
+// .cardText {
+//   color: #fff;
+//   font-size: 20px;
+// }

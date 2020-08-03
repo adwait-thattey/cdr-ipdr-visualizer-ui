@@ -1,7 +1,52 @@
+@mixin flex(
+  $align-items: flex-start,
+  $justify-content: flex-start,
+  $flex-direction: row
+) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
 .container {
   height: 100vh;
+  overflow: hidden;
 }
 
 .section {
   overflow: auto;
+}
+
+.section1 {
+  @include flex(center, space-around);
+  margin: 40px 20px;
+}
+
+.section2 {
+  @include flex(center, space-around);
+  //   width: 100%;
+  height: 55vh;
+  margin: 40px 20px;
+  //   padding: 0 30px;
+  //   padding: ;
+}
+
+.subsection1 {
+  @include flex(center, space-around, column);
+  overflow: auto;
+  //   width: 100%;
+  height: 100%;
+  flex: 1;
+  //   margin-right: 30px;
+}
+
+.subsection2 {
+  overflow: auto;
+  //   width: 100%;
+  height: 100%;
+  flex: 3;
+  background: #fdebd0;
+  height: 100%;
+  border-radius: 15px;
 }

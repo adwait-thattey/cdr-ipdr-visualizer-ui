@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Home from './containers/Home/Home';
@@ -9,8 +9,28 @@ import Map from './containers/Map/Map';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Alerts from './containers/Alerts/Alerts';
 import Cluster from './containers/Cluster/Cluster';
+import { notification } from 'antd';
+import SingleUser from './containers/SingleUser/SingleUser';
+
+const openNotification = (alert) => {
+  notification['warning']({
+    message: alert.title,
+    description: alert.description,
+  });
+};
+
+const test = {
+  title: 'The Title',
+  description: 'This is the description of the toast notification',
+};
 
 function App() {
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     openNotification(test);
+  //   }, 1000);
+  // }, []);
+
   return (
     <Router>
       <div className="container-wrap">
@@ -40,6 +60,9 @@ function App() {
             </Route>
             <Route path="/alerts">
               <Alerts />
+            </Route>
+            <Route path="/user/:id">
+              <SingleUser />
             </Route>
           </Switch>
         </div>

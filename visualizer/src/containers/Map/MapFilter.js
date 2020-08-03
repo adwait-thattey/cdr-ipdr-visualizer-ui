@@ -27,12 +27,12 @@ const Filter = ({ updateChange, modalChange, initial }) => {
         <CCheckBox
           handleChange={handleChangeCheckbox}
           name="cdr"
-          defaultChecked={true}
+          checked={filters.cdr}
         />
         <CCheckBox
           handleChange={handleChangeCheckbox}
           name="ipdr"
-          defaultChecked={true}
+          checked={filters.ipdr}
         />
       </div>
 
@@ -42,6 +42,7 @@ const Filter = ({ updateChange, modalChange, initial }) => {
           onChange={handleChange}
           title="User ID's"
           placeholder="Enter User Id"
+          value={filters.user_id}
         />
       </div>
       <div className={styles.dual}>
@@ -50,12 +51,14 @@ const Filter = ({ updateChange, modalChange, initial }) => {
           onChange={handleChange}
           title="Start Time"
           placeholder="Enter Time Start"
+          value={filters.time_start}
         />
         <DateTimeInput
           name="time_end"
           onChange={handleChange}
           title="End Time"
           placeholder="Enter Time End"
+          value={filters.time_end}
         />
       </div>
       <div className={styles.dual}>

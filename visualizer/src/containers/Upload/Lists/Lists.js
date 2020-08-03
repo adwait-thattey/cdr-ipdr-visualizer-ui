@@ -60,7 +60,7 @@ const Lists = () => {
       // await axios.put('/data/watchlists', inputData);
       setList(list);
     } else {
-      // await axios.post('/data/watchlists', inputData);
+      await axios.post('/data/watchlists/', inputData);
       setList([inputData, ...list]);
     }
     resetInput();
@@ -99,7 +99,7 @@ const Lists = () => {
               rows={6}
               className={styles.inputTextBox}
               value={inputData.raw_data}
-              onChange={(e) => inputHandler('content', e.target.value)}
+              onChange={(e) => inputHandler('raw_data', e.target.value)}
               style={{ background: '#fff' }}
               placeholder="Enter Data Here"
             />

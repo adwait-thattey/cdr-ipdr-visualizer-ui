@@ -29,10 +29,12 @@
   background-color: #f0ffff;
   padding: 10px;
   margin: 10px 0;
-  width: 200px;
+  width: 250px;
   cursor: pointer;
   text-align: center;
   transition: 0.3s ease;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .panelItem:hover {

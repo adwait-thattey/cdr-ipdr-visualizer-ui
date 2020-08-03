@@ -2,17 +2,13 @@ import React from 'react';
 
 import { Steps, Tabs } from 'antd';
 import UserData from '../UserData/UserData';
+import IPDRData from '../Data/IPDRData';
+import CDRData from '../Data/CDRData';
+
+import { dateTimeString } from '../../services/dateUtils';
 
 const { Step } = Steps;
 const { TabPane } = Tabs;
-
-function dateTimeString(timestamp) {
-  const date = new Date(timestamp);
-
-  return `${date.getDate()}-${
-    date.getMonth() + 1
-  }-${date.getFullYear()} ${date.toLocaleTimeString()}`;
-}
 
 const MapSidePanel = ({ data }) => {
   return (
@@ -27,7 +23,7 @@ const MapSidePanel = ({ data }) => {
           <TabPane tab="Details" key="1">
             {data && data.user && <UserData data={data.user} />}
           </TabPane>
-          <TabPane tab="Details" key="2">
+          <TabPane tab="Timeline" key="2">
             {data && data.points && (
               <h1>
                 <Steps
@@ -40,12 +36,22 @@ const MapSidePanel = ({ data }) => {
                       key={index}
                       title={val.properties.type.toUpperCase()}
                       description={dateTimeString(val.properties.timestamp[0])}
+                      style={{ fontWeight: 'bolder', cursor: 'pointer' }}
+                      onClick={() => {
+                        data.showData(val.properties.type, val.properties.id);
+                      }}
                     />
                   ))}
                 </Steps>
               </h1>
             )}
           </TabPane>
+          {data.data && (
+            <TabPane tab="Data" key="3">
+              {data.data.type === 'ipdr' && <IPDRData data={data.data.data} />}
+              {data.data.type === 'cdr' && <CDRData data={data.data.data} />}
+            </TabPane>
+          )}
         </Tabs>
       </div>
     </div>

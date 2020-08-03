@@ -80,7 +80,7 @@
 
 .input {
   width: 100%;
-  margin: 10px 0 !important;
+  margin: 5px 0 !important;
 }
 
 .inputOpt {
@@ -96,4 +96,13 @@
 .subsection1 {
   border-bottom: 4px dashed #ffbb8b;
   overflow: auto;
+}
+
+.monitoredItem {
+  @include flex(center, space-between);
+}
+
+.logText {
+  width: 90%;
+  overflow: hidden;
 }

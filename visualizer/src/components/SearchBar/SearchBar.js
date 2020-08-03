@@ -6,7 +6,7 @@ import Button from '../Button/Button';
 import styles from './SearchBar.module.scss';
 import Circle from '../Circle/Circle';
 
-const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList, header }) => {
+const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList, header, showClusterButton }) => {
 
 
   const genDropD = (wishlists) => {
@@ -23,6 +23,9 @@ const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList,
     )
   }
 
+  const onClusterClick = () => {
+      window.location= "/cluster"
+  }
   const menu = genDropD(wishlists);
 
   return (
@@ -32,6 +35,7 @@ const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList,
       </div>
 
       <div className={styles.buttons}>
+        <Button text="Show Clusters" onClick={onClusterClick} />
         <Button text="Filter" onClick={onFilterClick} />
         <Dropdown overlay={menu} placement="topCenter">
           <AiButton className={styles.dropdownbtn} size="large">{(selectedUserList && selectedUserList.name) || "Watch Lists"}</AiButton>
