@@ -10,6 +10,7 @@ import Dashboard from './containers/Dashboard/Dashboard';
 import Alerts from './containers/Alerts/Alerts';
 import { notification } from 'antd';
 import SingleUser from './containers/SingleUser/SingleUser';
+import DualUser from './containers/DualUserData/DualUserData';
 
 const openNotification = (alert) => {
   notification['warning']({
@@ -59,6 +60,9 @@ function App() {
             </Route>
             <Route path="/user/:id">
               <SingleUser />
+            </Route>
+            <Route path="/dual/:id1/:id2">
+              <DualUser />
             </Route>
           </Switch>
         </div>

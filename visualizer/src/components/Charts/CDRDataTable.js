@@ -5,41 +5,30 @@ import styles from './Table.module.scss';
 import { AiFillCaretDown, AiFillCaretUp } from 'react-icons/ai';
 
 import { dateTimeString } from '../../services/dateUtils';
-import { useParams } from 'react-router-dom';
 
-const UsersTable = ({ data }) => {
+const CDRDataTable = ({ data }) => {
   const [sort, reSort] = useState('i');
-
-  const { id } = useParams();
 
   const dataCopy = useMemo(() => {
     return [...data];
   }, [data]);
 
   const sortedData = useMemo(() => {
-    if (sort === 'ff') {
+    if (sort === 'df') {
       return dataCopy.sort((a, b) => {
-        return a.total_times - b.total_times;
-      });
-    } else if (sort === 'df') {
-      return dataCopy.sort((a, b) => {
-        return a.total_duration - b.total_duration;
-      });
-    } else if (sort === 'fr') {
-      return dataCopy.sort((a, b) => {
-        return b.total_times - a.total_times;
+        return a.duration - b.duration;
       });
     } else if (sort === 'dr') {
       return dataCopy.sort((a, b) => {
-        return b.total_duration - a.total_duration;
+        return b.duration - a.duration;
       });
     } else if (sort === 'lf') {
       return dataCopy.sort((a, b) => {
-        return Date.parse(a.last_called) - Date.parse(b.last_called);
+        return Date.parse(a.timestamp) - Date.parse(b.timestamp);
       });
     } else if (sort === 'lr') {
       return dataCopy.sort((a, b) => {
-        return Date.parse(b.last_called) - Date.parse(a.last_called);
+        return Date.parse(b.timestamp) - Date.parse(a.timestamp);
       });
     } else {
       return data;
@@ -63,30 +52,22 @@ const UsersTable = ({ data }) => {
       <thead>
         <tr className={styles.tr}>
           <th className={styles.th}>
-            <div className={styles.heading}>Name</div>
+            <div className={styles.heading}>From</div>
           </th>
           <th className={styles.th}>
-            <div className={styles.heading}>Mobile</div>
+            <div className={styles.heading}>To</div>
           </th>
           <th className={styles.th + ' ' + styles.th_button}>
             <div className={styles.button} onClick={() => handleChange('d')}>
-              Total Duration
+              Duration
               {(sort === 'df' && <AiFillCaretUp />) ||
                 (sort === 'dr' && <AiFillCaretDown />) ||
                 ' '}
             </div>
           </th>
           <th className={styles.th + ' ' + styles.th_button}>
-            <div className={styles.button} onClick={() => handleChange('f')}>
-              Total Times
-              {(sort === 'ff' && <AiFillCaretUp />) ||
-                (sort === 'fr' && <AiFillCaretDown />) ||
-                ' '}
-            </div>
-          </th>
-          <th className={styles.th + ' ' + styles.th_button}>
             <div className={styles.button} onClick={() => handleChange('l')}>
-              Last Called
+              Date
               {(sort === 'lf' && <AiFillCaretUp />) ||
                 (sort === 'lr' && <AiFillCaretDown />) ||
                 ' '}
@@ -97,13 +78,10 @@ const UsersTable = ({ data }) => {
       <tbody>
         {sortedData.map((val, index) => (
           <tr className={styles.tr} key={index}>
-            <td className={styles.td}>
-              <a href={`/dual/${id}/${val.id}`}>{val.name}</a>
-            </td>
-            <td className={styles.td}>{val.phone_number}</td>
-            <td className={styles.td}>{val.total_duration}</td>
-            <td className={styles.td}>{val.total_times}</td>
-            <td className={styles.td}>{dateTimeString(val.last_called)}</td>
+            <td className={styles.td}>{val.from_number}</td>
+            <td className={styles.td}>{val.to_number}</td>
+            <td className={styles.td}>{val.duration}</td>
+            <td className={styles.td}>{dateTimeString(val.timestamp)}</td>
           </tr>
         ))}
       </tbody>
@@ -111,4 +89,4 @@ const UsersTable = ({ data }) => {
   );
 };
 
-export default UsersTable;
+export default CDRDataTable;
