@@ -8,6 +8,7 @@ import Upload from './containers/Upload/Upload';
 import Map from './containers/Map/Map';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Alerts from './containers/Alerts/Alerts';
+import Cluster from './containers/Cluster/Cluster';
 import { notification } from 'antd';
 import SingleUser from './containers/SingleUser/SingleUser';
 
@@ -53,6 +54,9 @@ function App() {
             </Route>
             <Route path="/dashboard">
               <Dashboard />
+            </Route>
+            <Route path="/cluster">
+              <Cluster />
             </Route>
             <Route path="/alerts">
               <Alerts />

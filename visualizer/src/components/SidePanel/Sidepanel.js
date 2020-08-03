@@ -18,8 +18,6 @@ const SidePanel = (props) => {
   const highlight = (e) => highLightNode(data, e.target.checked);
   const remove = () => removeNode(data);
 
-  console.log(data && data.phone_numbers);
-
   return (
     <div>
       <div>
@@ -43,7 +41,7 @@ const SidePanel = (props) => {
                     name="Remove Node"
                     checked={false}
                   />
-                  <a href="/map/1" target="_blank">View User timeline</a>
+                  <a href={`/map/${data.id}`} target="_blank">View User timeline</a>
                 </div>
                 <UserData data={data} />
               </div>

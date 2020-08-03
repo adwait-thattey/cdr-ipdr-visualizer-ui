@@ -20,6 +20,12 @@ const UserData = ({ data }) => {
             <div key={index} className={styles.phoneContainer}>
               <div className={styles.phoneItemContainer}>
                 <h3>Phone Number</h3>
+                {/*<h3>{Object.keys(each)[0]}</h3>
+              </div>
+              <div className={styles.phoneItemContainer}>
+                <h3>IMSI Number</h3>
+                <h3>{each[Object.keys(each)[0]][0][0]}</h3>
+          */}
                 <h3>{key}</h3>
               </div>
               {data.phone_numbers[0][key][0].map((val, key) => (

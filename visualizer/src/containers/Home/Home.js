@@ -5,9 +5,10 @@ import { Modal, Dropdown, Menu, Button as AiButton } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
-import { getFilteredData } from '../../services/filters';
+import { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists } from '../../services/filters';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
+
 
 const getRandomColor = () => {
   var letters = '0123456789ABCDEF';
@@ -18,6 +19,19 @@ const getRandomColor = () => {
   return color;
 };
 
+
+const edgeColors = {
+  5: 'green',
+  10: 'yellow',
+  20: 'red'
+}
+
+const colors = [];
+for (let i = 0; i < 10; i++) {
+  colors.push(getRandomColor());
+}
+
+
 const userListsData = [
   {
     id: 1,
@@ -26,53 +40,14 @@ const userListsData = [
     to_display: true,
     raw_data: 'user_id,125',
   },
-  {
-    id: 2,
-    users_list: [2, 3, 4],
-    name: 'Watchlist 2',
-    to_display: true,
-    raw_data: 'user_id,125',
-  },
 ];
-
-const getNodeData = async () =>
-  new Promise((res, rej) => {
-    setTimeout(() => {
-      res({
-        name: 'Brijesh Bumrela',
-        address: 'IIIT Sri City',
-        phone_numbers: [
-          { number: '7985641784', imsi: '9878ARUSNCJA1234' },
-          { number: '9898784515', imsi: '7878AQNSANWJ1234' },
-        ],
-        devices: [
-          { imei: 'AYDBWTAJRK23', mac: '80:20:42:41:41' },
-          { imei: 'QEUSMSGFYS98', mac: '80:20:42:11:90' },
-        ],
-      });
-    }, 1000);
-  });
 
 const cdrData = [
   { id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] },
-  { id: 50, from: 1, to: 3, frequency: 5, calls: [71, 74] },
-  { id: 51, from: 2, to: 3, frequency: 5, calls: [] },
-  { id: 52, from: 2, to: 3, frequency: 5, calls: [] },
-  { id: 53, from: 3, to: 6, frequency: 5, calls: [] },
-  { id: 54, from: 4, to: 6, frequency: 3, calls: [] },
-  { id: 55, from: 5, to: 6, frequency: 5, calls: [] },
-  { id: 56, from: 7, to: 9, frequency: 5, calls: [] },
-  { id: 57, from: 9, to: 8, frequency: 5, calls: [] },
-  { id: 58, from: 9, to: 5, frequency: 5, calls: [] },
-  { id: 59, from: 8, to: 2, frequency: 5, calls: [] },
-  { id: 60, from: 9, to: 3, frequency: 5, calls: [] },
-  { id: 61, from: 5, to: 7, frequency: 5, calls: [] },
 ];
 
 const ipdrData = [
   { id: 70, from: 1, service: 1 + 50000, records: 3, calls: [21] },
-  { id: 71, from: 2, service: 3 + 50000, records: 2, calls: [] },
-  { id: 72, from: 1, service: 3 + 50000, records: 4, calls: [22] },
 ];
 
 const detailedCdrData = [
@@ -88,85 +63,7 @@ const detailedCdrData = [
     cell_id: null,
     location_lat: null,
     location_long: null,
-  },
-  {
-    id: 69,
-    timestamp: '2019-04-08T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 70,
-    timestamp: '2019-03-18T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 71,
-    timestamp: '2019-07-21T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 72,
-    timestamp: '2019-12-01T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 73,
-    timestamp: '2019-01-15T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
-  {
-    id: 74,
-    timestamp: '2019-03-30T19:02:41+05:30',
-    from_number: '9447774476',
-    to_number: '9876543211',
-    duration: 471,
-    call_type: 'Outgoing',
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-  },
+  }
 ];
 
 const detailedIpdrData = [
@@ -189,71 +86,12 @@ const detailedIpdrData = [
     upload_data_volume: null,
     download_data_volume: null,
   },
-  {
-    id: 22,
-    start_time: '2019-04-30T19:02:41+05:30',
-    duration: 975,
-    private_ip: null,
-    private_port: null,
-    public_ip: null,
-    public_port: null,
-    destination_ip: null,
-    destination_port: 8001,
-    from_number: null,
-    imei: null,
-    imsi: null,
-    cell_id: null,
-    location_lat: null,
-    location_long: null,
-    upload_data_volume: null,
-    download_data_volume: null,
-  },
 ];
 
 const usersData = [
   {
     id: 1,
     name: 'Brijesh',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 2,
-    name: 'Adwait',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 3,
-    name: 'Parth',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 4,
-    name: 'Riya',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 5,
-    name: 'Shlok',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 6,
-    name: 'Ram',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 7,
-    name: 'Vijendar',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 8,
-    name: 'Saini',
-    phone_numbers: ['1234567890', '0987654321', '3628292838'],
-  },
-  {
-    id: 9,
-    name: 'Ankur',
     phone_numbers: ['1234567890', '0987654321', '3628292838'],
   },
 ];
@@ -263,16 +101,6 @@ const servicesData = [
     id: 1 + 50000,
     name: 'WhatsApp',
     port: 5432,
-  },
-  {
-    id: 2 + 50000,
-    name: 'Messenger',
-    port: 8000,
-  },
-  {
-    id: 3 + 50000,
-    name: 'Telegram',
-    port: 8001,
   },
 ];
 
@@ -284,8 +112,8 @@ const initialFilters = {
   location_long: null,
   radius: null,
 
-  time_start: null,
-  time_end: null,
+  time_start: "2020-07-25T18:30:00.000Z",
+  time_end: "2020-07-31T18:30:00.000Z",
 
   duration_min: null,
   duration_max: null,
@@ -347,38 +175,103 @@ const Home = () => {
   // Sidepanel to showcase the detailed side panel
   const [detailPanel, setDetailPanel] = useState([false, null]);
 
-  const [cdr, setCdrData] = useState(cdrData);
+  const [cdr, setCdrData] = useState([]);
   const [detailedCdr, setDetailedCdr] = useState(detailedCdrData);
   const [ipdr, setIpdr] = useState(ipdrData);
   const [detailedIpdr, setDetailedIpdr] = useState(detailedIpdrData);
-  const [users, setUsers] = useState(usersData);
+  const [users, setUsers] = useState([]);
   const [services, setServices] = useState(servicesData);
 
   // Filters state
   const [filters, setFilters] = useState(initialFilters);
 
   // Users list
-  const [userLists, setUserLists] = useState(userListsData);
-  const [selectedUserList, setSelectedUserList] = useState(null);
+  const [watchLists, setWatchLists] = useState(userListsData);
+
 
   const handleFilterModal = (status) => setShowFilterModal(status);
+
+
+  useEffect(() => {
+    async function fetchData() {
+
+      try {
+        const updatedData = await getFilteredData(filters);
+        const { cdrData, ipdrData } = updatedData;
+    
+
+        const userIdsFromCdr = getUserNodes(cdrData, "cdr");
+        const userInfoOne = await getUserInfo(userIdsFromCdr);
+
+
+        const userIdsFromIpdr = getUserNodes(ipdrData, "ipdr");
+        const userInfoTwo = await getUserInfo(userIdsFromIpdr)
+
+        const serviceNodes = getServiceNodes(ipdrData);
+        const getServices = await getServiceInfo(serviceNodes);
+
+
+        const watchLists = await getWatchLists();
+        const watchListWithColor = watchLists.map((list, index) => ({ ...list, color: colors[index % colors.length], selected: false }))
+        setWatchLists(watchListWithColor);
+
+        setAllValues(cdrData, ipdrData, [...userInfoOne, ...userInfoTwo], getServices)
+      } catch(e) {
+        console.log(e);
+      }
+
+    }
+    fetchData();
+  }, [filters]);
+
+  const getUserNodes = (apiData, type) => {
+      const users = new Set()
+      apiData.forEach(data => {
+        users.add(data.from);
+        // For IPDR check is required
+        if (type === "cdr") users.add(data.to);
+      })
+      return users;
+  }
+
+  const getServiceNodes = (apiData) => {
+      const services = new Set()
+      apiData.forEach(data => {
+          services.add(data.to);
+      })
+      return services;
+  }
+
+  const getUserInfo = async (userIds) => await getUserData(userIds);
+
+  const getEdgeColor = (node) => {
+
+    const frequency = node.data.frequency;
+
+    if (frequency < 10) return "green";
+    if (frequency < 20) return "yellow";
+    else return "red";
+
+  }
 
   const handleFilters = async (newFilterState) => {
     setFilters(newFilterState);
     setShowFilterModal(false);
     try {
       const updatedData = await getFilteredData(newFilterState);
-      setAllValues(updatedData);
+      const { cdrData } = updatedData;
+      const userIds = getUserNodes(cdrData);
+      const userInfo = await getUserInfo(userIds);
+      setAllValues(cdrData, [], userInfo, [])
     } catch (e) {
       console.log(e);
     }
   };
 
-  const setAllValues = (updatedData) => {
-    const { cdr, ipdr, users, services } = updatedData;
+  const setAllValues = (cdr, ipdr, users, services) => {
     setCdrData(cdr);
     setIpdr(ipdr);
-    setUsers(users);
+    setUsers([...users]);
     setServices(services);
   };
 
@@ -408,27 +301,25 @@ const Home = () => {
     setUsers([...otherNodes, selectedNode]);
   };
 
-  const handleUserListSelect = (id) => {
-    const wishlist = userLists.find((user) => user.id === id);
-    if (!wishlist) throw new Error('wishlist not found');
+  const handleUserListSelect = (checked, id) => {
+    const watchList = watchLists.find(user => user.id === id);
+    const otherWatchLists = watchLists.filter(user => user.id !== id);
+    if (!watchList) throw new Error('watchList not found');
+    watchList.selected = checked;
+    
+    setWatchLists([...otherWatchLists, { ...watchList }])
+  };
 
-    const newUsers = [];
-
-    for (let user of users) {
-      let userFound = false;
-      for (let user_id of wishlist.users_list) {
-        if (user.id === user_id) {
-          userFound = true;
-          user.highlighted = true;
+  const getNodeColor = (node) => {
+      for (let list of watchLists) {
+        if (!list.selected) continue;
+        if (list.users_list.includes(node.node)) {
+          return list.color;
         }
       }
-      if (!userFound) user.highlighted = false;
-      newUsers.push({ ...user });
-    }
-
-    setSelectedUserList(wishlist);
-    setUsers(newUsers);
-  };
+      if (node.data.type === "service") return 'lightgray';
+      return node.data.highlighted ? 'brown' : 'orange';
+  }
 
   useEffect(() => {
     var G = new window.jsnx.Graph();
@@ -457,7 +348,7 @@ const Home = () => {
 
     // CDR edges
     for (let ele of cdr) {
-      const { from, to, frequency, id } = ele;
+      const { from, to, calls } = ele;
       if (
         users.find(
           (user) => (user.id === from || user.id === to) && user.removed,
@@ -465,16 +356,16 @@ const Home = () => {
       ) {
         continue;
       }
-      G.addEdge(from, to, { frequency, color: 'blue', id });
+      G.addEdge(from, to, { frequency: calls.length });
     }
 
     // IPDR edges
     for (let ele of ipdr) {
-      const { from, service, id } = ele;
-      if (users.find((user) => user.id === from && user.removed)) {
+      const { from, to, calls } = ele;
+      if (users.find((user) => (user.id === from || user.id === to) && user.removed)) {
         continue;
       }
-      G.addEdge(from, service, { id });
+      G.addEdge(from, to, { ...ele, frequency: calls.length });
     }
 
     window.jsnx.draw(G, {
@@ -488,14 +379,17 @@ const Home = () => {
         linkDistance: 160,
       },
       nodeStyle: {
-        fill: (d) => (d.data.highlighted ? 'red' : d.data.color),
+        fill: (d) => getNodeColor(d),
       },
       labels: (d) => {
         let name = d.data.name;
-        if (name.length > 6) {
+        if (name && name.length > 6) {
           name = name.slice(0, 6) + '...';
         }
         return name;
+      },
+      edgeStyle: {
+        fill: d => getEdgeColor(d)
       },
       stickyDrag: true,
     });
@@ -505,25 +399,39 @@ const Home = () => {
     });
 
     window.d3.selectAll('.node').on('click', async (d) => {
-      const nodeData = await getNodeData(d.node);
+
       const updatedData = {
         id: d.node,
         ...d.data,
-        ...nodeData,
         type: d.data.type,
       };
+
+      const cdrs = getAllCdrsFromUserNode(d.node)
+      const detailedCdrs = await getCdrData(cdrs);
+      setDetailedCdr(detailedCdrs);
+      // localhost:8000/data/cdrs?cdr=15
+
       setDetailPanel([true, updatedData]);
     });
 
     window.d3.selectAll('.node').on('mouseleave', (d) => {
       setHoverModal([false, null]);
     });
-  }, [cdr, ipdr, users, services]);
+  }, [cdr, ipdr, users, services, watchLists]);
+
+
+  const getAllCdrsFromUserNode = (node) => {
+    
+    const nodes = [];
+    
+    cdr.filter(ele => ele.from === node || ele.to === node).forEach(node => {
+      nodes.push(...node.calls)
+    })
+
+    return nodes;
+  }
 
   const hoverDiv = () => {
-    // const { x, y } = hoverModal[1];
-    // console.log(hoverModal[1]);
-
     const event = window.d3.event;
 
     if (event) {
@@ -541,6 +449,7 @@ const Home = () => {
     }
   };
 
+
   return (
     <>
       <Modal
@@ -553,24 +462,32 @@ const Home = () => {
       </Modal>
 
       <div className={styles.fullContainer}>
+        <SearchBar
+          wishlists={watchLists}
+          updateWishList={handleUserListSelect}
+          onFilterClick={() => handleFilterModal(true)}
+          header="Visualize"
+          showClusterButton={true}
+          />
+        
         {/* <SearchBar
           wishlists={userLists}
           updateWishList={handleUserListSelect}
           onFilterClick={() => handleFilterModal(true)}
           selectedUserList={selectedUserList}
         /> */}
-        <Header
+        {/* <Header
           title="Visualize"
           onFilterClick={() => handleFilterModal(true)}
           child={
             <FilterButtons
-              wishlists={userLists}
+              wishlists={watchLists}
               updateWishList={handleUserListSelect}
               onFilterClick={() => handleFilterModal(true)}
-              selectedUserList={selectedUserList}
+              // selectedUserList={selectedUserList}
             />
           }
-        />
+        /> */}
 
         <div className={styles.networkWrapper}>
           <div className={styles.graphCanvas} id="demo-canvas"></div>

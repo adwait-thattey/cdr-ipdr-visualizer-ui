@@ -1,7 +1,7 @@
 import axios from './axios';
 
 
-const getFilteredData = async (filters) => {
+const getClusterInfo = async (filters) => {
     const { 
         location_lat, location_long, location_radius, 
         cdr, ipdr, 
@@ -74,33 +74,11 @@ const getFilteredData = async (filters) => {
         else params.cell_id = cell_id
     }
 
-    const result = await axios.get('/data', {
+    // COMMUNITY API
+    const result = await axios.get('/analytics/community', {
         params
     })
-    return result.data;
-}
-
-
-const getCdrData = async (ids) => {
-    const queryString = genQueryString2(ids, "cdr")
-    const result = await axios.get(`/data/cdrs?cdr=${queryString}`)
-    return result.data;
-}
-
-
-
-// Helpers
-
-const genQueryString = (list, key) => {
-    let queryString = "";
-
-    for (let i = 0; i < list.length; i++) {
-        if (i === 0) queryString += `?${key}=${list[i]}&`;
-        else if (i === list.length - 1) queryString += `${key}=${list[i]}`;
-        else queryString += `${key}=${list[i]}&`
-    }
-
-    return queryString;
+    return result.data[0];
 }
 
 
@@ -119,32 +97,4 @@ const genQueryString2 = (list, key) => {
 }
 
 
-const getUserData = async (userIds) => {
-
-    const key = "person";
-
-    const userListId = Array.from(userIds);
-
-    const queryString = genQueryString(userListId, key)
-
-    const result = await axios.get(`/data/persons/${queryString}`)
-    return result.data;
-}
-
-
-const getServiceInfo = async (serviceIds) => {
-    const key = "service";
-
-    const userListId = Array.from(serviceIds);
-    const queryString = genQueryString(userListId, key)
-
-    const result = await axios.get(`/data/services/${queryString}`)
-    return result.data;
-}
-
-const getWatchLists = async () => {
-    const response = await axios.get('/data/watchlists');
-    return response.data;
-};
-
-export { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists }
+export { getClusterInfo }

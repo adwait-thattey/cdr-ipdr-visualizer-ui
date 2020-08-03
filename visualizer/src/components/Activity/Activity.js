@@ -13,18 +13,21 @@ const Activity = ({
 }) => {
   let finalValues = [];
   if (data) {
+
     const cdrIds = []
       .concat(
         ...cdr
-          .filter((item) => item.from === data.id)
+          .filter((item) => item.from === data.id || item.to === data.id)
           .map((item) => item.calls),
       )
-      .map((item) => detailedCdr.find((obj) => obj.id === item));
+      .map((item) => {
+        return detailedCdr.find((obj) => obj.id === item)
+      });
 
     const ipdrIds = []
       .concat(
         ...ipdr
-          .filter((item) => item.from === data.id)
+          .filter((item) => item.from === data.id || item.to === data.id)
           .map((item) => item.calls),
       )
       .map((item) => detailedIpdr.find((obj) => obj.id === item));
@@ -35,14 +38,13 @@ const Activity = ({
       return new Date(d2) - new Date(d1);
     });
   }
-  console.log('==');
-  console.log(data);
   return (
     <h1 className={styles.container}>
       {data ? (
         finalValues.length > 0 ? (
           <Steps progressDot current={finalValues.length} direction="vertical">
-            {finalValues.map((item) => {
+            {finalValues.map((item, key) => {
+              if (!item) return;
               const date = new Date(
                 item.timestamp ? item.timestamp : item.start_time,
               );
@@ -76,7 +78,7 @@ const Activity = ({
               } else {
                 title = `Called ${item.to_number}`;
               }
-              return <Step title={title} description={description} />;
+              return <Step key={key} title={title} description={description} />;
             })}
           </Steps>
         ) : (
