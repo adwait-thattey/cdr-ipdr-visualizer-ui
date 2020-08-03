@@ -8,6 +8,7 @@ import CustomPopup from '../../components/CustomPopup/CustomPopup';
 import { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists } from '../../services/filters';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
+import Circle from '../../components/Circle/Circle';
 
 
 const getRandomColor = () => {
@@ -211,11 +212,39 @@ const Home = () => {
         const getServices = await getServiceInfo(serviceNodes);
 
 
+        // { id: 49, from: 1, to: 2, calls: [68, 70, 73] },
+
+        const finalUserList = [...userInfoOne, ...userInfoTwo]
+
+        cdrData.forEach(data => {
+          const { from, to, calls } = data;
+          finalUserList.forEach(user => {
+            if (user.id === from || user.id === to) {
+                if (!user.count) user.count = 0
+                if (!user.calls) user.calls = []
+                user.count += calls.length;
+                user.calls = [...user.calls, ...calls]
+            }
+          })
+        })
+
+
+        ipdrData.forEach(data => {
+          const { from, calls } = data;
+          finalUserList.forEach(user => {
+            if (user.id === from) {
+                user.count += calls.length;
+                user.calls = [...user.calls, ...calls]
+            }
+          })
+        })
+
+
         const watchLists = await getWatchLists();
         const watchListWithColor = watchLists.map((list, index) => ({ ...list, color: colors[index % colors.length], selected: false }))
         setWatchLists(watchListWithColor);
 
-        setAllValues(cdrData, ipdrData, [...userInfoOne, ...userInfoTwo], getServices)
+        setAllValues(cdrData, ipdrData, finalUserList, getServices)
       } catch(e) {
         console.log(e);
       }
@@ -311,6 +340,10 @@ const Home = () => {
   };
 
   const getNodeColor = (node) => {
+      let color = "orange";
+      if (node.data.count > 6) color = "red";
+      else if (node.data.count > 3) color = "green";
+      else color = "yellow";
       for (let list of watchLists) {
         if (!list.selected) continue;
         if (list.users_list.includes(node.node)) {
@@ -318,7 +351,8 @@ const Home = () => {
         }
       }
       if (node.data.type === "service") return 'lightgray';
-      return node.data.highlighted ? 'brown' : 'orange';
+
+      return node.data.highlighted ? 'brown' : color;
   }
 
   useEffect(() => {
@@ -370,9 +404,8 @@ const Home = () => {
 
     window.jsnx.draw(G, {
       element: '#demo-canvas',
-      withLabels: true,
       nodeAttr: {
-        r: (d) => (d.data.type === 'service' ? 35 : 26),
+        r: (d) => (d.data.type === 'service' ? 20 : 10),
       },
       layoutAttr: {
         charge: -120,
@@ -488,8 +521,13 @@ const Home = () => {
             />
           }
         /> */}
-
+          <div className={styles.mark}>
+            <h4>Calls Greater than 8 <Circle color="red"/></h4>
+            <h4>Calls Greater than 6 <Circle color="green"/></h4>
+            <h4>Calls Greater than 4 <Circle color="yellow"/></h4>
+          </div>
         <div className={styles.networkWrapper}>
+          
           <div className={styles.graphCanvas} id="demo-canvas"></div>
           <div className={styles.sidepanelWrapper}>
             {

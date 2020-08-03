@@ -35,3 +35,17 @@
   color: #fff !important;
   cursor: pointer;
 }
+
+
+.mark {
+  display: flex;
+  margin-top: 20px;
+}
+
+.mark > * {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  min-width: 200px;
+  margin-left: 20px;
+}
