@@ -560,7 +560,7 @@ const Home = () => {
           selectedUserList={selectedUserList}
         /> */}
         <Header
-          title="Visualise"
+          title="Visualize"
           onFilterClick={() => handleFilterModal(true)}
           child={
             <FilterButtons

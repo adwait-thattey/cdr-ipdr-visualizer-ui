@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 import Home from './containers/Home/Home';
@@ -8,8 +8,27 @@ import Upload from './containers/Upload/Upload';
 import Map from './containers/Map/Map';
 import Dashboard from './containers/Dashboard/Dashboard';
 import Alerts from './containers/Alerts/Alerts';
+import { notification } from 'antd';
+
+const openNotification = (alert) => {
+  notification['warning']({
+    message: alert.title,
+    description: alert.description,
+  });
+};
+
+const test = {
+  title: 'The Title',
+  description: 'This is the description of the toast notification',
+};
 
 function App() {
+  // useEffect(() => {
+  //   setInterval(() => {
+  //     openNotification(test);
+  //   }, 1000);
+  // }, []);
+
   return (
     <Router>
       <div className="container-wrap">

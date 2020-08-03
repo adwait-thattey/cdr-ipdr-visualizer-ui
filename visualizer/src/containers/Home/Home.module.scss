@@ -23,8 +23,11 @@
 .dropdownbtn {
   border: 1px solid #0252fc !important;
   border-radius: 7px !important;
+  padding: 0 40px !important;
   color: #0252fc !important;
-  font-weight: bold !important;
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  min-width: 160px !important;
 }
 
 .dropdownbtn:hover {
