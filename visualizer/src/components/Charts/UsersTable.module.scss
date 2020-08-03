@@ -1,0 +1,54 @@
+%heading {
+  display: inline;
+  margin: 2px 0;
+  padding: 0 4px;
+  line-height: 1.2em;
+  font-weight: 700;
+  color: #3f76dd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.heading {
+  @extend %heading;
+}
+
+.button {
+  @extend %heading;
+  cursor: pointer;
+
+  &:hover {
+    color: #67a8f3;
+  }
+}
+
+.table,
+.tr {
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 20px;
+}
+
+%color {
+  &:nth-of-type(even) {
+    background-color: rgb(226, 226, 226);
+  }
+  &:nth-of-type(odd) {
+    background-color: rgb(255, 255, 255);
+  }
+  padding: 15px;
+  line-height: 1.3em;
+  text-align: center;
+}
+
+.th {
+  @extend %color;
+}
+
+.td {
+  @extend %color;
+  border: 0;
+  border-top: 2px solid black;
+}
