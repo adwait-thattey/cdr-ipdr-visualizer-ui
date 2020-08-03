@@ -18,7 +18,7 @@ const initialFilters = {
     location_radius: null,
 
 
-    time_start: null,
+    time_start: new Date().getDate() + 1,
     time_end: null,
 
 

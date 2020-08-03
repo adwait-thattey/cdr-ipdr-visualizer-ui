@@ -18,6 +18,12 @@ const getRandomColor = () => {
 };
 
 
+const edgeColors = {
+  5: 'green',
+  10: 'yellow',
+  20: 'red'
+}
+
 const colors = [];
 for (let i = 0; i < 10; i++) {
   colors.push(getRandomColor());
@@ -202,6 +208,16 @@ const Home = () => {
 
   const getUserInfo = async (userIds) => await getUserData(userIds);
 
+  const getEdgeColor = (node) => {
+
+    const frequency = node.data.frequency;
+
+    if (frequency < 10) return "green";
+    if (frequency < 20) return "yellow";
+    else return "red";
+
+  }
+
   const handleFilters = async (newFilterState) => {
     setFilters(newFilterState);
     setShowFilterModal(false);
@@ -295,7 +311,7 @@ const Home = () => {
 
     // CDR edges
     for (let ele of cdr) {
-      const { from, to, frequency, id } = ele;
+      const { from, to, calls } = ele;
       if (
         users.find(
           (user) => (user.id === from || user.id === to) && user.removed,
@@ -303,16 +319,16 @@ const Home = () => {
       ) {
         continue;
       }
-      G.addEdge(from, to, { frequency, color: 'blue', id });
+      G.addEdge(from, to, { frequency: calls.length });
     }
 
     // IPDR edges
     for (let ele of ipdr) {
-      const { from, to, id } = ele;
+      const { from, to, calls } = ele;
       if (users.find((user) => (user.id === from || user.id === to) && user.removed)) {
         continue;
       }
-      G.addEdge(from, to, { id });
+      G.addEdge(from, to, { ...ele, frequency: calls.length });
     }
 
     window.jsnx.draw(G, {
@@ -334,6 +350,9 @@ const Home = () => {
           name = name.slice(0, 6) + '...';
         }
         return name;
+      },
+      edgeStyle: {
+        fill: d => getEdgeColor(d)
       },
       stickyDrag: true,
     });

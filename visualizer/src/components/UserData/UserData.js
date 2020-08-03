@@ -24,7 +24,7 @@ const UserData = ({ data }) => {
               </div>
               <div className={styles.phoneItemContainer}>
                 <h3>IMSI Number</h3>
-                <h3>{each[Object.keys(each)[0]]}</h3>
+                <h3>{each[Object.keys(each)[0]][0][0]}</h3>
               </div>
             </div>
           );
