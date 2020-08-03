@@ -14,10 +14,14 @@ const Chart = ({ data }) => {
     return data ? data.map((val) => val.name) : null;
   }, [data]);
 
-  const [dataSeries, timeSeries] = useMemo(() => {
+  const [dataSeries, timeSeries, durationSeries] = useMemo(() => {
     return data
-      ? [data.map((val) => val.total_data), data.map((val) => val.total_times)]
-      : [null, null];
+      ? [
+          data.map((val) => val.total_data),
+          data.map((val) => val.total_times),
+          data.map((val) => val.duration),
+        ]
+      : [null, null, null];
   }, [data]);
 
   const [selected, setSelected] = useState('Traffic');
@@ -32,6 +36,7 @@ const Chart = ({ data }) => {
     <Menu onClick={handleMenuClick}>
       <Menu.Item key="Traffic">Traffic</Menu.Item>
       <Menu.Item key="Frequency">Frequency</Menu.Item>
+      <Menu.Item key="Duration">Duration</Menu.Item>
     </Menu>
   );
 
@@ -66,30 +71,44 @@ const Chart = ({ data }) => {
           </Dropdown>
         </div>
       </div>
-      {selected === 'Traffic' && labels && (
-        <ChartType
-          height={350}
-          width={500}
-          id={selected}
-          labels={labels}
-          series={dataSeries}
-          title={'Traffic'}
-          yQuantity="bytes"
-          color={'#4caf50'}
-        />
-      )}
-      {selected === 'Frequency' && labels && (
-        <ChartType
-          height={350}
-          width={500}
-          id={selected}
-          labels={labels}
-          series={timeSeries}
-          title={'Frequency'}
-          yQuantity="times"
-          color={'#2b908f'}
-        />
-      )}
+      <div style={{ overflow: 'hidden' }}>
+        {selected === 'Traffic' && labels && (
+          <ChartType
+            height={350}
+            width={500}
+            id={selected}
+            labels={labels}
+            series={dataSeries}
+            title={'Traffic'}
+            yQuantity="bytes"
+            color={'#4caf50'}
+          />
+        )}
+        {selected === 'Frequency' && labels && (
+          <ChartType
+            height={350}
+            width={500}
+            id={selected}
+            labels={labels}
+            series={timeSeries}
+            title={'Frequency'}
+            yQuantity="times"
+            color={'#2b908f'}
+          />
+        )}
+        {selected === 'Duration' && labels && (
+          <ChartType
+            height={350}
+            width={500}
+            id={selected}
+            labels={labels}
+            series={durationSeries}
+            title={'Duration'}
+            yQuantity="secs"
+            color={'#216b9f'}
+          />
+        )}
+      </div>
     </div>
   );
 };

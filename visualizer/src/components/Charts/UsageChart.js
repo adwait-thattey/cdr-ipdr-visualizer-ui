@@ -1,11 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Dropdown, Menu, Button } from 'antd';
 import styles from './Chart.module.scss';
-import {
-  AiOutlineDownCircle,
-  AiFillSignal,
-  AiOutlineSwap,
-} from 'react-icons/ai';
+import { AiOutlineDownCircle, AiFillSignal } from 'react-icons/ai';
 import DataChart from './DataChart';
 
 const Chart = ({ ipdr, cdr }) => {
@@ -58,7 +54,7 @@ const Chart = ({ ipdr, cdr }) => {
             labels={cdrLabels}
             series={cdrSeries}
             titleY={'Call Time'}
-            yQuantity="mins"
+            yQuantity="secs"
             color={'#f04530'}
             shadowColor={'#ff8080'}
           />
