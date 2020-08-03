@@ -29,3 +29,11 @@
   text-align: center;
   margin: 10px 0;
 }
+
+.wrapper {
+    display: flex;
+}
+
+.wrapper > * {
+    margin-left: 10px;
+}

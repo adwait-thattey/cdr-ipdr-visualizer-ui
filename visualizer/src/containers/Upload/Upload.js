@@ -12,7 +12,7 @@ const { TabPane } = Tabs;
 
 const Upload = () => {
   let { id } = useParams();
-  const defaultActiveTab = id ? id : 'cdr';
+  const defaultActiveTab = id ? id : 'audio';
   return (
     <div className={styles.container}>
       <Header title="Upload Data" onFilterClick={() => {}} />
