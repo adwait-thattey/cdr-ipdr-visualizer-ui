@@ -8,7 +8,8 @@ import UserData from '../UserData/UserData';
 const { TabPane } = Tabs;
 
 const SidePanel = (props) => {
-  const { data: propData, highLightNode, removeNode } = props;
+  const { data: propData, highLightNode, removeNode, cluster } = props;
+
   const [data, setData] = useState(propData);
 
   useEffect(() => {
@@ -17,6 +18,26 @@ const SidePanel = (props) => {
 
   const highlight = (e) => highLightNode(data, e.target.checked);
   const remove = () => removeNode(data);
+
+
+  if (cluster) {
+    return (
+      <div className={styles.datafields}>
+        <div>
+          <h4>Phone Number</h4>
+          <h3>{propData && propData.node}</h3>
+        </div>
+        <div>
+          <h4>Influence</h4>
+          <h3>{propData && propData.data.influence}</h3>
+        </div>
+        <div>
+          <h4>Community Index</h4>
+          <h3>{propData && propData.data.comm_index}</h3>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div>

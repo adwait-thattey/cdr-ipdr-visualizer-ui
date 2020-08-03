@@ -1,3 +1,26 @@
-.graphCanvas {
-    height: 90vh;
-}
+.fullContainer {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .graphCanvas {
+    height: 95vh;
+    width: 70%;
+  }
+  
+  .sidepanelWrapper {
+    width: 30%;
+    height: 89vh;
+    overflow: scroll;
+    border-left: 10px solid #f4f8fe;
+  }
+  
+  .networkWrapper {
+    display: flex;
+    flex: 1;
+    margin-top: 15px;
+  }
+  

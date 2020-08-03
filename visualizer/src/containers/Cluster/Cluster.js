@@ -5,6 +5,7 @@ import { Modal } from 'antd';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
 import { getClusterInfo } from '../../services/clusters';
+import SidePanel from '../../components/SidePanel/Sidepanel';
 
 
 const getRandomColor = () => {
@@ -155,6 +156,10 @@ const Home = () => {
     const handleFilterModal = (status) => setShowFilterModal(status);
 
     const [selectedCommunity, setSelectedCommunity] = useState(null);
+    const [selectedNode, setSelectedNode] = useState(null);
+
+
+    const [communityMaxNode, setCommunityMaxNode] = useState({});
 
 
     const getCommunities = () => {
@@ -175,6 +180,19 @@ const Home = () => {
 
             try {
                 const communityObj = await getClusterInfo(filters);
+
+                const maxValues = {}
+
+                for (let key in communityObj) {
+                  if (!maxValues[communityObj[key][0]]) {
+                    maxValues[communityObj[key][0]] = 0
+                  }
+                  maxValues[communityObj[key][0]] = Math.max(maxValues[communityObj[key][0]], communityObj[key][1])
+                }
+
+
+                console.log("MAXVALUES", maxValues);
+                setCommunityMaxNode(maxValues)
                 setNodes(communityObj)
             } catch(e) {
                 console.log(e);
@@ -256,8 +274,6 @@ const Home = () => {
     setWatchLists([...otherWatchLists, { ...watchList }])
   };
 
-  console.log(nodes);
-
   const getNodeColor = (node) => {
       return colors[node.data.comm_index];
   }
@@ -273,21 +289,24 @@ const Home = () => {
     for (let ele in nodes) {
         if (selectedCommunity !== null) {
             if (nodes[ele][0] === selectedCommunity) {
-                console.log('yaha');
                 G.addNode(ele, { comm_index: nodes[ele][0], influence: nodes[ele][1] });
             }
         }
         else {
-            console.log('yaha2');
             G.addNode(ele, { comm_index: nodes[ele][0], influence: nodes[ele][1] });
         }
     }
+
+
 
     window.jsnx.draw(G, {
       element: '#demo-canvas',
       withLabels: true,
       nodeAttr: {
-        r: (d) => d.data.influence + 10,
+        r: (d) => {
+          if (d.data.influence === communityMaxNode[d.data.comm_index]) return 20;
+          return d.data.influence + 10
+        },
       },
       layoutAttr: {
         charge: -120,
@@ -316,6 +335,7 @@ const Home = () => {
     window.d3.selectAll('.node').on('click', (d) => {
         if (selectedCommunity === d.data.comm_index) setSelectedCommunity(null)
         else setSelectedCommunity(d.data.comm_index);
+        setSelectedNode(d)
         setHoverModal([false, null]);
     });
 
@@ -377,6 +397,14 @@ const Home = () => {
 
         <div className={styles.networkWrapper}>
           <div className={styles.graphCanvas} id="demo-canvas"></div>
+          <div className={styles.sidepanelWrapper}>
+            {
+              <SidePanel
+                data={selectedNode}
+                cluster={true}
+              />
+            }
+          </div>
         </div>
 
         {hoverModal[0] && hoverDiv()}
