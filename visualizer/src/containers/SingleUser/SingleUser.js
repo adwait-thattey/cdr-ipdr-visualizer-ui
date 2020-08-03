@@ -28,7 +28,7 @@ const SingleUser = () => {
     return <Header title="User Analysis" />;
   }
 
-  const { cdr, ipdr, services, users } = data;
+  const { cdr, ipdr, services, users, stats } = data;
 
   return (
     <>
@@ -43,30 +43,14 @@ const SingleUser = () => {
             </Col>
           </Row>
           <Row justify="space-around" align="center">
-            <Col span={4}>
-              <div className={styles.stats}>
-                <h1>Stats</h1>
-                <h3>StatsName</h3>
-              </div>
-            </Col>
-            <Col span={4}>
-              <div className={styles.stats}>
-                <h1>Stats</h1>
-                <h3>StatsName</h3>
-              </div>
-            </Col>
-            <Col span={4}>
-              <div className={styles.stats}>
-                <h1>Stats</h1>
-                <h3>StatsName</h3>
-              </div>
-            </Col>
-            <Col span={4}>
-              <div className={styles.stats}>
-                <h1>Stats</h1>
-                <h3>StatsName</h3>
-              </div>
-            </Col>
+            {stats.map((val, index) => (
+              <Col span={4} key={index}>
+                <div className={styles.stats}>
+                  <h1>val.key</h1>
+                  <h3>val.value</h3>
+                </div>
+              </Col>
+            ))}
           </Row>
           <Row justify="space-around" align="center">
             <Col span={13}>
