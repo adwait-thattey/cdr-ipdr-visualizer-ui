@@ -1,0 +1,31 @@
+@mixin flex(
+  $align-items: flex-start,
+  $justify-content: flex-start,
+  $flex-direction: row
+) {
+  display: flex;
+  align-items: $align-items;
+  justify-content: $justify-content;
+  flex-direction: $flex-direction;
+}
+
+.container {
+  @include flex(center, space-around);
+  //   border: thin solid black;
+  height: 70vh;
+  padding: 0 5%;
+}
+
+.element {
+  @include flex(center, space-around, column);
+  //   border: thin solid black;
+  background-color: #f2f4f4;
+  padding: 30px;
+  border-radius: 15px;
+  width: 40%;
+}
+
+.caption {
+  text-align: center;
+  margin: 10px 0;
+}

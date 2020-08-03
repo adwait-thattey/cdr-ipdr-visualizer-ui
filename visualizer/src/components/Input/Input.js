@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Input.module.scss';
 
-const Input = ({ name, placeholder, onChange, title, value, width }) => {
+const Input = ({ name, placeholder, onChange, title, value, width, type }) => {
   return (
     <div className={styles.inputHead}>
       <label>{title}</label>
@@ -12,6 +12,7 @@ const Input = ({ name, placeholder, onChange, title, value, width }) => {
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value, name)}
         value={value}
+        type={type || 'text'}
       />
     </div>
   );

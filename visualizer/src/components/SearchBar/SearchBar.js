@@ -6,7 +6,7 @@ import Button from '../Button/Button';
 import styles from './SearchBar.module.scss';
 import Circle from '../Circle/Circle';
 
-const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList }) => {
+const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList, header }) => {
 
 
   const genDropD = (wishlists) => {
@@ -28,7 +28,7 @@ const SearchBar = ({ onFilterClick, wishlists, updateWishList, selectedUserList 
   return (
     <nav className={styling.nav}>
       <div>
-        <Input placeholder="Search here" width="40rem" />
+        <h1 className={styling.heading}>{header}</h1>
       </div>
 
       <div className={styles.buttons}>

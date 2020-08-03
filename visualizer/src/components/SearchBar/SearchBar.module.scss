@@ -12,6 +12,15 @@
   padding: 0 7rem;
 }
 
+.heading {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  font-size: 2rem;
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: 400;
+}
+
 .user {
   display: flex;
   align-items: center;

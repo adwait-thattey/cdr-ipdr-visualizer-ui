@@ -6,6 +6,7 @@ import Cdr from './Cdr/Cdr';
 import Ipdr from './Ipdr/Ipdr';
 import Lists from './Lists/Lists';
 import { useParams } from 'react-router-dom';
+import AudioUpload from './Audio/Audio';
 
 const { TabPane } = Tabs;
 
@@ -29,6 +30,9 @@ const Upload = () => {
           </TabPane>
           <TabPane tab="Lists" className={styles.tab} key="lists">
             <Lists />
+          </TabPane>
+          <TabPane tab="Audio" className={styles.tab} key="audio">
+            <AudioUpload />
           </TabPane>
         </Tabs>
       </div>
