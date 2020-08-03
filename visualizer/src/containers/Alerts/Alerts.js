@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Alerts.module.scss';
-import { Tabs, Select, Input, Radio } from 'antd';
+import { Tabs, Select, Input, Radio, Spin } from 'antd';
 import Header from '../../components/Header/Header';
 import Button from '../../components/Button/Button';
 import { DeleteOutlined } from '@ant-design/icons';
-import axios from '../../services/axios'
+import axios from '../../services/axios';
 
 const { TabPane } = Tabs;
 const { Option } = Select;
@@ -190,13 +190,15 @@ const monitoredItem = [
 const Log = () => {
   const [logId, setLogId] = useState(-1);
   // const [val, setVal] = useState(1);
-  const [monitoredList, setMonitoredList] = useState(monitoredItem);
+  const [logs, setLogs] = useState([]);
+  const [monitoredList, setMonitoredList] = useState([]);
 
   const [inputVal, setInputVal] = useState({
-    id: Date.now(),
-    type: 'watchlist',
-    text: '',
-    mode: 1,
+    // id: Date.now(),
+    name: '',
+    entity: 'phone',
+    value: '',
+    alert_type: 'new record',
   });
 
   const handleInput = (key, value) => {
@@ -206,31 +208,38 @@ const Log = () => {
 
   const resetInput = () => {
     setInputVal({
-      id: Date.now(),
-      type: 'watchlist',
-      text: '',
-      mode: 1,
+      name: '',
+      entity: 'phone',
+      value: '',
+      alert_type: 'new record',
     });
   };
 
-  const saveInput = () => {
-    setMonitoredList([inputVal, ...monitoredList]);
-    resetInput();
+  const saveInput = async () => {
+    let res = await axios.post('/data/alerts/', inputVal);
+    if (res.status === 201) {
+      setMonitoredList([inputVal, ...monitoredList]);
+      resetInput();
+    }
   };
 
-  const handleDelete = (id) => {
-    setMonitoredList(monitoredList.filter((item) => item.id !== id));
+  const handleDelete = async (id) => {
+    let res = await axios.delete('/data/alerts', { data: { id: id } });
+    if (res.status === 200) {
+      setMonitoredList(monitoredList.filter((item) => item.id !== id));
+    }
   };
 
   const getData = async () => {
-    let res = await axios.get('/data/alerts');
-    console.log(res.data);
-    setMonitoredList(res.data);
+    let res1 = await axios.get('/data/alerts');
+    setMonitoredList(res1.data.reverse());
+    let res2 = await axios.get('/data/alertinstances');
+    setLogs(res2.data.reverse());
+    // console.log(res2.data);
   };
 
   useEffect(() => {
     getData();
-    // setMonitoredList(await getData());
   }, []);
 
   return (
@@ -239,14 +248,18 @@ const Log = () => {
       <div className={styles.section}>
         <div className={styles.section1}>
           <h4>Logs</h4>
-          {logData.map((item) => {
+          {logs.map((item) => {
             return (
               <div
                 className={styles.logItem}
                 key={item.id}
                 onClick={() => setLogId(item.id)}
               >
-                {item.text}
+                {item.alert.entity === 'phone'
+                  ? `New record found for monitored phone ${item.alert.value}`
+                  : item.alert.entity === 'watchlist'
+                  ? `Sudden usage increase in watchlist ${item.alert.value}`
+                  : `Sudden usage increase in area of tower ${item.alert.value}`}
               </div>
             );
           })}
@@ -257,16 +270,25 @@ const Log = () => {
             <div className={styles.details}>
               {logId === -1
                 ? 'Select log item to view details'
-                : logData
+                : logs
                     .filter((item) => item.id === logId)
                     .map((item) => {
                       return (
                         <>
-                          <h4>{item.text}</h4>
+                          <h4>
+                            {item.alert.entity === 'phone'
+                              ? `New record found for monitored phone ${item.alert.value}`
+                              : item.alert.entity === 'watchlist'
+                              ? `Sudden usage increase in watchlist ${item.alert.value}`
+                              : `Sudden usage increase in area of tower ${item.alert.value}`}
+                          </h4>
                           <div>Time: {item.timestamp}</div>
                           {/* <div>To: {item.to_number}</div> */}
-                          <div>Duration: {item.duration} seconds</div>
-                          <div>Call Type: {item.call_type}</div>
+                          <div>Alert Name: {item.alert.name}</div>
+                          <div>
+                            Call Type: {item.object.attribute} -{' '}
+                            {item.object.value}
+                          </div>
                         </>
                       );
                     })}
@@ -275,30 +297,35 @@ const Log = () => {
           <div className={styles.subsection2}>
             <h4>Set Monitored Items</h4>
             <div className={styles.monitoringForm}>
-              <Select
-                defaultValue="watchlist"
+              <Input
+                placeholder="Enter Alert Title"
                 className={styles.input}
-                value={inputVal.type}
-                onChange={(value) => handleInput('type', value)}
+                value={inputVal.name}
+                onChange={(e) => handleInput('name', e.target.value)}
+              />
+              <Select
+                defaultValue="phone"
+                className={styles.input}
+                value={inputVal.entity}
+                onChange={(value) => handleInput('entity', value)}
               >
                 <Option value="watchlist">Watchlist</Option>
                 <Option value="tower">Tower</Option>
                 <Option value="phone">Phone</Option>
               </Select>
-              {}
               <Input
                 placeholder="Enter Details"
                 className={styles.input}
-                value={inputVal.text}
-                onChange={(e) => handleInput('text', e.target.value)}
+                value={inputVal.value}
+                onChange={(e) => handleInput('value', e.target.value)}
               />
               <Radio.Group
-                onChange={(e) => handleInput('mode', e.target.value)}
-                value={inputVal.mode}
+                onChange={(e) => handleInput('alert_type', e.target.value)}
+                value={inputVal.alert_type}
                 className={styles.inputOpt}
               >
-                <Radio value={1}>On Spike</Radio>
-                <Radio value={2}>On New Record</Radio>
+                <Radio value={'spike'}>On Spike</Radio>
+                <Radio value={'new record'}>On New Record</Radio>
               </Radio.Group>
               <Button text={'Save'} onClick={saveInput} />
             </div>
@@ -306,18 +333,24 @@ const Log = () => {
         </div>
         <div className={styles.section3}>
           <h4>List Items being monitored</h4>
-          {monitoredList.map((item) => {
-            return (
-              <div
-                className={`${styles.logItem} ${styles.monitoredItem} `}
-                key={item.id}
-                // onClick={() => setLogId(item.id)}
-              >
-                <div className={styles.logText}>{item.name + " : " + item.entity + "-" + item.value }</div>
-                <DeleteOutlined onClick={() => handleDelete(item.id)} />
-              </div>
-            );
-          })}
+          {monitoredList.length > 0 ? (
+            monitoredList.map((item) => {
+              return (
+                <div
+                  className={`${styles.logItem} ${styles.monitoredItem} `}
+                  key={item.id}
+                  // onClick={() => setLogId(item.id)}
+                >
+                  <div className={styles.logText}>
+                    {item.name + ' : ' + item.entity + '-' + item.value}
+                  </div>
+                  <DeleteOutlined onClick={() => handleDelete(item.id)} />
+                </div>
+              );
+            })
+          ) : (
+            <Spin />
+          )}
         </div>
       </div>
     </div>
