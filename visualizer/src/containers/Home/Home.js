@@ -281,6 +281,7 @@ const Home = () => {
           return list.color;
         }
       }
+      if (node.data.type === "service") return 'lightgray';
       return node.data.highlighted ? 'brown' : 'orange';
   }
 
@@ -429,6 +430,7 @@ const Home = () => {
           wishlists={watchLists}
           updateWishList={handleUserListSelect}
           onFilterClick={() => handleFilterModal(true)}
+          header="Visualize"
         />
 
         <div className={styles.networkWrapper}>
