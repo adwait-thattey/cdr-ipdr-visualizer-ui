@@ -15,6 +15,11 @@ const { Option } = Select;
 
 const SpamDetection = () => {
   const [show, setShow] = useState(false);
+  const [possible_spammers, set_possible_spammers] = useState([
+    8363864832,
+    7981647992,
+    9987390040,
+  ]);
   const history = useHistory();
   const [inputVal, setInputVal] = useState({
     mode: 'phone',
@@ -41,7 +46,14 @@ const SpamDetection = () => {
       {!show ? (
         <p>Click the button below to detect spam from the data stored</p>
       ) : (
-        <div className={styles.listContainer}></div>
+        <>
+          <h4>Possible Spammers Are:</h4>
+          <div className={styles.listContainer}>
+            {possible_spammers.map((item) => (
+              <div className={styles.listItem}>{item}</div>
+            ))}
+          </div>
+        </>
       )}
       <div className={styles.formContainer}>
         <Button text={'Search'} onClick={searchRecord} />

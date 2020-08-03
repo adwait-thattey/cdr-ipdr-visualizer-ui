@@ -28,10 +28,22 @@
 }
 
 .listContainer {
+  @include flex(center, space-around, column);
   height: 50%;
-  background: red;
+  background: #dcdcdc;
   animation: anim 0.7s forwards;
+  width: 50%;
+}
+
+.listItem {
+  @include flex(center, center, column);
+  flex: 1;
   width: 100%;
+  // padding: 20px;
+  font-size: 25px;
+}
+.listItem:hover {
+  background: #c9c7c7;
 }
 
 @keyframes anim {
