@@ -5,10 +5,16 @@ import { Modal, Dropdown, Menu, Button as AiButton } from 'antd';
 import SidePanel from '../../components/SidePanel/Sidepanel';
 import Filter from '../Filter/Filter';
 import CustomPopup from '../../components/CustomPopup/CustomPopup';
-import { getFilteredData, getUserData, getCdrData, getServiceInfo, getWatchLists, getIpdrData } from '../../services/filters';
+import {
+  getFilteredData,
+  getUserData,
+  getCdrData,
+  getServiceInfo,
+  getWatchLists,
+  getIpdrData,
+} from '../../services/filters';
 import Button from '../../components/Button/Button';
 import Circle from '../../components/Circle/Circle';
-
 
 const getRandomColor = () => {
   var letters = '0123456789ABCDEF';
@@ -19,18 +25,16 @@ const getRandomColor = () => {
   return color;
 };
 
-
 const edgeColors = {
   5: 'green',
   10: 'yellow',
-  20: 'red'
-}
+  20: 'red',
+};
 
 const colors = [];
 for (let i = 0; i < 10; i++) {
   colors.push(getRandomColor());
 }
-
 
 const userListsData = [
   {
@@ -42,9 +46,7 @@ const userListsData = [
   },
 ];
 
-const cdrData = [
-  { id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] },
-];
+const cdrData = [{ id: 49, from: 1, to: 2, frequency: 5, calls: [68, 70, 73] }];
 
 const ipdrData = [
   { id: 70, from: 1, service: 1 + 50000, records: 3, calls: [21] },
@@ -53,7 +55,7 @@ const ipdrData = [
 const detailedCdrData = [
   {
     id: 68,
-    timestamp: '2020-08-01T18:56:41+05:30',
+    timestamp: '2019-08-01T18:56:41+05:30',
     from_number: '9447774476',
     to_number: '9876543211',
     duration: 471,
@@ -63,7 +65,72 @@ const detailedCdrData = [
     cell_id: null,
     location_lat: null,
     location_long: null,
-  }
+  },
+  {
+    id: 69,
+    timestamp: '2020-08-01T18:56:41+05:30',
+    from_number: '9447774476',
+    to_number: '9844512514',
+    duration: 125,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 70,
+    timestamp: '2019-07-01T18:56:41+05:30',
+    from_number: '9447774476',
+    to_number: '9774561223',
+    duration: 365,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 71,
+    timestamp: '2010-08-01T18:56:41+05:30',
+    from_number: '9447774476',
+    to_number: '9855461258',
+    duration: 129,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 72,
+    timestamp: '2020-08-01T18:56:41+05:30',
+    from_number: '9447774476',
+    to_number: '7894564541',
+    duration: 269,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
+  {
+    id: 73,
+    timestamp: '2018-12-18T18:56:41+05:30',
+    from_number: '9447774476',
+    to_number: '9774561231',
+    duration: 564,
+    call_type: 'Outgoing',
+    imei: null,
+    imsi: null,
+    cell_id: null,
+    location_lat: null,
+    location_long: null,
+  },
 ];
 
 const detailedIpdrData = [
@@ -188,100 +255,94 @@ const Home = () => {
   // Users list
   const [watchLists, setWatchLists] = useState(userListsData);
 
-
   const handleFilterModal = (status) => setShowFilterModal(status);
-
 
   useEffect(() => {
     async function fetchData() {
-
       try {
         const updatedData = await getFilteredData(filters);
         const { cdrData, ipdrData } = updatedData;
-    
 
-        const userIdsFromCdr = getUserNodes(cdrData, "cdr");
+        const userIdsFromCdr = getUserNodes(cdrData, 'cdr');
         const userInfoOne = await getUserInfo(userIdsFromCdr);
 
-
-        const userIdsFromIpdr = getUserNodes(ipdrData, "ipdr");
-        const userInfoTwo = await getUserInfo(userIdsFromIpdr)
+        const userIdsFromIpdr = getUserNodes(ipdrData, 'ipdr');
+        const userInfoTwo = await getUserInfo(userIdsFromIpdr);
 
         const serviceNodes = getServiceNodes(ipdrData);
         const getServices = await getServiceInfo(serviceNodes);
 
-
         // { id: 49, from: 1, to: 2, calls: [68, 70, 73] },
 
-        const finalUserList = [...userInfoOne, ...userInfoTwo]
+        const finalUserList = [...userInfoOne, ...userInfoTwo];
 
-        cdrData.forEach(data => {
+        cdrData.forEach((data) => {
           const { from, to, calls } = data;
-          finalUserList.forEach(user => {
+          finalUserList.forEach((user) => {
             if (user.id === from || user.id === to) {
-                if (!user.count) user.count = 0
-                if (!user.calls) user.calls = []
-                user.count += calls.length;
-                user.calls = [...user.calls, ...calls]
+              if (!user.count) user.count = 0;
+              if (!user.calls) user.calls = [];
+              user.count += calls.length;
+              user.calls = [...user.calls, ...calls];
             }
-          })
-        })
+          });
+        });
 
-
-        ipdrData.forEach(data => {
+        ipdrData.forEach((data) => {
           const { from, calls } = data;
-          finalUserList.forEach(user => {
-            if (!user.count) user.count = 0
+          finalUserList.forEach((user) => {
+            if (!user.count) user.count = 0;
             if (user.id === from) {
-                user.count += calls.length;
+              user.count += calls.length;
             }
-            if (!user.calls) user.calls = []
-            user.calls = [...user.calls, ...calls]
-          })
-        })
-
+            if (!user.calls) user.calls = [];
+            user.calls = [...user.calls, ...calls];
+          });
+        });
 
         const watchLists = await getWatchLists();
-        const watchListWithColor = watchLists.map((list, index) => ({ ...list, color: colors[index % colors.length], selected: false }))
+        const watchListWithColor = watchLists.map((list, index) => ({
+          ...list,
+          color: colors[index % colors.length],
+          selected: false,
+        }));
         setWatchLists(watchListWithColor);
 
-        setAllValues(cdrData, ipdrData, finalUserList, getServices)
-      } catch(e) {
+        setAllValues(cdrData, ipdrData, finalUserList, getServices);
+      } catch (e) {
         console.log(e);
       }
-
     }
     fetchData();
   }, [filters]);
 
   const getUserNodes = (apiData, type) => {
-      const users = new Set()
-      apiData.forEach(data => {
-        users.add(data.from);
-        // For IPDR check is required
-        if (type === "cdr") users.add(data.to);
-      })
-      return users;
-  }
+    const users = new Set();
+    apiData.forEach((data) => {
+      users.add(data.from);
+      // For IPDR check is required
+      if (type === 'cdr') users.add(data.to);
+    });
+    return users;
+  };
 
   const getServiceNodes = (apiData) => {
-      const services = new Set()
-      apiData.forEach(data => {
-          services.add(data.to);
-      })
-      return services;
-  }
+    const services = new Set();
+    apiData.forEach((data) => {
+      services.add(data.to);
+    });
+    return services;
+  };
 
   const getUserInfo = async (userIds) => await getUserData(userIds);
 
   const getEdgeColor = (node) => {
-
     const frequency = node.data.frequency;
 
-    if (frequency < 10) return "green";
-    if (frequency < 20) return "yellow";
-     return "red";
-  }
+    if (frequency < 10) return 'green';
+    if (frequency < 20) return 'yellow';
+    return 'red';
+  };
 
   const handleFilters = async (newFilterState) => {
     setFilters(newFilterState);
@@ -291,7 +352,7 @@ const Home = () => {
       const { cdrData } = updatedData;
       const userIds = getUserNodes(cdrData);
       const userInfo = await getUserInfo(userIds);
-      setAllValues(cdrData, [], userInfo, [])
+      setAllValues(cdrData, [], userInfo, []);
     } catch (e) {
       console.log(e);
     }
@@ -331,29 +392,29 @@ const Home = () => {
   };
 
   const handleUserListSelect = (checked, id) => {
-    const watchList = watchLists.find(user => user.id === id);
-    const otherWatchLists = watchLists.filter(user => user.id !== id);
+    const watchList = watchLists.find((user) => user.id === id);
+    const otherWatchLists = watchLists.filter((user) => user.id !== id);
     if (!watchList) throw new Error('watchList not found');
     watchList.selected = checked;
-    
-    setWatchLists([...otherWatchLists, { ...watchList }])
+
+    setWatchLists([...otherWatchLists, { ...watchList }]);
   };
 
   const getNodeColor = (node) => {
-      let color = "orange";
-      // if (node.data.count > 6) color = "red";
-      // else if (node.data.count > 3) color = "green";
-      // else color = "yellow";
-      // for (let list of watchLists) {
-      //   if (!list.selected) continue;
-      //   if (list.users_list.includes(node.node)) {
-      //     return list.color;
-      //   }
-      // }
-      if (node.data.type === "service") return 'blue';
+    let color = 'orange';
+    if (node.data.count > 6) color = 'red';
+    else if (node.data.count > 3) color = 'green';
+    else color = 'yellow';
+    for (let list of watchLists) {
+      if (!list.selected) continue;
+      if (list.users_list.includes(node.node)) {
+        return list.color;
+      }
+    }
+    if (node.data.type === 'service') return 'blue';
 
-      return node.data.highlighted ? 'brown' : color;
-  }
+    return node.data.highlighted ? 'brown' : color;
+  };
 
   useEffect(() => {
     var G = new window.jsnx.Graph();
@@ -391,14 +452,18 @@ const Home = () => {
       ) {
         continue;
       }
-      G.addEdge(from, to, { frequency: calls.length, });
+      G.addEdge(from, to, { frequency: calls.length });
     }
 
     // IPDR edges
     for (let ele of ipdr) {
       const { from, to, calls } = ele;
 
-      if (users.find((user) => (user.id === from || user.id === to) && user.removed)) {
+      if (
+        users.find(
+          (user) => (user.id === from || user.id === to) && user.removed,
+        )
+      ) {
         continue;
       }
       G.addEdge(from, to, { ...ele, frequency: calls.length });
@@ -424,7 +489,7 @@ const Home = () => {
         return name;
       },
       edgeStyle: {
-        fill: d => getEdgeColor(d)
+        fill: (d) => getEdgeColor(d),
       },
       stickyDrag: true,
     });
@@ -434,24 +499,21 @@ const Home = () => {
     });
 
     window.d3.selectAll('.node').on('click', async (d) => {
-
       const updatedData = {
         id: d.node,
         ...d.data,
         type: d.data.type,
       };
 
-      if (d.data.type === "service") {
-        const ipdrs = getAllIpdrsFromUserNode(d.node)
+      if (d.data.type === 'service') {
+        const ipdrs = getAllIpdrsFromUserNode(d.node);
         const detailedIPdrs = await getIpdrData(ipdrs);
         setDetailedIpdr(detailedIPdrs);
-
       } else {
-        const cdrs = getAllCdrsFromUserNode(d.node)
+        const cdrs = getAllCdrsFromUserNode(d.node);
         const detailedCdrs = await getCdrData(cdrs);
-        setDetailedCdr(detailedCdrs);
+        // setDetailedCdr(detailedCdrs);
       }
-
 
       setDetailPanel([true, updatedData]);
     });
@@ -461,28 +523,29 @@ const Home = () => {
     });
   }, [cdr, ipdr, users, services, watchLists]);
 
-
   const getAllCdrsFromUserNode = (node) => {
-    
     const nodes = [];
-    
-    cdr.filter(ele => ele.from === node || ele.to === node).forEach(node => {
-      nodes.push(...node.calls)
-    })
+
+    cdr
+      .filter((ele) => ele.from === node || ele.to === node)
+      .forEach((node) => {
+        nodes.push(...node.calls);
+      });
 
     return nodes;
-  }
+  };
 
   const getAllIpdrsFromUserNode = (node) => {
-    
     const nodes = [];
-    
-    ipdr.filter(ele => ele.from === node || ele.to === node).forEach(node => {
-      nodes.push(...node.calls)
-    })
+
+    ipdr
+      .filter((ele) => ele.from === node || ele.to === node)
+      .forEach((node) => {
+        nodes.push(...node.calls);
+      });
 
     return nodes;
-  }
+  };
 
   const hoverDiv = () => {
     const event = window.d3.event;
@@ -502,7 +565,6 @@ const Home = () => {
     }
   };
 
-
   return (
     <>
       <Modal
@@ -521,8 +583,8 @@ const Home = () => {
           onFilterClick={() => handleFilterModal(true)}
           header="Visualize"
           showClusterButton={true}
-          />
-        
+        />
+
         {/* <SearchBar
           wishlists={userLists}
           updateWishList={handleUserListSelect}
@@ -541,13 +603,18 @@ const Home = () => {
             />
           }
         /> */}
-          <div className={styles.mark}>
-            <h4>Calls Greater than 8 <Circle color="red"/></h4>
-            <h4>Calls Greater than 6 <Circle color="green"/></h4>
-            <h4>Calls Greater than 4 <Circle color="yellow"/></h4>
-          </div>
+        <div className={styles.mark}>
+          <h4>
+            Calls Greater than 8 <Circle color="red" />
+          </h4>
+          <h4>
+            Calls Greater than 6 <Circle color="green" />
+          </h4>
+          <h4>
+            Calls Greater than 4 <Circle color="yellow" />
+          </h4>
+        </div>
         <div className={styles.networkWrapper}>
-          
           <div className={styles.graphCanvas} id="demo-canvas"></div>
           <div className={styles.sidepanelWrapper}>
             {

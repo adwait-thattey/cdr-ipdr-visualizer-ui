@@ -35,7 +35,7 @@ const SidePanel = (props) => {
           <h3>{propData && propData.data.comm_index}</h3>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -61,7 +61,9 @@ const SidePanel = (props) => {
                     name="Remove Node"
                     checked={false}
                   />
-                  <a href={`/map/${data.id}`} target="_blank">View User timeline</a>
+                  <a href={`/map/${data.id}`} target="_blank">
+                    View User timeline
+                  </a>
                 </div>
                 <UserData data={data} />
               </div>
