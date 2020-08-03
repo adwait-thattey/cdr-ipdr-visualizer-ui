@@ -3,10 +3,14 @@ export function dataToGeoJSON(data) {
     type: 'Feature',
     geometry: {
       type: 'Point',
-      coordinates: [data.lng, data.lat],
+      coordinates: [data.location_long, data.location_lat],
     },
     properties: {
-      timestamp: [new Date(data.timestamp).getTime()],
+      timestamp: [
+        new Date(
+          data.type === 'cdr' ? data.timestamp : data.start_time,
+        ).getTime(),
+      ],
       type: data.type,
       cluster: false,
       id: data.id,

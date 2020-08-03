@@ -1,0 +1,51 @@
+%boxes {
+  border: 1px solid #2f2f2f;
+  border-radius: 6px;
+}
+
+.name {
+  @extend %boxes;
+  height: 50px;
+  margin: 0 0 15px;
+  font-size: 20px;
+  font-weight: 800;
+  text-decoration: underline;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #b3e2ee;
+  color: #1f2f89;
+}
+
+.stats {
+  @extend %boxes;
+  height: 150px;
+  margin: 5px 0 30px;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-direction: column;
+  align-items: center;
+  background-color: #2f3d89;
+
+  h1,
+  h3 {
+    color: #fff;
+    padding: 0;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  h1 {
+    font-size: 3em;
+    font-weight: 900;
+  }
+}
+
+.tableContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+}
