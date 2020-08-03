@@ -154,6 +154,8 @@ const Home = () => {
     const [nodes, setNodes] = useState([])
     const handleFilterModal = (status) => setShowFilterModal(status);
 
+    const [selectedCommunity, setSelectedCommunity] = useState(null);
+
 
     const getCommunities = () => {
         return {
@@ -269,7 +271,16 @@ const Home = () => {
     // G.addEdge(3, 2, { edge_labels: "node2" });
     // User nodes
     for (let ele in nodes) {
-        G.addNode(ele, { comm_index: nodes[ele][0], influence: nodes[ele][1] });
+        if (selectedCommunity !== null) {
+            if (nodes[ele][0] === selectedCommunity) {
+                console.log('yaha');
+                G.addNode(ele, { comm_index: nodes[ele][0], influence: nodes[ele][1] });
+            }
+        }
+        else {
+            console.log('yaha2');
+            G.addNode(ele, { comm_index: nodes[ele][0], influence: nodes[ele][1] });
+        }
     }
 
     window.jsnx.draw(G, {
@@ -302,10 +313,16 @@ const Home = () => {
       setHoverModal([true, d]);
     });
 
+    window.d3.selectAll('.node').on('click', (d) => {
+        if (selectedCommunity === d.data.comm_index) setSelectedCommunity(null)
+        else setSelectedCommunity(d.data.comm_index);
+        setHoverModal([false, null]);
+    });
+
     window.d3.selectAll('.node').on('mouseleave', (d) => {
       setHoverModal([false, null]);
     });
-  }, [nodes]);
+  }, [nodes, selectedCommunity]);
 
 
   const getAllCdrsFromUserNode = (node) => {
