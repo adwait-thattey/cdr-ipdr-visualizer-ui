@@ -20,7 +20,7 @@ const SingleUser = () => {
 
   useEffect(() => {
     (async () => {
-      updateData(await getSingleUserData());
+      updateData(await getSingleUserData(id));
     })();
   }, [id]);
 
